@@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#0B0F19] text-slate-100 selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen flex flex-col justify-between bg-[#161310] text-slate-100 selection:bg-indigo-500 selection:text-white">
       {/* Header Nav */}
       <header className="px-6 lg:px-12 py-6 flex items-center justify-between border-b border-slate-800/60">
         <div className="flex items-center gap-2">

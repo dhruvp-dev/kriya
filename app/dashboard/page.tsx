@@ -45,7 +45,7 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center">
+      <div className="min-h-screen bg-[#161310] flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
           <span className="text-sm font-semibold text-slate-400">Loading Character Dashboard...</span>
@@ -56,7 +56,7 @@ export default function DashboardPage() {
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-[#0B0F19] flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen bg-[#161310] flex flex-col items-center justify-center p-6 text-center">
         <h2 className="text-xl font-bold text-slate-100">Session Expired or Character Not Found</h2>
         <p className="text-sm text-slate-400 mt-2 mb-4">Please log in to access your dashboard.</p>
         <Button variant="primary" onClick={() => (window.location.href = '/login')}>
@@ -69,7 +69,7 @@ export default function DashboardPage() {
   const { profile, character, attributes, pendingQuests, todayCompletedQuests, recentAchievements } = data;
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] flex">
+    <div className="min-h-screen bg-[#161310] flex">
       {/* Sidebar */}
       <Sidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
 

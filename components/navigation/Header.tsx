@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Menu } from 'lucide-react'; // Lucide for UI chrome per rule!
+import { Menu } from 'lucide-react';
 import type { Character, Profile } from '../../types/database.types';
 import { LevelBadge } from '../rpg/LevelBadge';
 import { GoldDisplay } from '../rpg/GoldDisplay';
@@ -25,12 +25,12 @@ export function Header({ character, profile, onToggleMobileMenu }: HeaderProps) 
   const xpSpanForLevel = Math.max(1, nextLevelXpThreshold - currentLevelXpThreshold);
 
   return (
-    <header className="sticky top-0 z-30 w-full glass-panel border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md px-4 lg:px-8 py-3 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-30 w-full glass-panel border-b border-[#332D26] bg-[#161310]/90 backdrop-blur-md px-4 lg:px-8 py-3 flex items-center justify-between gap-4">
       <div className="flex items-center gap-3">
         {onToggleMobileMenu && (
           <button
             onClick={onToggleMobileMenu}
-            className="lg:hidden p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-xl transition-colors"
+            className="lg:hidden p-2 text-[#A89F8F] hover:text-[#F5F2ED] hover:bg-[#26221D] rounded-xl transition-colors"
             aria-label="Toggle menu"
           >
             <Menu className="w-5 h-5" />
@@ -40,8 +40,8 @@ export function Header({ character, profile, onToggleMobileMenu }: HeaderProps) 
         <div className="flex items-center gap-3">
           <Avatar config={profile.avatar_config} size="sm" />
           <div className="hidden sm:block">
-            <h1 className="text-sm font-bold text-slate-100">{profile.display_name}</h1>
-            <p className="text-xs text-slate-400">Hero</p>
+            <h1 className="text-sm font-bold text-[#F5F2ED]">{profile.display_name}</h1>
+            <p className="text-xs text-[#A89F8F]">Hero</p>
           </div>
         </div>
       </div>
@@ -52,7 +52,7 @@ export function Header({ character, profile, onToggleMobileMenu }: HeaderProps) 
           max={xpSpanForLevel}
           label={`Level ${character.level} Progress`}
           subLabel={`${character.total_xp} Total XP`}
-          colorClass="bg-purple-500"
+          colorClass="bg-[#EA580C]"
         />
       </div>
 

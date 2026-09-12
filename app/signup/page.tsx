@@ -60,7 +60,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8 bg-[#0B0F19]">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8 bg-[#161310]">
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center space-y-2">
           <Link href="/" className="inline-flex items-center gap-2">

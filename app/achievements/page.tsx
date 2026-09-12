@@ -33,7 +33,7 @@ export default function AchievementsPage() {
   const unlockedCount = achievements.filter((a) => a.unlocked).length;
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] flex">
+    <div className="min-h-screen bg-[#161310] flex">
       <Sidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
 
       <div className="flex-1 lg:pl-64 flex flex-col min-w-0">

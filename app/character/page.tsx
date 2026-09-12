@@ -29,7 +29,7 @@ export default function CharacterPage() {
 
   if (isLoading || !data) {
     return (
-      <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center">
+      <div className="min-h-screen bg-[#161310] flex items-center justify-center">
         <span className="text-sm text-slate-400 font-semibold">Loading Character Sheet...</span>
       </div>
     );
@@ -42,7 +42,7 @@ export default function CharacterPage() {
   const xpSpan = Math.max(1, nextThreshold - currentThreshold);
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] flex">
+    <div className="min-h-screen bg-[#161310] flex">
       <Sidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
 
       <div className="flex-1 lg:pl-64 flex flex-col min-w-0">

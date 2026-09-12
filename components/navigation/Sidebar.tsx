@@ -15,7 +15,7 @@ import {
   Settings,
   LogOut,
   X,
-} from 'lucide-react'; // Lucide for interface chrome per rule!
+} from 'lucide-react';
 import { cn } from '../../lib/utils/cn';
 import { signOutAction } from '../../lib/actions/auth';
 import { useToast } from '../ui/Toast';
@@ -58,29 +58,29 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-[#161310]/80 backdrop-blur-sm lg:hidden"
         />
       )}
 
       <aside
         className={cn(
-          'fixed top-0 left-0 z-40 h-screen w-64 glass-panel bg-slate-950/95 border-r border-slate-800 flex flex-col justify-between transition-transform duration-300 lg:translate-x-0',
+          'fixed top-0 left-0 z-40 h-screen w-64 glass-panel bg-[#161310]/95 border-r border-[#332D26] flex flex-col justify-between transition-transform duration-300 lg:translate-x-0',
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
         <div className="p-6">
-          <div className="flex items-center justify-between pb-6 border-b border-slate-800/80">
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-indigo-600/30">
+          <div className="flex items-center justify-between pb-6 border-b border-[#332D26]">
+            <Link href="/dashboard" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#EA580C] to-[#F59E0B] flex items-center justify-center font-black text-white text-lg shadow-sm shadow-[#EA580C]/20">
                 K
               </div>
-              <span className="text-xl font-black tracking-tight text-slate-100">KRIYA</span>
+              <span className="text-xl font-black tracking-tight text-[#F5F2ED]">KRIYA</span>
             </Link>
 
             {onClose && (
               <button
                 onClick={onClose}
-                className="lg:hidden p-1.5 text-slate-400 hover:text-slate-200 rounded-lg hover:bg-slate-800"
+                className="lg:hidden p-1.5 text-[#A89F8F] hover:text-[#F5F2ED] rounded-lg hover:bg-[#26221D]"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -100,11 +100,11 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
                   className={cn(
                     'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all',
                     isActive
-                      ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/25'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                      ? 'bg-[#EA580C] text-white shadow-sm shadow-[#EA580C]/20'
+                      : 'text-[#A89F8F] hover:text-[#F5F2ED] hover:bg-[#26221D]'
                   )}
                 >
-                  <Icon className={cn('w-5 h-5', isActive ? 'text-white' : 'text-slate-400')} />
+                  <Icon className={cn('w-5 h-5', isActive ? 'text-white' : 'text-[#A89F8F]')} />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -112,7 +112,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           </nav>
         </div>
 
-        <div className="p-6 border-t border-slate-800/80">
+        <div className="p-6 border-t border-[#332D26]">
           <button
             onClick={handleSignOut}
             className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-rose-400 hover:bg-rose-500/10 transition-colors"
