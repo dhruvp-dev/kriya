@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import confetti from 'canvas-confetti';
-import { Plus } from 'lucide-react';
+import { Plus, Check } from 'lucide-react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { CharacterProgressionCard } from '../../components/rpg/CharacterProgressionCard';
@@ -161,24 +161,31 @@ export default function DashboardPage() {
         });
       }
 
+      const combinedQuestsMap = new Map<string, any>();
       if (dbQuests && dbQuests.length > 0) {
-        setQuests(
-          dbQuests.map((q) => {
-            const reward = getRewardForDifficulty(
-              (q.difficulty?.toLowerCase() as any) || 'medium'
-            );
-            return {
-              id: q.id,
-              title: q.title,
-              description: q.description || undefined,
-              attribute: (q.attribute as any) || 'intellect',
-              difficulty: (q.difficulty?.toUpperCase() as any) || 'MEDIUM',
-              xp: reward.xp,
-              gold: reward.gold,
-              completed: q.status === 'completed',
-            };
-          })
-        );
+        dbQuests.forEach((q) => combinedQuestsMap.set(q.id, q));
+      }
+      if (dashData?.todayCompletedQuests && dashData.todayCompletedQuests.length > 0) {
+        dashData.todayCompletedQuests.forEach((q) => combinedQuestsMap.set(q.id, q));
+      }
+
+      if (combinedQuestsMap.size > 0) {
+        const mappedList: QuestItem[] = Array.from(combinedQuestsMap.values()).map((q) => {
+          const reward = getRewardForDifficulty(
+            (q.difficulty?.toLowerCase() as any) || 'medium'
+          );
+          return {
+            id: q.id,
+            title: q.title,
+            description: q.description || undefined,
+            attribute: (q.attribute as any) || 'intellect',
+            difficulty: (q.difficulty?.toUpperCase() as any) || 'MEDIUM',
+            xp: q.xp_reward || reward.xp,
+            gold: q.gold_reward || reward.gold,
+            completed: q.status === 'completed',
+          };
+        });
+        setQuests(mappedList);
       } else {
         setQuests([]);
       }
@@ -383,7 +390,11 @@ export default function DashboardPage() {
   };
 
   const pendingQuests = quests.filter((q) => !q.completed);
+  const completedQuests = quests.filter((q) => q.completed);
   const filteredTodayQuests = pendingQuests.filter((q) =>
+    activeFilter === 'All' ? true : q.attribute.toLowerCase() === activeFilter.toLowerCase()
+  );
+  const filteredCompletedQuests = completedQuests.filter((q) =>
     activeFilter === 'All' ? true : q.attribute.toLowerCase() === activeFilter.toLowerCase()
   );
 
@@ -470,19 +481,46 @@ export default function DashboardPage() {
                     </div>
                   ))}
                 </div>
-              ) : filteredTodayQuests.length > 0 ? (
-                <div className="grid grid-cols-1 gap-3">
-                  {filteredTodayQuests.map((quest) => (
-                    <QuestCard
-                      key={quest.id}
-                      quest={quest}
-                      onComplete={handleCompleteQuest}
-                    />
-                  ))}
+              ) : filteredTodayQuests.length > 0 || filteredCompletedQuests.length > 0 ? (
+                <div className="space-y-4">
+                  {/* Pending Quests */}
+                  {filteredTodayQuests.length > 0 && (
+                    <div className="grid grid-cols-1 gap-3">
+                      {filteredTodayQuests.map((quest) => (
+                        <QuestCard
+                          key={quest.id}
+                          quest={quest}
+                          onComplete={handleCompleteQuest}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Completed Today Section */}
+                  {filteredCompletedQuests.length > 0 && (
+                    <div className="pt-3 space-y-3">
+                      <div className="flex items-center gap-2 pt-2 border-t border-[#E6E6E8]">
+                        <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#ECFDF5] text-[#059669]">
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </span>
+                        <h3 className="text-xs font-bold text-[#60606C] uppercase tracking-wider">
+                          Completed Today ({filteredCompletedQuests.length})
+                        </h3>
+                      </div>
+                      <div className="grid grid-cols-1 gap-3">
+                        {filteredCompletedQuests.map((quest) => (
+                          <QuestCard
+                            key={quest.id}
+                            quest={quest}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="bg-[#F7F7F8] border border-[#E6E6E8] rounded-2xl p-10 text-center space-y-3">
-                  <h3 className="text-base font-bold text-[#151515]">No quests pending</h3>
+                  <h3 className="text-base font-bold text-[#151515]">No quests yet</h3>
                   <p className="text-xs text-[#60606C] max-w-xs mx-auto leading-relaxed">
                     Turn something you want to accomplish into your first quest today.
                   </p>

@@ -90,8 +90,8 @@ export function CreateQuestModal({ isOpen, onClose, onCreated, onCreateQuest }: 
       handleQuestCreated({
         title: title.trim(),
         description: description.trim(),
-        attribute,
-        difficulty,
+        attribute: attribute.toLowerCase(),
+        difficulty: difficulty.toLowerCase(),
         xp: reward.xp,
         gold: reward.gold,
         subtasks: subtasks.length > 0 ? subtasks : undefined,

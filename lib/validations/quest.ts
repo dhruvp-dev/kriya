@@ -1,8 +1,19 @@
 import { z } from 'zod';
 
-export const questDifficultySchema = z.enum(['easy', 'medium', 'hard', 'epic']);
-export const attributeTypeSchema = z.enum(['strength', 'intellect', 'discipline', 'creativity']);
-export const questRecurrenceSchema = z.enum(['none', 'daily']);
+export const questDifficultySchema = z.preprocess(
+  (val) => (typeof val === 'string' ? val.toLowerCase().trim() : val),
+  z.enum(['easy', 'medium', 'hard', 'epic'])
+);
+
+export const attributeTypeSchema = z.preprocess(
+  (val) => (typeof val === 'string' ? val.toLowerCase().trim() : val),
+  z.enum(['strength', 'intellect', 'discipline', 'creativity'])
+);
+
+export const questRecurrenceSchema = z.preprocess(
+  (val) => (typeof val === 'string' ? val.toLowerCase().trim() : val),
+  z.enum(['none', 'daily'])
+);
 
 export const createQuestSchema = z.object({
   title: z

@@ -91,22 +91,29 @@ export default function QuestsPage() {
         });
       }
 
+      const combinedQuestsMap = new Map<string, any>();
       if (dbQuests && dbQuests.length > 0) {
-        setQuests(
-          dbQuests.map((q) => {
-            const reward = getRewardForDifficulty((q.difficulty?.toLowerCase() as any) || 'medium');
-            return {
-              id: q.id,
-              title: q.title,
-              description: q.description || undefined,
-              attribute: (q.attribute as any) || 'intellect',
-              difficulty: (q.difficulty?.toUpperCase() as any) || 'MEDIUM',
-              xp: reward.xp,
-              gold: reward.gold,
-              completed: q.status === 'completed',
-            };
-          })
-        );
+        dbQuests.forEach((q) => combinedQuestsMap.set(q.id, q));
+      }
+      if (dashData?.todayCompletedQuests && dashData.todayCompletedQuests.length > 0) {
+        dashData.todayCompletedQuests.forEach((q) => combinedQuestsMap.set(q.id, q));
+      }
+
+      if (combinedQuestsMap.size > 0) {
+        const mappedList: QuestItem[] = Array.from(combinedQuestsMap.values()).map((q) => {
+          const reward = getRewardForDifficulty((q.difficulty?.toLowerCase() as any) || 'medium');
+          return {
+            id: q.id,
+            title: q.title,
+            description: q.description || undefined,
+            attribute: (q.attribute as any) || 'intellect',
+            difficulty: (q.difficulty?.toUpperCase() as any) || 'MEDIUM',
+            xp: q.xp_reward || reward.xp,
+            gold: q.gold_reward || reward.gold,
+            completed: q.status === 'completed',
+          };
+        });
+        setQuests(mappedList);
       } else {
         setQuests([]);
       }
