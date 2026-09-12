@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
@@ -17,6 +17,8 @@ import {
   Clock,
 } from 'lucide-react';
 import { Avatar, AvatarVariant } from '../../components/avatars';
+import { getDashboardData } from '../../lib/queries/dashboard';
+import { getXpThreshold } from '../../lib/progression';
 
 interface LeaderboardUser {
   rank: number;
@@ -37,14 +39,14 @@ const ALL_TIME_DATA: LeaderboardUser[] = [
   { rank: 5, name: 'Leo V.', variant: 'runner', level: 13, totalXp: 3450, isUser: false, roleTitle: 'The Runner', trend: 'same' },
   { rank: 6, name: 'Sophia T.', variant: 'explorer', level: 12, totalXp: 2890, isUser: false, roleTitle: 'The Explorer', trend: 'same' },
   { rank: 7, name: 'Alex N.', variant: 'maker', level: 12, totalXp: 2600, isUser: false, roleTitle: 'The Maker', trend: 'down' },
-  { rank: 8, name: 'Dhruv', variant: 'architect', level: 12, totalXp: 2480, isUser: true, roleTitle: 'The Architect', trend: 'up' },
+  { rank: 8, name: 'You', variant: 'architect', level: 1, totalXp: 0, isUser: true, roleTitle: 'The Architect', trend: 'up' },
   { rank: 9, name: 'Chloe W.', variant: 'creator', level: 11, totalXp: 2120, isUser: false, roleTitle: 'The Creator', trend: 'same' },
   { rank: 10, name: 'James P.', variant: 'strategist', level: 10, totalXp: 1840, isUser: false, roleTitle: 'The Strategist', trend: 'same' },
 ];
 
 const WEEKLY_DATA: LeaderboardUser[] = [
-  { rank: 1, name: 'Dhruv', variant: 'architect', level: 12, totalXp: 940, isUser: true, roleTitle: 'The Architect', trend: 'up' },
-  { rank: 2, name: 'Elena R.', variant: 'scholar', level: 18, totalXp: 880, isUser: false, roleTitle: 'The Scholar', trend: 'same' },
+  { rank: 1, name: 'Elena R.', variant: 'scholar', level: 18, totalXp: 880, isUser: false, roleTitle: 'The Scholar', trend: 'same' },
+  { rank: 2, name: 'You', variant: 'architect', level: 1, totalXp: 0, isUser: true, roleTitle: 'The Architect', trend: 'up' },
   { rank: 3, name: 'Aria S.', variant: 'creator', level: 13, totalXp: 760, isUser: false, roleTitle: 'The Creator', trend: 'up' },
   { rank: 4, name: 'Marcus K.', variant: 'strategist', level: 15, totalXp: 620, isUser: false, roleTitle: 'The Strategist', trend: 'same' },
   { rank: 5, name: 'Leo V.', variant: 'runner', level: 13, totalXp: 580, isUser: false, roleTitle: 'The Runner', trend: 'same' },
@@ -56,18 +58,79 @@ const WEEKLY_DATA: LeaderboardUser[] = [
 export default function LeaderboardPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [timeFilter, setTimeFilter] = useState<'all_time' | 'weekly'>('all_time');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [userStats] = useState({
-    level: 12,
-    currentXp: 2480,
-    nextLevelXp: 3200,
-    gold: 680,
-    streak: 14,
-    displayName: 'Dhruv',
+  const [userStats, setUserStats] = useState<{
+    level: number;
+    currentXp: number;
+    nextLevelXp: number;
+    gold: number;
+    streak: number;
+    displayName: string;
+    avatarVariant: AvatarVariant;
+    title: string;
+  }>({
+    level: 1,
+    currentXp: 0,
+    nextLevelXp: 100,
+    gold: 0,
+    streak: 0,
+    displayName: 'Hero',
+    avatarVariant: 'architect',
     title: 'Architect of Habits',
   });
 
-  const activeDataset = timeFilter === 'all_time' ? ALL_TIME_DATA : WEEKLY_DATA;
+  const loadData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const dashData = await getDashboardData();
+      if (dashData && dashData.character && dashData.profile) {
+        const { character, profile } = dashData;
+        const nextThreshold = getXpThreshold(character.level + 1);
+
+        let avatarVariant: AvatarVariant = 'architect';
+        if (profile.avatar_config) {
+          try {
+            const parsed = typeof profile.avatar_config === 'string' ? JSON.parse(profile.avatar_config) : profile.avatar_config;
+            if (parsed?.baseModel) avatarVariant = parsed.baseModel as AvatarVariant;
+          } catch {}
+        }
+
+        setUserStats({
+          level: character.level,
+          currentXp: character.total_xp,
+          nextLevelXp: nextThreshold,
+          gold: character.gold,
+          streak: character.current_streak,
+          displayName: profile.display_name || 'Hero',
+          avatarVariant,
+          title: 'Architect of Habits',
+        });
+      }
+    } catch {
+      // Graceful fallback
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const rawDataset = timeFilter === 'all_time' ? ALL_TIME_DATA : WEEKLY_DATA;
+  const activeDataset = rawDataset.map((u) => {
+    if (u.isUser) {
+      return {
+        ...u,
+        name: userStats.displayName || 'You',
+        variant: userStats.avatarVariant,
+        level: userStats.level,
+        totalXp: userStats.currentXp,
+      };
+    }
+    return u;
+  });
 
   // Podium players: #2 (index 1), #1 (index 0), #3 (index 2)
   const firstPlace = activeDataset[0];
@@ -98,11 +161,13 @@ export default function LeaderboardPage() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         activeTab="leaderboard"
+        isLoading={isLoading}
         userStats={userStats}
       />
 
       <main className="flex-1 lg:pl-60 min-w-0 flex flex-col min-h-screen">
         <Header
+          isLoading={isLoading}
           userStats={userStats}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />

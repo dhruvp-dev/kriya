@@ -4,18 +4,11 @@ import { redirect } from 'next/navigation';
 import { createClient } from '../lib/supabase/server';
 import { LandingNavbar } from '../components/landing/LandingNavbar';
 import { HeroSection } from '../components/landing/HeroSection';
-import { HabitToQuestGenerator } from '../components/landing/HabitToQuestGenerator';
-import { ProductFacts } from '../components/landing/ProductFacts';
-import { CoreLoopSection } from '../components/landing/CoreLoopSection';
-import { QuestShowcase } from '../components/landing/QuestShowcase';
-import { ProgressionShowcase } from '../components/landing/ProgressionShowcase';
-import { CharacterShowcase } from '../components/landing/CharacterShowcase';
-import { StreakSection } from '../components/landing/StreakSection';
-import { AchievementsSection } from '../components/landing/AchievementsSection';
-import { RewardsSection } from '../components/landing/RewardsSection';
-import { WhyKriyaSection } from '../components/landing/WhyKriyaSection';
-import { ProductTrustSection } from '../components/landing/ProductTrustSection';
-import { FinalCtaSection } from '../components/landing/FinalCtaSection';
+import { TabbedFeatureSection } from '../components/landing/TabbedFeatureSection';
+import { BentoGridSection } from '../components/landing/BentoGridSection';
+import { StatsQuotesSection } from '../components/landing/StatsQuotesSection';
+import { FaqSection } from '../components/landing/FaqSection';
+import { SkyCtaBanner } from '../components/landing/SkyCtaBanner';
 import { LandingFooter } from '../components/landing/LandingFooter';
 
 export const metadata: Metadata = {
@@ -45,18 +38,11 @@ export default async function HomePage() {
       <LandingNavbar />
       <main>
         <HeroSection />
-        <HabitToQuestGenerator />
-        <ProductFacts />
-        <CoreLoopSection />
-        <QuestShowcase />
-        <ProgressionShowcase />
-        <CharacterShowcase />
-        <StreakSection />
-        <AchievementsSection />
-        <RewardsSection />
-        <WhyKriyaSection />
-        <ProductTrustSection />
-        <FinalCtaSection />
+        <TabbedFeatureSection />
+        <BentoGridSection />
+        <StatsQuotesSection />
+        <FaqSection />
+        <SkyCtaBanner />
       </main>
       <LandingFooter />
     </div>

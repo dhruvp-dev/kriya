@@ -35,112 +35,31 @@ export default function DashboardPage() {
   });
 
   // Database / Local Character State
-  const [userStats, setUserStats] = useState({
-    level: 12,
-    currentXp: 2480,
-    nextLevelXp: 3200,
-    gold: 680,
-    streak: 14,
-    displayName: 'Dhruv',
-  });
+  const [userStats, setUserStats] = useState<{
+    level: number;
+    currentXp: number;
+    nextLevelXp: number;
+    gold: number;
+    streak: number;
+    displayName: string;
+    avatarVariant?: string;
+  } | null>(null);
 
   const [attributes, setAttributes] = useState<AttributeData>({
-    strength: 8,
-    intellect: 12,
-    discipline: 15,
-    creativity: 10,
+    strength: 0,
+    intellect: 0,
+    discipline: 0,
+    creativity: 0,
   });
 
   // Quests State
-  const [quests, setQuests] = useState<QuestItem[]>([
-    {
-      id: 'q-1',
-      title: 'Study React API Architecture',
-      description: 'Review custom hooks and state management patterns.',
-      attribute: 'intellect',
-      difficulty: 'MEDIUM',
-      xp: 50,
-      gold: 15,
-      completed: false,
-    },
-    {
-      id: 'q-2',
-      title: '30 minute workout',
-      description: 'Build momentum through daily physical movement.',
-      attribute: 'strength',
-      difficulty: 'MEDIUM',
-      xp: 50,
-      gold: 15,
-      completed: false,
-    },
-    {
-      id: 'q-3',
-      title: 'Read 20 pages of non-fiction',
-      description: 'Focus mindfully without digital distractions.',
-      attribute: 'discipline',
-      difficulty: 'EASY',
-      xp: 20,
-      gold: 5,
-      completed: false,
-    },
-    {
-      id: 'q-4',
-      title: 'Design retro typography tokens',
-      description: 'Refine micro-spacing and chamfered card details.',
-      attribute: 'creativity',
-      difficulty: 'HARD',
-      xp: 100,
-      gold: 30,
-      completed: false,
-    },
-  ]);
+  const [quests, setQuests] = useState<QuestItem[]>([]);
 
   // Achievements State
-  const [achievements] = useState<AchievementItem[]>([
-    {
-      id: 'ach-1',
-      title: 'FIRST STEP',
-      description: 'Complete 1 quest',
-      unlocked: true,
-    },
-    {
-      id: 'ach-2',
-      title: 'CONSISTENT',
-      description: '7-day streak',
-      unlocked: true,
-    },
-    {
-      id: 'ach-3',
-      title: 'SCHOLAR',
-      description: 'Reach Level 10',
-      unlocked: true,
-    },
-    {
-      id: 'ach-4',
-      title: 'DISCIPLINE MASTER',
-      description: 'Complete 25 Discipline quests',
-      unlocked: false,
-    },
-  ]);
+  const [achievements, setAchievements] = useState<AchievementItem[]>([]);
 
   // Activity Feed
-  const [activities, setActivities] = useState<ActivityItem[]>([
-    {
-      id: 'act-1',
-      title: 'Completed quest',
-      subtext: 'Study React API Architecture',
-      xp: 50,
-      gold: 15,
-      timeAgo: 'Just now',
-      type: 'quest',
-    },
-    {
-      id: 'act-2',
-      title: 'Reached Level 12',
-      timeAgo: 'Yesterday',
-      type: 'level',
-    },
-  ]);
+  const [activities, setActivities] = useState<ActivityItem[]>([]);
 
   // Load Database Data (Supabase Fallback)
   const loadData = useCallback(async () => {
@@ -155,13 +74,22 @@ export default function DashboardPage() {
         const { character, profile, attributes: dbAttr } = dashData;
         const nextThreshold = getXpThreshold(character.level + 1);
 
+        let avatarVariant = 'architect';
+        if (profile.avatar_config) {
+          try {
+            const parsed = typeof profile.avatar_config === 'string' ? JSON.parse(profile.avatar_config) : profile.avatar_config;
+            if (parsed?.baseModel) avatarVariant = parsed.baseModel;
+          } catch {}
+        }
+
         setUserStats({
           level: character.level,
           currentXp: character.total_xp,
           nextLevelXp: nextThreshold,
           gold: character.gold,
           streak: character.current_streak,
-          displayName: profile.display_name || 'Dhruv',
+          displayName: profile.display_name || 'Hero',
+          avatarVariant,
         });
 
         if (dbAttr) {
@@ -172,6 +100,47 @@ export default function DashboardPage() {
             creativity: dbAttr.creativity || 0,
           });
         }
+
+        if (dashData.todayCompletedQuests && dashData.todayCompletedQuests.length > 0) {
+          setActivities(
+            dashData.todayCompletedQuests.map((q) => {
+              const reward = getRewardForDifficulty((q.difficulty?.toLowerCase() as any) || 'medium');
+              return {
+                id: `act-${q.id}`,
+                title: 'Completed quest',
+                subtext: q.title,
+                xp: reward.xp,
+                gold: reward.gold,
+                timeAgo: 'Today',
+                type: 'quest',
+              };
+            })
+          );
+        } else {
+          setActivities([]);
+        }
+
+        if (dashData.recentAchievements && dashData.recentAchievements.length > 0) {
+          setAchievements(
+            dashData.recentAchievements.map((ua: any) => ({
+              id: ua.id || ua.achievement_id,
+              title: ua.achievements?.title || 'Achievement Unlocked',
+              description: ua.achievements?.description || 'Milestone reached',
+              unlocked: true,
+            }))
+          );
+        }
+      } else {
+        // Fallback for new / non-authenticated sessions
+        setUserStats({
+          level: 1,
+          currentXp: 0,
+          nextLevelXp: 100,
+          gold: 0,
+          streak: 0,
+          displayName: 'Hero',
+          avatarVariant: 'architect',
+        });
       }
 
       if (dbQuests && dbQuests.length > 0) {
@@ -192,9 +161,20 @@ export default function DashboardPage() {
             };
           })
         );
+      } else {
+        setQuests([]);
       }
     } catch (err) {
-      // Graceful fallback to client state
+      setUserStats({
+        level: 1,
+        currentXp: 0,
+        nextLevelXp: 100,
+        gold: 0,
+        streak: 0,
+        displayName: 'Hero',
+        avatarVariant: 'architect',
+      });
+      setQuests([]);
     } finally {
       setIsLoading(false);
     }
@@ -220,20 +200,33 @@ export default function DashboardPage() {
 
       if (dbResult && dbResult.success && dbResult.data) {
         const res = dbResult.data;
-        setUserStats((prev) => ({
+        setUserStats((prev) => prev ? ({
           ...prev,
           level: res.new_level,
           currentXp: res.total_xp,
           nextLevelXp: getXpThreshold(res.new_level + 1),
           gold: prev.gold + res.gold_gained,
           streak: res.current_streak,
-        }));
+        }) : null);
 
         setAttributes((prev) => ({
           ...prev,
           [res.attribute_increased]:
             (prev[res.attribute_increased as keyof AttributeData] || 0) + 1,
         }));
+
+        setActivities((prev) => [
+          {
+            id: `act-${Date.now()}`,
+            title: 'Completed quest',
+            subtext: targetQuest.title,
+            xp: res.xp_gained,
+            gold: res.gold_gained,
+            timeAgo: 'Just now',
+            type: 'quest',
+          },
+          ...prev,
+        ]);
 
         if (res.leveled_up) {
           confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
@@ -252,17 +245,22 @@ export default function DashboardPage() {
       } else {
         // Fallback local RPG Engine calculation
         const reward = getRewardForDifficulty(targetQuest.difficulty.toLowerCase() as any);
-        const newXp = userStats.currentXp + reward.xp;
-        const newGold = userStats.gold + reward.gold;
-        const { newLevel, leveledUp } = calculateLevel(newXp, userStats.level);
+        const currentLevel = userStats?.level || 1;
+        const currentXp = userStats?.currentXp || 0;
+        const currentGold = userStats?.gold || 0;
+        const newXp = currentXp + reward.xp;
+        const newGold = currentGold + reward.gold;
+        const { newLevel, leveledUp } = calculateLevel(newXp, currentLevel);
         const nextThreshold = getXpThreshold(newLevel + 1);
 
         setUserStats((prev) => ({
-          ...prev,
           level: newLevel,
           currentXp: newXp,
           nextLevelXp: nextThreshold,
           gold: newGold,
+          streak: prev?.streak || 0,
+          displayName: prev?.displayName || 'Hero',
+          avatarVariant: prev?.avatarVariant || 'architect',
         }));
 
         setAttributes((prev) => ({
@@ -270,6 +268,19 @@ export default function DashboardPage() {
           [targetQuest.attribute]:
             (prev[targetQuest.attribute as keyof AttributeData] || 0) + 1,
         }));
+
+        setActivities((prev) => [
+          {
+            id: `act-${Date.now()}`,
+            title: 'Completed quest',
+            subtext: targetQuest.title,
+            xp: reward.xp,
+            gold: reward.gold,
+            timeAgo: 'Just now',
+            type: 'quest',
+          },
+          ...prev,
+        ]);
 
         if (leveledUp) {
           confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
@@ -346,12 +357,14 @@ export default function DashboardPage() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         activeTab="home"
-        userStats={userStats}
+        isLoading={isLoading}
+        userStats={userStats || undefined}
       />
 
       <main className="flex-1 lg:pl-60 min-w-0 flex flex-col min-h-screen bg-[#FFFFFF]">
         <Header
-          userStats={userStats}
+          isLoading={isLoading}
+          userStats={userStats || undefined}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
           onOpenCreateModal={() => setIsCreateModalOpen(true)}
         />
@@ -360,7 +373,11 @@ export default function DashboardPage() {
           {/* Main Content Column */}
           <div className="lg:col-span-8 space-y-6">
             {/* Progression Component */}
-            <CharacterProgressionCard userStats={userStats} />
+            <CharacterProgressionCard
+              isLoading={isLoading}
+              userStats={userStats || undefined}
+              completedQuestsCount={quests.filter((q) => q.completed).length}
+            />
 
             {/* Today's Quests Section */}
             <div className="space-y-4">
@@ -396,7 +413,28 @@ export default function DashboardPage() {
               </div>
 
               {/* Quest Rows */}
-              {filteredTodayQuests.length > 0 ? (
+              {isLoading ? (
+                <div className="grid grid-cols-1 gap-3">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="p-4 rounded-2xl bg-[#FFFFFF] border border-[#E6E6E8] animate-pulse flex items-center justify-between gap-4"
+                    >
+                      <div className="flex items-center gap-3.5 flex-1 min-w-0">
+                        <div className="w-5 h-5 rounded-full bg-[#F3F4F5] shrink-0" />
+                        <div className="space-y-2 flex-1 min-w-0">
+                          <div className="h-4 w-44 bg-[#E6E6E8] rounded" />
+                          <div className="h-3 w-60 bg-[#F3F4F5] rounded" />
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <div className="h-6 w-16 bg-[#F3F4F5] rounded-lg" />
+                        <div className="h-6 w-16 bg-[#F3F4F5] rounded-lg" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : filteredTodayQuests.length > 0 ? (
                 <div className="grid grid-cols-1 gap-3">
                   {filteredTodayQuests.map((quest) => (
                     <QuestCard
@@ -428,6 +466,10 @@ export default function DashboardPage() {
           {/* Right Sidebar Widgets */}
           <div className="lg:col-span-4">
             <RightSidebar
+              isLoading={isLoading}
+              level={userStats?.level ?? 1}
+              displayName={userStats?.displayName || 'Hero'}
+              avatarVariant={userStats?.avatarVariant || 'architect'}
               attributes={attributes}
               achievements={achievements}
               activities={activities}

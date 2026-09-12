@@ -10,6 +10,7 @@ export interface CharacterProgressionCardProps {
   gold?: number;
   streak?: number;
   completedQuestsCount?: number;
+  isLoading?: boolean;
   userStats?: {
     level: number;
     currentXp: number;
@@ -26,14 +27,49 @@ export function CharacterProgressionCard({
   nextLevelXp,
   gold,
   streak,
-  completedQuestsCount = 42,
+  completedQuestsCount = 0,
+  isLoading = false,
   userStats,
 }: CharacterProgressionCardProps) {
-  const activeLevel = level ?? userStats?.level ?? 12;
-  const activeCurrentXp = currentXp ?? userStats?.currentXp ?? 2430;
-  const activeNextLevelXp = nextLevelXp ?? userStats?.nextLevelXp ?? 3162;
-  const activeGold = gold ?? userStats?.gold ?? 680;
-  const activeStreak = streak ?? userStats?.streak ?? 14;
+  if (isLoading) {
+    return (
+      <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl p-6 sm:p-7 shadow-2xs font-sans animate-pulse">
+        {/* Top Header Skeleton */}
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-4">
+          <div className="space-y-1.5">
+            <div className="h-3 w-20 bg-[#F3F4F5] rounded" />
+            <div className="h-7 w-28 bg-[#E6E6E8] rounded-lg" />
+          </div>
+          <div className="space-y-1.5 sm:text-right">
+            <div className="h-6 w-24 bg-[#E6E6E8] rounded-lg sm:ml-auto" />
+            <div className="h-3 w-32 bg-[#F3F4F5] rounded sm:ml-auto" />
+          </div>
+        </div>
+
+        {/* Progress Bar Skeleton */}
+        <div className="space-y-2 mb-6">
+          <div className="h-2 w-full bg-[#F3F4F5] rounded-full" />
+          <div className="flex justify-between items-center">
+            <div className="h-3 w-20 bg-[#F3F4F5] rounded" />
+            <div className="h-3 w-32 bg-[#F3F4F5] rounded" />
+          </div>
+        </div>
+
+        {/* Metrics Strip Skeleton */}
+        <div className="flex flex-wrap items-center gap-6 pt-5 border-t border-[#E6E6E8]">
+          <div className="h-4 w-24 bg-[#F3F4F5] rounded" />
+          <div className="h-4 w-20 bg-[#F3F4F5] rounded" />
+          <div className="h-4 w-32 bg-[#F3F4F5] rounded" />
+        </div>
+      </div>
+    );
+  }
+
+  const activeLevel = level ?? userStats?.level ?? 1;
+  const activeCurrentXp = currentXp ?? userStats?.currentXp ?? 0;
+  const activeNextLevelXp = nextLevelXp ?? userStats?.nextLevelXp ?? 100;
+  const activeGold = gold ?? userStats?.gold ?? 0;
+  const activeStreak = streak ?? userStats?.streak ?? 0;
 
   const xpPercent = Math.min(100, Math.round((activeCurrentXp / activeNextLevelXp) * 100));
   const remainingXp = Math.max(0, activeNextLevelXp - activeCurrentXp);

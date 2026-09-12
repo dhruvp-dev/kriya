@@ -1,57 +1,127 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { Search, Calendar, CheckCircle2, Coins, Sparkles } from 'lucide-react';
+import { getDashboardData } from '../../lib/queries/dashboard';
+import { getHistoryData } from '../../lib/queries/history';
+import { getXpThreshold } from '../../lib/progression';
+
+interface HistoryEntry {
+  id: string;
+  title: string;
+  attribute: string;
+  xp: number;
+  gold: number;
+  completedAt: string;
+}
 
 export default function HistoryPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [userStats] = useState({
-    level: 12,
-    currentXp: 2480,
-    nextLevelXp: 3200,
-    gold: 680,
-    streak: 14,
-    displayName: 'Dhruv',
-  });
+  const [userStats, setUserStats] = useState<{
+    level: number;
+    currentXp: number;
+    nextLevelXp: number;
+    gold: number;
+    streak: number;
+    displayName: string;
+    avatarVariant?: string;
+  } | null>(null);
 
-  const historyEntries = [
-    {
-      id: 'hist-1',
-      title: 'Study React API Architecture',
-      attribute: 'Intellect',
-      xp: 50,
-      gold: 15,
-      completedAt: 'Today, 09:45 AM',
-    },
-    {
-      id: 'hist-2',
-      title: '30 minute morning workout',
-      attribute: 'Strength',
-      xp: 20,
-      gold: 5,
-      completedAt: 'Yesterday, 07:30 AM',
-    },
-    {
-      id: 'hist-3',
-      title: 'Read 20 pages of non-fiction',
-      attribute: 'Discipline',
-      xp: 20,
-      gold: 5,
-      completedAt: 'Sep 11, 2026',
-    },
-    {
-      id: 'hist-4',
-      title: 'Design retro typography tokens',
-      attribute: 'Creativity',
-      xp: 100,
-      gold: 30,
-      completedAt: 'Sep 10, 2026',
-    },
-  ];
+  const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([]);
+
+  const loadData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const [dashData, historyData] = await Promise.all([
+        getDashboardData(),
+        getHistoryData(),
+      ]);
+
+      if (dashData && dashData.character && dashData.profile) {
+        const { character, profile } = dashData;
+        const nextThreshold = getXpThreshold(character.level + 1);
+
+        let avatarVariant = 'architect';
+        if (profile.avatar_config) {
+          try {
+            const parsed = typeof profile.avatar_config === 'string' ? JSON.parse(profile.avatar_config) : profile.avatar_config;
+            if (parsed?.baseModel) avatarVariant = parsed.baseModel;
+          } catch {}
+        }
+
+        setUserStats({
+          level: character.level,
+          currentXp: character.total_xp,
+          nextLevelXp: nextThreshold,
+          gold: character.gold,
+          streak: character.current_streak,
+          displayName: profile.display_name || 'Hero',
+          avatarVariant,
+        });
+      } else {
+        setUserStats({
+          level: 1,
+          currentXp: 0,
+          nextLevelXp: 100,
+          gold: 0,
+          streak: 0,
+          displayName: 'Hero',
+          avatarVariant: 'architect',
+        });
+      }
+
+      if (historyData && historyData.length > 0) {
+        setHistoryEntries(
+          historyData.map((h) => ({
+            id: h.id,
+            title: h.quest_title || 'Completed Quest',
+            attribute: h.attribute_increased || 'Discipline',
+            xp: h.xp_gained,
+            gold: h.gold_gained,
+            completedAt: new Date(h.completed_at).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+            }),
+          }))
+        );
+      } else if (dashData?.todayCompletedQuests && dashData.todayCompletedQuests.length > 0) {
+        setHistoryEntries(
+          dashData.todayCompletedQuests.map((q) => ({
+            id: q.id,
+            title: q.title,
+            attribute: q.attribute || 'Discipline',
+            xp: q.xp_reward || 20,
+            gold: q.gold_reward || 5,
+            completedAt: 'Today',
+          }))
+        );
+      } else {
+        setHistoryEntries([]);
+      }
+    } catch {
+      setUserStats({
+        level: 1,
+        currentXp: 0,
+        nextLevelXp: 100,
+        gold: 0,
+        streak: 0,
+        displayName: 'Hero',
+        avatarVariant: 'architect',
+      });
+      setHistoryEntries([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const filteredEntries = historyEntries.filter((e) =>
     e.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -64,12 +134,14 @@ export default function HistoryPage() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         activeTab="history"
-        userStats={userStats}
+        isLoading={isLoading}
+        userStats={userStats || undefined}
       />
 
       <main className="flex-1 lg:pl-60 min-w-0 flex flex-col min-h-screen">
         <Header
-          userStats={userStats}
+          isLoading={isLoading}
+          userStats={userStats || undefined}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
 
@@ -97,45 +169,73 @@ export default function HistoryPage() {
           </div>
 
           <div className="bg-white border border-[#E6E6E8] rounded-2xl shadow-xs overflow-hidden">
-            <div className="divide-y divide-[#E6E6E8]">
-              {filteredEntries.map((entry) => (
-                <div
-                  key={entry.id}
-                  className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#F7F7F8] transition-colors"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-8 h-8 rounded-full bg-[#F2F7F4] text-[#668F72] flex items-center justify-center shrink-0 border border-[#668F72]/20">
-                      <CheckCircle2 className="w-4 h-4" />
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-bold text-[#070709]">{entry.title}</h4>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-xs font-semibold text-[#60606C]">
-                          {entry.attribute}
-                        </span>
-                        <span className="text-xs text-[#D0D1D4]">•</span>
-                        <span className="text-xs text-[#8B8B8B] flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {entry.completedAt}
-                        </span>
+            {isLoading ? (
+              <div className="divide-y divide-[#E6E6E8]">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="p-4 sm:p-5 flex items-center justify-between animate-pulse">
+                    <div className="flex items-center gap-3.5 flex-1 min-w-0">
+                      <div className="w-8 h-8 rounded-full bg-[#F3F4F5] shrink-0" />
+                      <div className="space-y-2 flex-1 min-w-0">
+                        <div className="h-4 w-48 bg-[#E6E6E8] rounded" />
+                        <div className="h-3 w-32 bg-[#F3F4F5] rounded" />
                       </div>
                     </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <div className="h-6 w-16 bg-[#F3F4F5] rounded-lg" />
+                      <div className="h-6 w-16 bg-[#F3F4F5] rounded-lg" />
+                    </div>
                   </div>
+                ))}
+              </div>
+            ) : filteredEntries.length > 0 ? (
+              <div className="divide-y divide-[#E6E6E8]">
+                {filteredEntries.map((entry) => (
+                  <div
+                    key={entry.id}
+                    className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#F7F7F8] transition-colors"
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-8 h-8 rounded-full bg-[#F2F7F4] text-[#668F72] flex items-center justify-center shrink-0 border border-[#668F72]/20">
+                        <CheckCircle2 className="w-4 h-4" />
+                      </div>
 
-                  <div className="flex items-center gap-2 text-xs font-bold text-right self-end sm:self-center tabular-nums">
-                    <span className="px-2.5 py-1 bg-[#F7F7F8] border border-[#E6E6E8] rounded-lg text-[#070709] flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-[#C85A3D]" />
-                      +{entry.xp} XP
-                    </span>
-                    <span className="px-2.5 py-1 bg-[#FDF8EC] border border-[#D9A441]/20 rounded-lg text-[#D9A441] flex items-center gap-1">
-                      <Coins className="w-3 h-3" />
-                      +{entry.gold} Gold
-                    </span>
+                      <div>
+                        <h4 className="text-sm font-bold text-[#070709]">{entry.title}</h4>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-xs font-semibold text-[#60606C]">
+                            {entry.attribute}
+                          </span>
+                          <span className="text-xs text-[#D0D1D4]">•</span>
+                          <span className="text-xs text-[#8B8B8B] flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            {entry.completedAt}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-xs font-bold text-right self-end sm:self-center tabular-nums">
+                      <span className="px-2.5 py-1 bg-[#F7F7F8] border border-[#E6E6E8] rounded-lg text-[#070709] flex items-center gap-1">
+                        <Sparkles className="w-3 h-3 text-[#C85A3D]" />
+                        +{entry.xp} XP
+                      </span>
+                      <span className="px-2.5 py-1 bg-[#FDF8EC] border border-[#D9A441]/20 rounded-lg text-[#D9A441] flex items-center gap-1">
+                        <Coins className="w-3 h-3" />
+                        +{entry.gold} Gold
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="p-12 text-center space-y-2">
+                <CheckCircle2 className="w-8 h-8 text-[#8B8B8B] mx-auto" />
+                <h3 className="text-sm font-bold text-[#070709]">No completed quests yet</h3>
+                <p className="text-xs text-[#8B8B8B]">
+                  Quests you mark as completed will appear here.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </main>

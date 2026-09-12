@@ -200,14 +200,14 @@ export function HeroQuestPreview() {
         {/* Level Progress Bar with Live Math */}
         <div className="py-4 space-y-2 border-b border-[#E6E6E8]">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-extrabold text-[#070709] tracking-tight">
+            <span className="font-bold text-[#070709] tracking-normal">
               LEVEL 12 PROGRESS
             </span>
             <div className="text-right text-xs">
-              <span className="font-bold text-[#070709] tabular-nums">
+              <span className="font-bold text-[#070709] tabular-nums tracking-normal">
                 {currentXP.toLocaleString()} XP
               </span>
-              <span className="text-[#8B8B8B] font-medium ml-1.5 tabular-nums">
+              <span className="text-[#8B8B8B] font-normal ml-1.5 tabular-nums tracking-normal">
                 / {nextLevelXP.toLocaleString()} XP NEXT LEVEL
               </span>
             </div>
@@ -221,8 +221,8 @@ export function HeroQuestPreview() {
           </div>
 
           <div className="flex justify-between items-center text-[11px] text-[#8B8B8B] pt-0.5">
-            <span className="tabular-nums font-medium">{progressPercent}% of level complete</span>
-            <span className="tabular-nums font-semibold text-[#070709]">
+            <span className="tabular-nums font-normal tracking-normal">{progressPercent}% of level complete</span>
+            <span className="tabular-nums font-medium text-[#070709] tracking-normal">
               {nextLevelXP - currentXP} XP until Level 13
             </span>
           </div>
@@ -231,7 +231,7 @@ export function HeroQuestPreview() {
         {/* TODAY'S QUEST (Primary Interactive Core) */}
         <div className="pt-4 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-extrabold text-[#8B8B8B] uppercase tracking-[0.16em]">
+            <span className="text-[11px] font-semibold text-[#8B8B8B] uppercase tracking-normal">
               TODAY'S QUEST
             </span>
             <span className="text-[11px] font-semibold text-[#C85A3D]">

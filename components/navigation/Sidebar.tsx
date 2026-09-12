@@ -24,6 +24,7 @@ export interface SidebarProps {
   onClose?: () => void;
   activeTab?: string;
   onSelectTab?: (tab: string) => void;
+  isLoading?: boolean;
   userStats?: {
     level: number;
     currentXp: number;
@@ -56,18 +57,27 @@ export function Sidebar({
   onClose,
   activeTab = 'home',
   onSelectTab,
+  isLoading = false,
   userStats = {
-    level: 12,
-    currentXp: 2480,
-    nextLevelXp: 3200,
-    displayName: 'Dhruv',
+    level: 1,
+    currentXp: 0,
+    nextLevelXp: 100,
+    displayName: 'Hero',
     avatarVariant: 'architect',
   },
 }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const xpPercent = Math.min(100, Math.round((userStats.currentXp / userStats.nextLevelXp) * 100));
+  const stats = userStats || {
+    level: 1,
+    currentXp: 0,
+    nextLevelXp: 100,
+    displayName: 'Hero',
+    avatarVariant: 'architect',
+  };
+
+  const xpPercent = Math.min(100, Math.round((stats.currentXp / (stats.nextLevelXp || 1)) * 100));
 
   const renderNavItem = (item: { id: string; label: string; href: string; icon: any }) => {
     const Icon = item.icon;
@@ -165,32 +175,45 @@ export function Sidebar({
 
           {/* Bottom Account / Character Summary */}
           <div className="pt-3 border-t border-[#E6E6E8] mt-auto">
-            <Link
-              href="/character"
-              className="p-2.5 rounded-xl bg-[#F7F7F8] hover:bg-[#F3F4F5] border border-[#E6E6E8] transition-colors flex items-center gap-3 group"
-            >
-              <Avatar
-                variant={(userStats.avatarVariant as any) || 'architect'}
-                size={34}
-              />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-[#070709] truncate">
-                    {userStats.displayName}
-                  </span>
-                  <span className="text-[11px] font-semibold text-[#8B8B8B] tabular-nums">
-                    Lv. {userStats.level}
-                  </span>
-                </div>
-                {/* Micro Progress Bar */}
-                <div className="h-1 w-full bg-[#E6E6E8] rounded-full overflow-hidden mt-1.5">
-                  <div
-                    className="h-full bg-[#070709] rounded-full transition-all duration-300"
-                    style={{ width: `${xpPercent}%` }}
-                  />
+            {isLoading ? (
+              <div className="p-2.5 rounded-xl bg-[#F7F7F8] border border-[#E6E6E8] flex items-center gap-3 animate-pulse">
+                <div className="w-8 h-8 rounded-full bg-[#E6E6E8] shrink-0" />
+                <div className="flex-1 min-w-0 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <div className="h-3 w-16 bg-[#E6E6E8] rounded" />
+                    <div className="h-3 w-8 bg-[#E6E6E8] rounded" />
+                  </div>
+                  <div className="h-1 w-full bg-[#E6E6E8] rounded-full" />
                 </div>
               </div>
-            </Link>
+            ) : (
+              <Link
+                href="/character"
+                className="p-2.5 rounded-xl bg-[#F7F7F8] hover:bg-[#F3F4F5] border border-[#E6E6E8] transition-colors flex items-center gap-3 group"
+              >
+                <Avatar
+                  variant={(stats.avatarVariant as any) || 'architect'}
+                  size={34}
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-[#070709] truncate">
+                      {stats.displayName || 'Hero'}
+                    </span>
+                    <span className="text-[11px] font-semibold text-[#8B8B8B] tabular-nums">
+                      Lv. {stats.level}
+                    </span>
+                  </div>
+                  {/* Micro Progress Bar */}
+                  <div className="h-1 w-full bg-[#E6E6E8] rounded-full overflow-hidden mt-1.5">
+                    <div
+                      className="h-full bg-[#070709] rounded-full transition-all duration-300"
+                      style={{ width: `${xpPercent}%` }}
+                    />
+                  </div>
+                </div>
+              </Link>
+            )}
           </div>
         </div>
       </aside>

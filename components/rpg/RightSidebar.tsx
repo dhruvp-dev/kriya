@@ -31,85 +31,86 @@ export interface ActivityItem {
 
 export interface RightSidebarProps {
   level?: number;
+  displayName?: string;
+  avatarVariant?: string;
+  roleTitle?: string;
   attributes?: AttributeData;
   achievements?: AchievementItem[];
   activities?: ActivityItem[];
+  isLoading?: boolean;
 }
 
 export function RightSidebar({
-  level = 12,
+  level = 1,
+  displayName = 'Hero',
+  avatarVariant = 'architect',
+  roleTitle = 'Architect',
   attributes = {
-    strength: 8,
-    intellect: 12,
-    discipline: 15,
-    creativity: 10,
+    strength: 0,
+    intellect: 0,
+    discipline: 0,
+    creativity: 0,
   },
-  achievements = [
-    {
-      id: '1',
-      title: 'First Step',
-      description: 'Complete 1 quest',
-      unlocked: true,
-    },
-    {
-      id: '2',
-      title: 'Consistent',
-      description: '7-day streak',
-      unlocked: true,
-    },
-    {
-      id: '3',
-      title: 'Scholar',
-      description: 'Reach Level 10',
-      unlocked: true,
-    },
-    {
-      id: '4',
-      title: 'Discipline Master',
-      description: 'Complete 25 Discipline quests',
-      unlocked: false,
-    },
-  ],
-  activities = [
-    {
-      id: 'act-1',
-      title: 'Completed quest',
-      subtext: 'Study React API Architecture',
-      xp: 50,
-      gold: 15,
-      timeAgo: '12m ago',
-      type: 'quest',
-    },
-    {
-      id: 'act-2',
-      title: 'Reached Level 12',
-      timeAgo: 'Yesterday',
-      type: 'level',
-    },
-    {
-      id: 'act-3',
-      title: 'Achievement unlocked',
-      subtext: 'Scholar',
-      timeAgo: '2d ago',
-      type: 'achievement',
-    },
-  ],
+  achievements = [],
+  activities = [],
+  isLoading = false,
 }: RightSidebarProps) {
   const maxAttribute = 25;
 
+  if (isLoading) {
+    return (
+      <aside className="w-full xl:w-80 space-y-6 shrink-0 select-none font-sans animate-pulse">
+        {/* Attributes Skeleton */}
+        <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl p-6 shadow-2xs space-y-5">
+          <div className="flex items-center gap-4 pb-4 border-b border-[#E6E6E8]">
+            <div className="w-14 h-14 rounded-2xl bg-[#F3F4F5] shrink-0" />
+            <div className="space-y-1.5 flex-1 min-w-0">
+              <div className="h-4 w-24 bg-[#E6E6E8] rounded" />
+              <div className="h-3 w-32 bg-[#F3F4F5] rounded" />
+            </div>
+          </div>
+          <div className="space-y-3.5 pt-1">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="space-y-1">
+                <div className="flex justify-between items-center">
+                  <div className="h-3 w-16 bg-[#F3F4F5] rounded" />
+                  <div className="h-3 w-6 bg-[#F3F4F5] rounded" />
+                </div>
+                <div className="h-1.5 w-full bg-[#F3F4F5] rounded-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Activity Skeleton */}
+        <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl p-5 shadow-2xs space-y-3.5">
+          <div className="h-3 w-24 bg-[#F3F4F5] rounded pb-2.5" />
+          <div className="space-y-3">
+            {[1, 2].map((i) => (
+              <div key={i} className="space-y-1.5">
+                <div className="h-3.5 w-40 bg-[#E6E6E8] rounded" />
+                <div className="h-2.5 w-24 bg-[#F3F4F5] rounded" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </aside>
+    );
+  }
+
   return (
     <aside className="w-full xl:w-80 space-y-6 shrink-0 select-none font-sans">
-      
       {/* 1. CHARACTER & ATTRIBUTES PANEL */}
       <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl p-6 shadow-2xs space-y-5">
-        
         {/* Blob Avatar & Name Header */}
         <div className="flex items-center gap-4 pb-4 border-b border-[#E6E6E8]">
-          <Avatar variant="architect" size={54} />
+          <Avatar variant={(avatarVariant as any) || 'architect'} size={54} />
           <div className="min-w-0">
-            <h4 className="text-base font-bold text-[#151515] tracking-tight">Dhruv</h4>
+            <h4 className="text-base font-bold text-[#151515] tracking-tight truncate">
+              {displayName || 'Hero'}
+            </h4>
             <div className="flex items-center gap-1.5 text-xs text-[#60606C] mt-0.5">
-              <span className="font-semibold text-[#070709]">Architect</span>
+              <span className="font-semibold text-[#070709] capitalize">{roleTitle || 'Hero'}</span>
               <span>·</span>
               <span className="tabular-nums font-medium text-[#8B8B8B]">Level {level}</span>
             </div>
@@ -183,33 +184,41 @@ export function RightSidebar({
           <h3 className="text-xs font-semibold text-[#8B8B8B] tracking-wider uppercase">
             Achievements
           </h3>
-          <span className="text-xs font-semibold text-[#070709] tabular-nums">3/4</span>
+          <span className="text-xs font-semibold text-[#070709] tabular-nums">
+            {achievements.filter((a) => a.unlocked).length}/{achievements.length || 4}
+          </span>
         </div>
 
-        <div className="space-y-2">
-          {achievements.map((item) => (
-            <div
-              key={item.id}
-              className={cn(
-                'flex items-center justify-between p-2.5 rounded-xl border text-xs transition-colors',
-                item.unlocked
-                  ? 'bg-[#FFFFFF] border-[#E6E6E8]'
-                  : 'bg-[#F7F7F8] border-transparent opacity-60'
-              )}
-            >
-              <div className="min-w-0 pr-2">
-                <div className="font-semibold text-[#151515] truncate">{item.title}</div>
-                <div className="text-[11px] text-[#8B8B8B] truncate mt-0.5">{item.description}</div>
+        {achievements.length > 0 ? (
+          <div className="space-y-2">
+            {achievements.map((item) => (
+              <div
+                key={item.id}
+                className={cn(
+                  'flex items-center justify-between p-2.5 rounded-xl border text-xs transition-colors',
+                  item.unlocked
+                    ? 'bg-[#FFFFFF] border-[#E6E6E8]'
+                    : 'bg-[#F7F7F8] border-transparent opacity-60'
+                )}
+              >
+                <div className="min-w-0 pr-2">
+                  <div className="font-semibold text-[#151515] truncate">{item.title}</div>
+                  <div className="text-[11px] text-[#8B8B8B] truncate mt-0.5">{item.description}</div>
+                </div>
+
+                {item.unlocked ? (
+                  <CheckCircle2 className="w-4 h-4 text-[#668F72] shrink-0" />
+                ) : (
+                  <Lock className="w-3.5 h-3.5 text-[#8B8B8B] shrink-0" />
+                )}
               </div>
-
-              {item.unlocked ? (
-                <CheckCircle2 className="w-4 h-4 text-[#668F72] shrink-0" />
-              ) : (
-                <Lock className="w-3.5 h-3.5 text-[#8B8B8B] shrink-0" />
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="py-3 text-center text-xs text-[#8B8B8B]">
+            Complete quests to unlock achievements.
+          </div>
+        )}
       </div>
 
       {/* 3. RECENT ACTIVITY */}
@@ -220,29 +229,35 @@ export function RightSidebar({
           </h3>
         </div>
 
-        <div className="space-y-3 text-xs">
-          {activities.map((act) => (
-            <div
-              key={act.id}
-              className="flex items-start justify-between gap-2 pb-2.5 border-b border-[#E6E6E8] last:border-0 last:pb-0"
-            >
-              <div className="min-w-0">
-                <div className="font-medium text-[#151515] truncate">{act.title}</div>
-                {act.subtext && (
-                  <div className="text-[11px] text-[#8B8B8B] truncate mt-0.5">{act.subtext}</div>
-                )}
-                {act.xp && act.gold && (
-                  <div className="flex items-center gap-2 mt-1 text-[11px] font-semibold text-[#D9A441] tabular-nums">
-                    <span>+{act.xp} XP</span>
-                    <span>·</span>
-                    <span>+{act.gold} Gold</span>
-                  </div>
-                )}
+        {activities.length > 0 ? (
+          <div className="space-y-3 text-xs">
+            {activities.map((act) => (
+              <div
+                key={act.id}
+                className="flex items-start justify-between gap-2 pb-2.5 border-b border-[#E6E6E8] last:border-0 last:pb-0"
+              >
+                <div className="min-w-0">
+                  <div className="font-medium text-[#151515] truncate">{act.title}</div>
+                  {act.subtext && (
+                    <div className="text-[11px] text-[#8B8B8B] truncate mt-0.5">{act.subtext}</div>
+                  )}
+                  {act.xp && act.gold && (
+                    <div className="flex items-center gap-2 mt-1 text-[11px] font-semibold text-[#D9A441] tabular-nums">
+                      <span>+{act.xp} XP</span>
+                      <span>·</span>
+                      <span>+{act.gold} Gold</span>
+                    </div>
+                  )}
+                </div>
+                <span className="text-[10px] text-[#8B8B8B] shrink-0 tabular-nums">{act.timeAgo}</span>
               </div>
-              <span className="text-[10px] text-[#8B8B8B] shrink-0 tabular-nums">{act.timeAgo}</span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="py-3 text-center text-xs text-[#8B8B8B]">
+            No recent activity yet.
+          </div>
+        )}
       </div>
 
     </aside>

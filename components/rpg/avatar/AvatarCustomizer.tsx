@@ -19,6 +19,7 @@ export interface AvatarCustomizerProps {
   onChange?: ((newConfig: AvatarConfig) => void) | ((newVariant: AvatarVariant, newFrame: AvatarFrameVariant) => void);
   ownedAccessories?: string[];
   showPreview?: boolean;
+  hideFrames?: boolean;
 }
 
 const FRAMES: { id: AvatarFrameVariant; name: string; price: number; description: string }[] = [
@@ -37,6 +38,7 @@ export function AvatarCustomizer({
   ownedFrames = ['default', 'gold'],
   onChange,
   showPreview = true,
+  hideFrames = false,
 }: AvatarCustomizerProps) {
   const [system, setSystem] = useState<'blob' | 'pixel'>('blob');
 
@@ -148,54 +150,56 @@ export function AvatarCustomizer({
       </div>
 
       {/* 2. Cosmetic Frame Selection */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <label className="text-xs font-bold text-[#60606C] uppercase tracking-wider flex items-center gap-1.5">
-            <Award className="w-3.5 h-3.5 text-[#D9A441]" /> Cosmetic Frame Overlay
-          </label>
-          <Link
-            href="/shop"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-[#070709] hover:text-[#C85A3D] transition-colors"
-          >
-            <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Cosmetics Shop</span>
-          </Link>
-        </div>
+      {!hideFrames && (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-bold text-[#60606C] uppercase tracking-wider flex items-center gap-1.5">
+              <Award className="w-3.5 h-3.5 text-[#D9A441]" /> Cosmetic Frame Overlay
+            </label>
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-[#070709] hover:text-[#C85A3D] transition-colors"
+            >
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>Cosmetics Shop</span>
+            </Link>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {FRAMES.map((f) => {
-            const isSelected = activeFrame === f.id;
-            const isUnlocked = f.id === 'default' || ownedFrames.includes(f.id);
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {FRAMES.map((f) => {
+              const isSelected = activeFrame === f.id;
+              const isUnlocked = f.id === 'default' || ownedFrames.includes(f.id);
 
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => handleFrameSelect(f.id)}
-                className={`p-3 rounded-xl border text-left transition-all relative cursor-pointer ${
-                  isSelected
-                    ? 'bg-[#070709] text-white border-[#070709]'
-                    : isUnlocked
-                    ? 'bg-white text-[#070709] border-[#E6E6E8] hover:bg-[#F7F7F8]'
-                    : 'bg-[#F7F7F8] text-[#8B8B8B] border-[#E6E6E8] opacity-75'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="font-bold text-xs">{f.name}</div>
-                  {!isUnlocked && (
-                    <span className="px-1.5 py-0.5 bg-[#C85A3D] text-white text-[9px] font-bold rounded uppercase flex items-center gap-0.5">
-                      <Lock className="w-2.5 h-2.5" /> Locked
-                    </span>
-                  )}
-                </div>
-                <div className={`text-[10px] mt-1 ${isSelected ? 'text-[#D0D1D4]' : 'text-[#60606C]'}`}>
-                  {isUnlocked ? f.description : `Unlock in Shop for ${f.price} Gold`}
-                </div>
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => handleFrameSelect(f.id)}
+                  className={`p-3 rounded-xl border text-left transition-all relative cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#070709] text-white border-[#070709]'
+                      : isUnlocked
+                      ? 'bg-white text-[#070709] border-[#E6E6E8] hover:bg-[#F7F7F8]'
+                      : 'bg-[#F7F7F8] text-[#8B8B8B] border-[#E6E6E8] opacity-75'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="font-bold text-xs">{f.name}</div>
+                    {!isUnlocked && (
+                      <span className="px-1.5 py-0.5 bg-[#C85A3D] text-white text-[9px] font-bold rounded uppercase flex items-center gap-0.5">
+                        <Lock className="w-2.5 h-2.5" /> Locked
+                      </span>
+                    )}
+                  </div>
+                  <div className={`text-[10px] mt-1 ${isSelected ? 'text-[#D0D1D4]' : 'text-[#60606C]'}`}>
+                    {isUnlocked ? f.description : `Unlock in Shop for ${f.price} Gold`}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

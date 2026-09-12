@@ -1,31 +1,98 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { Shield, Brain, Zap, Palette, Trophy, Sparkles } from 'lucide-react';
-import { Avatar, AvatarGallery } from '../../components/avatars';
+import { Avatar, AvatarGallery, AvatarVariant } from '../../components/avatars';
+import { getDashboardData } from '../../lib/queries/dashboard';
+import { getXpThreshold } from '../../lib/progression';
 
 export default function CharacterPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [userStats] = useState({
-    level: 12,
-    currentXp: 2480,
-    nextLevelXp: 3200,
-    gold: 680,
-    streak: 14,
-    displayName: 'Dhruv',
+  const [userStats, setUserStats] = useState<{
+    level: number;
+    currentXp: number;
+    nextLevelXp: number;
+    gold: number;
+    streak: number;
+    displayName: string;
+    avatarVariant: AvatarVariant;
+    title: string;
+  }>({
+    level: 1,
+    currentXp: 0,
+    nextLevelXp: 100,
+    gold: 0,
+    streak: 0,
+    displayName: 'Hero',
+    avatarVariant: 'architect',
     title: 'Architect of Habits',
   });
+
+  const [rawAttributes, setRawAttributes] = useState({
+    strength: 0,
+    intellect: 0,
+    discipline: 0,
+    creativity: 0,
+  });
+
+  const loadData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const dashData = await getDashboardData();
+      if (dashData && dashData.character && dashData.profile) {
+        const { character, profile, attributes: dbAttr } = dashData;
+        const nextThreshold = getXpThreshold(character.level + 1);
+
+        let avatarVariant: AvatarVariant = 'architect';
+        if (profile.avatar_config) {
+          try {
+            const parsed = typeof profile.avatar_config === 'string' ? JSON.parse(profile.avatar_config) : profile.avatar_config;
+            if (parsed?.baseModel) avatarVariant = parsed.baseModel as AvatarVariant;
+          } catch {}
+        }
+
+        setUserStats({
+          level: character.level,
+          currentXp: character.total_xp,
+          nextLevelXp: nextThreshold,
+          gold: character.gold,
+          streak: character.current_streak,
+          displayName: profile.display_name || 'Hero',
+          avatarVariant,
+          title: 'Architect of Habits',
+        });
+
+        if (dbAttr) {
+          setRawAttributes({
+            strength: dbAttr.strength || 0,
+            intellect: dbAttr.intellect || 0,
+            discipline: dbAttr.discipline || 0,
+            creativity: dbAttr.creativity || 0,
+          });
+        }
+      }
+    } catch {
+      // Graceful fallback
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const attributes = [
     {
       key: 'strength',
       label: 'Strength',
       description: 'Physical energy, endurance, and daily momentum',
-      value: 8,
-      max: 12,
+      value: rawAttributes.strength,
+      max: Math.max(20, rawAttributes.strength + 5),
       color: '#C85A3D',
       bgColor: '#FDF4F2',
       icon: Shield,
@@ -34,8 +101,8 @@ export default function CharacterPage() {
       key: 'intellect',
       label: 'Intellect',
       description: 'Deep focus, learning, and mental clarity',
-      value: 12,
-      max: 15,
+      value: rawAttributes.intellect,
+      max: Math.max(20, rawAttributes.intellect + 5),
       color: '#344653',
       bgColor: '#F0F4F7',
       icon: Brain,
@@ -44,8 +111,8 @@ export default function CharacterPage() {
       key: 'discipline',
       label: 'Discipline',
       description: 'Consistency, habit completion, and execution',
-      value: 15,
-      max: 20,
+      value: rawAttributes.discipline,
+      max: Math.max(20, rawAttributes.discipline + 5),
       color: '#668F72',
       bgColor: '#F2F7F4',
       icon: Zap,
@@ -54,15 +121,15 @@ export default function CharacterPage() {
       key: 'creativity',
       label: 'Creativity',
       description: 'Problem solving, design thinking, and synthesis',
-      value: 10,
-      max: 15,
+      value: rawAttributes.creativity,
+      max: Math.max(20, rawAttributes.creativity + 5),
       color: '#D9A441',
       bgColor: '#FDF8EC',
       icon: Palette,
     },
   ];
 
-  const xpPercentage = Math.min(100, Math.round((userStats.currentXp / userStats.nextLevelXp) * 100));
+  const xpPercentage = Math.min(100, Math.round((userStats.currentXp / (userStats.nextLevelXp || 1)) * 100));
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#070709] flex flex-col lg:flex-row font-sans">
@@ -70,11 +137,13 @@ export default function CharacterPage() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         activeTab="character"
+        isLoading={isLoading}
         userStats={userStats}
       />
 
       <main className="flex-1 lg:pl-60 min-w-0 flex flex-col min-h-screen">
         <Header
+          isLoading={isLoading}
           userStats={userStats}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />

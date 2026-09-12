@@ -1,24 +1,36 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { Volume2, VolumeX, Eye, EyeOff, Globe, Save, User } from 'lucide-react';
 import { useToast } from '../../components/ui/Toast';
 import { AvatarCustomizer } from '../../components/rpg/avatar/AvatarCustomizer';
 import { AvatarVariant, AvatarFrameVariant } from '../../components/avatars';
+import { getDashboardData } from '../../lib/queries/dashboard';
+import { getXpThreshold } from '../../lib/progression';
 
 export default function SettingsPage() {
   const { showToast } = useToast();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [userStats] = useState({
-    level: 12,
-    currentXp: 2480,
-    nextLevelXp: 3200,
-    gold: 680,
-    streak: 14,
-    displayName: 'Dhruv',
+  const [userStats, setUserStats] = useState<{
+    level: number;
+    currentXp: number;
+    nextLevelXp: number;
+    gold: number;
+    streak: number;
+    displayName: string;
+    avatarVariant?: string;
+  }>({
+    level: 1,
+    currentXp: 0,
+    nextLevelXp: 100,
+    gold: 0,
+    streak: 0,
+    displayName: 'Hero',
+    avatarVariant: 'architect',
   });
 
   const [selectedVariant, setSelectedVariant] = useState<AvatarVariant>('architect');
@@ -27,9 +39,56 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState({
     soundEnabled: true,
     leaderboardVisible: false,
-    timezone: 'Asia/Kolkata',
-    displayName: 'Dhruv',
+    timezone: 'UTC',
+    displayName: '',
   });
+
+  const loadData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const dashData = await getDashboardData();
+      if (dashData && dashData.character && dashData.profile) {
+        const { character, profile } = dashData;
+        const nextThreshold = getXpThreshold(character.level + 1);
+
+        let avatarVariant: AvatarVariant = 'architect';
+        if (profile.avatar_config) {
+          try {
+            const parsed = typeof profile.avatar_config === 'string' ? JSON.parse(profile.avatar_config) : profile.avatar_config;
+            if (parsed?.baseModel) {
+              avatarVariant = parsed.baseModel as AvatarVariant;
+              setSelectedVariant(avatarVariant);
+            }
+          } catch {}
+        }
+
+        const name = profile.display_name || 'Hero';
+        setUserStats({
+          level: character.level,
+          currentXp: character.total_xp,
+          nextLevelXp: nextThreshold,
+          gold: character.gold,
+          streak: character.current_streak,
+          displayName: name,
+          avatarVariant,
+        });
+
+        setSettings((prev) => ({
+          ...prev,
+          displayName: name,
+          timezone: profile.timezone || 'UTC',
+        }));
+      }
+    } catch {
+      // Graceful fallback
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleSave = () => {
     showToast('success', 'Settings Saved', 'Your avatar archetype, cosmetic frame, and preferences have been updated.');
@@ -41,11 +100,13 @@ export default function SettingsPage() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         activeTab="settings"
+        isLoading={isLoading}
         userStats={userStats}
       />
 
       <main className="flex-1 lg:pl-60 min-w-0 flex flex-col min-h-screen">
         <Header
+          isLoading={isLoading}
           userStats={userStats}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />

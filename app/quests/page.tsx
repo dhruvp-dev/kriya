@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { QuestCard, QuestItem } from '../../components/rpg/QuestCard';
@@ -8,6 +8,9 @@ import { CreateQuestModal } from '../../components/rpg/CreateQuestModal';
 import { useToast } from '../../components/ui/Toast';
 import { Plus, Search, CheckCircle2, Layers, Shield, Brain, Zap, Palette } from 'lucide-react';
 import { getRewardForDifficulty, calculateLevel, getXpThreshold } from '../../lib/progression';
+import { getDashboardData } from '../../lib/queries/dashboard';
+import { getQuestsData } from '../../lib/queries/quests';
+import { createQuestAction, completeQuestAction } from '../../lib/actions/quests';
 
 export default function QuestsPage() {
   const { showToast } = useToast();
@@ -15,68 +18,99 @@ export default function QuestsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState<'All' | 'Strength' | 'Intellect' | 'Discipline' | 'Creativity' | 'Completed'>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [userStats, setUserStats] = useState({
-    level: 12,
-    currentXp: 2480,
-    nextLevelXp: 3200,
-    gold: 680,
-    streak: 14,
-    displayName: 'Dhruv',
-  });
+  const [userStats, setUserStats] = useState<{
+    level: number;
+    currentXp: number;
+    nextLevelXp: number;
+    gold: number;
+    streak: number;
+    displayName: string;
+    avatarVariant?: string;
+  } | null>(null);
 
-  const [quests, setQuests] = useState<QuestItem[]>([
-    {
-      id: 'q-1',
-      title: 'Study React API Architecture',
-      description: 'Review state patterns and clean custom hooks.',
-      attribute: 'intellect',
-      difficulty: 'MEDIUM',
-      xp: 50,
-      gold: 15,
-      completed: false,
-    },
-    {
-      id: 'q-2',
-      title: 'Workout for 30 minutes',
-      description: 'Build momentum through physical movement.',
-      attribute: 'strength',
-      difficulty: 'EASY',
-      xp: 20,
-      gold: 5,
-      completed: false,
-    },
-    {
-      id: 'q-3',
-      title: 'Read 20 pages of non-fiction',
-      description: 'Focus mindfully without digital distractions.',
-      attribute: 'discipline',
-      difficulty: 'EASY',
-      xp: 20,
-      gold: 5,
-      completed: false,
-    },
-    {
-      id: 'q-4',
-      title: 'Design retro typography tokens',
-      description: 'Refine micro-spacing and subtle card details.',
-      attribute: 'creativity',
-      difficulty: 'HARD',
-      xp: 100,
-      gold: 30,
-      completed: false,
-    },
-    {
-      id: 'q-5',
-      title: 'Deep work sprint (90 mins)',
-      description: 'Uninterrupted technical problem solving.',
-      attribute: 'intellect',
-      difficulty: 'EPIC',
-      xp: 200,
-      gold: 60,
-      completed: false,
-    },
-  ]);
+  const [quests, setQuests] = useState<QuestItem[]>([]);
+
+  const loadData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const [dashData, dbQuests] = await Promise.all([
+        getDashboardData(),
+        getQuestsData(),
+      ]);
+
+      if (dashData && dashData.character && dashData.profile) {
+        const { character, profile } = dashData;
+        const nextThreshold = getXpThreshold(character.level + 1);
+
+        let avatarVariant = 'architect';
+        if (profile.avatar_config) {
+          try {
+            const parsed = typeof profile.avatar_config === 'string' ? JSON.parse(profile.avatar_config) : profile.avatar_config;
+            if (parsed?.baseModel) avatarVariant = parsed.baseModel;
+          } catch {}
+        }
+
+        setUserStats({
+          level: character.level,
+          currentXp: character.total_xp,
+          nextLevelXp: nextThreshold,
+          gold: character.gold,
+          streak: character.current_streak,
+          displayName: profile.display_name || 'Hero',
+          avatarVariant,
+        });
+      } else {
+        setUserStats({
+          level: 1,
+          currentXp: 0,
+          nextLevelXp: 100,
+          gold: 0,
+          streak: 0,
+          displayName: 'Hero',
+          avatarVariant: 'architect',
+        });
+      }
+
+      if (dbQuests && dbQuests.length > 0) {
+        setQuests(
+          dbQuests.map((q) => {
+            const reward = getRewardForDifficulty((q.difficulty?.toLowerCase() as any) || 'medium');
+            return {
+              id: q.id,
+              title: q.title,
+              description: q.description || undefined,
+              attribute: (q.attribute as any) || 'intellect',
+              difficulty: (q.difficulty?.toUpperCase() as any) || 'MEDIUM',
+              xp: reward.xp,
+              gold: reward.gold,
+              completed: q.status === 'completed',
+            };
+          })
+        );
+      } else {
+        setQuests([]);
+      }
+    } catch {
+      setUserStats({
+        level: 1,
+        currentXp: 0,
+        nextLevelXp: 100,
+        gold: 0,
+        streak: 0,
+        displayName: 'Hero',
+        avatarVariant: 'architect',
+      });
+      setQuests([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleCompleteQuest = async (questId: string) => {
     const quest = quests.find((q) => q.id === questId);
@@ -87,26 +121,50 @@ export default function QuestsPage() {
     );
 
     try {
-      const reward = getRewardForDifficulty(quest.difficulty.toLowerCase() as any);
-      const newXp = userStats.currentXp + reward.xp;
-      const newGold = userStats.gold + reward.gold;
-      const { newLevel, leveledUp } = calculateLevel(newXp, userStats.level);
-      const nextThreshold = getXpThreshold(newLevel + 1);
+      const dbResult = await completeQuestAction(questId);
+      if (dbResult && dbResult.success && dbResult.data) {
+        const res = dbResult.data;
+        setUserStats((prev) => prev ? ({
+          ...prev,
+          level: res.new_level,
+          currentXp: res.total_xp,
+          nextLevelXp: getXpThreshold(res.new_level + 1),
+          gold: prev.gold + res.gold_gained,
+          streak: res.current_streak,
+        }) : null);
 
-      setUserStats((prev) => ({
-        ...prev,
-        level: newLevel,
-        currentXp: newXp,
-        nextLevelXp: nextThreshold,
-        gold: newGold,
-      }));
+        showToast(
+          'success',
+          'Quest Completed!',
+          `+${res.xp_gained} XP  •  +${res.gold_gained} Gold`
+        );
+      } else {
+        const reward = getRewardForDifficulty(quest.difficulty.toLowerCase() as any);
+        const currentLevel = userStats?.level || 1;
+        const currentXp = userStats?.currentXp || 0;
+        const currentGold = userStats?.gold || 0;
+        const newXp = currentXp + reward.xp;
+        const newGold = currentGold + reward.gold;
+        const { newLevel, leveledUp } = calculateLevel(newXp, currentLevel);
+        const nextThreshold = getXpThreshold(newLevel + 1);
 
-      showToast(
-        'success',
-        'Quest Completed!',
-        `+${reward.xp} XP  •  +${reward.gold} Gold${leveledUp ? '  •  LEVEL UP!' : ''}`
-      );
-    } catch (err) {
+        setUserStats((prev) => ({
+          level: newLevel,
+          currentXp: newXp,
+          nextLevelXp: nextThreshold,
+          gold: newGold,
+          streak: prev?.streak || 0,
+          displayName: prev?.displayName || 'Hero',
+          avatarVariant: prev?.avatarVariant || 'architect',
+        }));
+
+        showToast(
+          'success',
+          'Quest Completed!',
+          `+${reward.xp} XP  •  +${reward.gold} Gold${leveledUp ? '  •  LEVEL UP!' : ''}`
+        );
+      }
+    } catch {
       setQuests((prev) =>
         prev.map((q) => (q.id === questId ? { ...q, completed: false } : q))
       );
@@ -114,21 +172,44 @@ export default function QuestsPage() {
     }
   };
 
-  const handleCreateQuest = (newQuestData: any) => {
-    const reward = getRewardForDifficulty(newQuestData.difficulty.toLowerCase() as any);
-    const newQuest: QuestItem = {
-      id: `q-${Date.now()}`,
-      title: newQuestData.title,
-      description: newQuestData.description || undefined,
-      attribute: newQuestData.attribute,
-      difficulty: newQuestData.difficulty.toUpperCase() as any,
-      xp: reward.xp,
-      gold: reward.gold,
-      completed: false,
-    };
-    setQuests((prev) => [newQuest, ...prev]);
-    setIsCreateModalOpen(false);
-    showToast('success', 'Quest Created', `"${newQuest.title}" added.`);
+  const handleCreateQuest = async (newQuestData: any) => {
+    try {
+      const dbResult = await createQuestAction(newQuestData);
+      if (dbResult && dbResult.success && dbResult.data) {
+        const qData = dbResult.data;
+        const reward = getRewardForDifficulty(qData.difficulty.toLowerCase() as any);
+        const newQuest: QuestItem = {
+          id: qData.id,
+          title: qData.title,
+          description: qData.description || undefined,
+          attribute: qData.attribute as any,
+          difficulty: qData.difficulty.toUpperCase() as any,
+          xp: reward.xp,
+          gold: reward.gold,
+          completed: false,
+        };
+        setQuests((prev) => [newQuest, ...prev]);
+      } else {
+        const reward = getRewardForDifficulty(newQuestData.difficulty.toLowerCase() as any);
+        const newQuest: QuestItem = {
+          id: `q-${Date.now()}`,
+          title: newQuestData.title,
+          description: newQuestData.description || undefined,
+          attribute: newQuestData.attribute,
+          difficulty: newQuestData.difficulty.toUpperCase() as any,
+          xp: reward.xp,
+          gold: reward.gold,
+          completed: false,
+        };
+        setQuests((prev) => [newQuest, ...prev]);
+      }
+
+      setIsCreateModalOpen(false);
+      showToast('success', 'Quest Created', `"${newQuestData.title}" added.`);
+    } catch {
+      setIsCreateModalOpen(false);
+      showToast('error', 'Error', 'Failed to create quest.');
+    }
   };
 
   const filteredQuests = quests.filter((quest) => {
@@ -166,12 +247,14 @@ export default function QuestsPage() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         activeTab="quests"
-        userStats={userStats}
+        isLoading={isLoading}
+        userStats={userStats || undefined}
       />
 
       <main className="flex-1 lg:pl-60 min-w-0 flex flex-col min-h-screen">
         <Header
-          userStats={userStats}
+          isLoading={isLoading}
+          userStats={userStats || undefined}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
           onOpenCreateModal={() => setIsCreateModalOpen(true)}
         />
@@ -226,7 +309,28 @@ export default function QuestsPage() {
             </div>
           </div>
 
-          {filteredQuests.length > 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="p-4 rounded-2xl bg-[#FFFFFF] border border-[#E6E6E8] animate-pulse flex items-center justify-between gap-4"
+                >
+                  <div className="flex items-center gap-3.5 flex-1 min-w-0">
+                    <div className="w-5 h-5 rounded-full bg-[#F3F4F5] shrink-0" />
+                    <div className="space-y-2 flex-1 min-w-0">
+                      <div className="h-4 w-40 bg-[#E6E6E8] rounded" />
+                      <div className="h-3 w-56 bg-[#F3F4F5] rounded" />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <div className="h-6 w-14 bg-[#F3F4F5] rounded-lg" />
+                    <div className="h-6 w-14 bg-[#F3F4F5] rounded-lg" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filteredQuests.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredQuests.map((quest) => (
                 <QuestCard

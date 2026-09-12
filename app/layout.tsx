@@ -29,6 +29,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,600,500,400&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="bg-[#FFFFFF] text-[#070709] min-h-screen antialiased font-sans selection:bg-[#070709] selection:text-[#FFFFFF]">
         <ToastProvider>{children}</ToastProvider>

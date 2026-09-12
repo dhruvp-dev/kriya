@@ -10,6 +10,7 @@ export interface HeaderProps {
   level?: number;
   character?: any;
   profile?: any;
+  isLoading?: boolean;
   userStats?: {
     level?: number;
     gold?: number;
@@ -29,16 +30,17 @@ export function Header({
   level,
   character,
   profile,
+  isLoading = false,
   userStats,
   onToggleMobileMenu,
   onOpenMobileMenu,
   onOpenCreateQuest,
   onOpenCreateModal,
 }: HeaderProps) {
-  const activeName = displayName || userStats?.displayName || profile?.display_name || 'Dhruv';
-  const activeGold = gold ?? userStats?.gold ?? character?.gold ?? 680;
-  const activeStreak = streak ?? userStats?.streak ?? character?.current_streak ?? 14;
-  const activeLevel = level ?? userStats?.level ?? character?.level ?? 12;
+  const activeName = displayName || userStats?.displayName || profile?.display_name || '';
+  const activeGold = gold ?? userStats?.gold ?? character?.gold ?? 0;
+  const activeStreak = streak ?? userStats?.streak ?? character?.current_streak ?? 0;
+  const activeLevel = level ?? userStats?.level ?? character?.level ?? 1;
 
   const handleMobileMenu = onOpenMobileMenu || onToggleMobileMenu;
   const handleCreateQuest = onOpenCreateModal || onOpenCreateQuest;
@@ -71,9 +73,13 @@ export function Header({
         )}
 
         <div className="flex flex-col min-w-0">
-          <h1 className="text-base sm:text-lg font-semibold text-[#151515] tracking-tight truncate">
-            {greeting}, {activeName}
-          </h1>
+          {isLoading ? (
+            <div className="h-5 w-36 bg-[#F3F4F5] rounded-md animate-pulse my-0.5" />
+          ) : (
+            <h1 className="text-base sm:text-lg font-semibold text-[#151515] tracking-tight truncate">
+              {activeName ? `${greeting}, ${activeName}` : greeting}
+            </h1>
+          )}
 
           <div className="text-xs text-[#8B8B8B] font-normal">
             Today · {todayDate}
@@ -85,27 +91,37 @@ export function Header({
       <div className="flex items-center gap-3 sm:gap-4 shrink-0">
         {/* Compact Stats Strip */}
         <div className="hidden sm:flex items-center gap-3 text-xs font-medium text-[#60606C]">
-          {/* Streak */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F7F7F8] border border-[#E6E6E8]">
-            <Flame className="w-3.5 h-3.5 text-[#C85A3D] fill-[#C85A3D]" />
-            <span className="tabular-nums font-semibold text-[#070709]">{activeStreak}</span>
-            <span className="text-[#8B8B8B]">day streak</span>
-          </div>
+          {isLoading ? (
+            <div className="flex items-center gap-2.5">
+              <div className="w-24 h-7 bg-[#F7F7F8] border border-[#E6E6E8] rounded-md animate-pulse" />
+              <div className="w-20 h-7 bg-[#F7F7F8] border border-[#E6E6E8] rounded-md animate-pulse" />
+              <div className="w-16 h-7 bg-[#F7F7F8] border border-[#E6E6E8] rounded-md animate-pulse" />
+            </div>
+          ) : (
+            <>
+              {/* Streak */}
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F7F7F8] border border-[#E6E6E8]">
+                <Flame className="w-3.5 h-3.5 text-[#C85A3D] fill-[#C85A3D]" />
+                <span className="tabular-nums font-semibold text-[#070709]">{activeStreak}</span>
+                <span className="text-[#8B8B8B]">day streak</span>
+              </div>
 
-          {/* Gold */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F7F7F8] border border-[#E6E6E8]">
-            <span className="w-3.5 h-3.5 rounded-full bg-[#D9A441] flex items-center justify-center text-[9px] font-bold text-white leading-none">
-              $
-            </span>
-            <span className="tabular-nums font-semibold text-[#070709]">{activeGold.toLocaleString()}</span>
-            <span className="text-[#8B8B8B]">Gold</span>
-          </div>
+              {/* Gold */}
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F7F7F8] border border-[#E6E6E8]">
+                <span className="w-3.5 h-3.5 rounded-full bg-[#D9A441] flex items-center justify-center text-[9px] font-bold text-white leading-none">
+                  $
+                </span>
+                <span className="tabular-nums font-semibold text-[#070709]">{activeGold.toLocaleString()}</span>
+                <span className="text-[#8B8B8B]">Gold</span>
+              </div>
 
-          {/* Level */}
-          <div className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#F7F7F8] border border-[#E6E6E8]">
-            <span className="text-[#8B8B8B]">Level</span>
-            <span className="tabular-nums font-semibold text-[#070709]">{activeLevel}</span>
-          </div>
+              {/* Level */}
+              <div className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#F7F7F8] border border-[#E6E6E8]">
+                <span className="text-[#8B8B8B]">Level</span>
+                <span className="tabular-nums font-semibold text-[#070709]">{activeLevel}</span>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Primary CTA Button: Near-black #070709 */}
