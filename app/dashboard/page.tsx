@@ -84,11 +84,15 @@ export default function DashboardPage() {
   const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const [dashData, dbQuests, achData] = await Promise.all([
+      const [dashResult, questsResult, achResult] = await Promise.allSettled([
         getDashboardData(),
         getQuestsData(),
         getAchievementsData(),
       ]);
+
+      const dashData = dashResult.status === 'fulfilled' ? dashResult.value : null;
+      const dbQuests = questsResult.status === 'fulfilled' ? questsResult.value : [];
+      const achData = achResult.status === 'fulfilled' ? achResult.value : [];
 
       if (dashData && dashData.character && dashData.profile) {
         const { character, profile, attributes: dbAttr } = dashData;

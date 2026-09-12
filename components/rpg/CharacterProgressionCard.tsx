@@ -75,7 +75,7 @@ export function CharacterProgressionCard({
   const remainingXp = Math.max(0, activeNextLevelXp - activeCurrentXp);
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl p-6 sm:p-7 shadow-2xs font-sans">
+    <div suppressHydrationWarning className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl p-6 sm:p-7 shadow-2xs font-sans">
       {/* Top Header: Level & Current XP */}
       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-4">
         <div>
@@ -88,10 +88,10 @@ export function CharacterProgressionCard({
         </div>
 
         <div className="text-left sm:text-right">
-          <div className="text-xl sm:text-2xl font-bold text-[#070709] tabular-nums">
+          <div suppressHydrationWarning className="text-xl sm:text-2xl font-bold text-[#070709] tabular-nums">
             {activeCurrentXp.toLocaleString()} <span className="text-xs font-medium text-[#8B8B8B]">XP</span>
           </div>
-          <div className="text-xs text-[#8B8B8B] tabular-nums">
+          <div suppressHydrationWarning className="text-xs text-[#8B8B8B] tabular-nums">
             {activeNextLevelXp.toLocaleString()} XP next level
           </div>
         </div>
@@ -107,8 +107,8 @@ export function CharacterProgressionCard({
         </div>
 
         <div className="flex justify-between items-center text-xs text-[#8B8B8B] font-medium tabular-nums">
-          <span>{xpPercent}% completed</span>
-          <span>{remainingXp.toLocaleString()} XP to Level {activeLevel + 1}</span>
+          <span suppressHydrationWarning>{xpPercent}% completed</span>
+          <span suppressHydrationWarning>{remainingXp.toLocaleString()} XP to Level {activeLevel + 1}</span>
         </div>
       </div>
 
@@ -117,7 +117,7 @@ export function CharacterProgressionCard({
         {/* Streak */}
         <div className="flex items-center gap-2">
           <Flame className="w-4 h-4 text-[#C85A3D] fill-[#C85A3D]" />
-          <span className="font-semibold text-[#070709] tabular-nums">{activeStreak}</span>
+          <span suppressHydrationWarning className="font-semibold text-[#070709] tabular-nums">{activeStreak}</span>
           <span className="text-[#60606C]">day streak</span>
         </div>
 
@@ -128,7 +128,7 @@ export function CharacterProgressionCard({
           <span className="w-4 h-4 rounded-full bg-[#D9A441] flex items-center justify-center text-[10px] font-bold text-white">
             $
           </span>
-          <span className="font-semibold text-[#070709] tabular-nums">{activeGold.toLocaleString()}</span>
+          <span suppressHydrationWarning className="font-semibold text-[#070709] tabular-nums">{activeGold.toLocaleString()}</span>
           <span className="text-[#60606C]">Gold</span>
         </div>
 
@@ -137,7 +137,7 @@ export function CharacterProgressionCard({
         {/* Quests Completed */}
         <div className="flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-[#668F72]" />
-          <span className="font-semibold text-[#070709] tabular-nums">{completedQuestsCount}</span>
+          <span suppressHydrationWarning className="font-semibold text-[#070709] tabular-nums">{completedQuestsCount}</span>
           <span className="text-[#60606C]">quests completed</span>
         </div>
       </div>

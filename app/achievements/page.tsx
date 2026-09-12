@@ -39,10 +39,13 @@ export default function AchievementsPage() {
   const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const [dashData, achData] = await Promise.all([
+      const [dashResult, achResult] = await Promise.allSettled([
         getDashboardData(),
         getAchievementsData(),
       ]);
+
+      const dashData = dashResult.status === 'fulfilled' ? dashResult.value : null;
+      const achData = achResult.status === 'fulfilled' ? achResult.value : [];
 
       if (dashData && dashData.character && dashData.profile) {
         const { character, profile } = dashData;

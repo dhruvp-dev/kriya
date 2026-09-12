@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, Plus, Flame, Sparkles } from 'lucide-react';
 
 export interface HeaderProps {
@@ -45,18 +45,24 @@ export function Header({
   const handleMobileMenu = onOpenMobileMenu || onToggleMobileMenu;
   const handleCreateQuest = onOpenCreateModal || onOpenCreateQuest;
 
-  // Contextual greeting
-  const hour = new Date().getHours();
-  let greeting = 'Good morning';
-  if (hour >= 12 && hour < 18) greeting = 'Good afternoon';
-  else if (hour >= 18) greeting = 'Good evening';
+  // Contextual greeting & formatted date with client-side hydration guard
+  const [greeting, setGreeting] = useState('Welcome back');
+  const [todayDate, setTodayDate] = useState('');
 
-  // Formatted date
-  const todayDate = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric',
-  });
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour >= 12 && hour < 18) setGreeting('Good afternoon');
+    else if (hour >= 18) setGreeting('Good evening');
+    else setGreeting('Good morning');
+
+    setTodayDate(
+      new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric',
+      })
+    );
+  }, []);
 
   return (
     <header className="sticky top-0 z-30 w-full bg-[#FFFFFF]/90 backdrop-blur-md border-b border-[#E6E6E8] px-4 lg:px-8 py-3.5 flex items-center justify-between gap-4 select-none font-sans">
@@ -76,13 +82,13 @@ export function Header({
           {isLoading ? (
             <div className="h-5 w-36 bg-[#F3F4F5] rounded-md animate-pulse my-0.5" />
           ) : (
-            <h1 className="text-base sm:text-lg font-semibold text-[#151515] tracking-tight truncate">
+            <h1 suppressHydrationWarning className="text-base sm:text-lg font-semibold text-[#151515] tracking-tight truncate">
               {activeName ? `${greeting}, ${activeName}` : greeting}
             </h1>
           )}
 
-          <div className="text-xs text-[#8B8B8B] font-normal">
-            Today · {todayDate}
+          <div suppressHydrationWarning className="text-xs text-[#8B8B8B] font-normal">
+            {todayDate ? `Today · ${todayDate}` : 'Today'}
           </div>
         </div>
       </div>

@@ -53,10 +53,13 @@ export default function QuestsPage() {
   const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const [dashData, dbQuests] = await Promise.all([
+      const [dashResult, questsResult] = await Promise.allSettled([
         getDashboardData(),
         getQuestsData(),
       ]);
+
+      const dashData = dashResult.status === 'fulfilled' ? dashResult.value : null;
+      const dbQuests = questsResult.status === 'fulfilled' ? questsResult.value : [];
 
       if (dashData && dashData.character && dashData.profile) {
         const { character, profile } = dashData;

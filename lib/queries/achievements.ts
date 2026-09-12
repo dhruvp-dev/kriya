@@ -116,34 +116,18 @@ export async function getAchievementsData(): Promise<AchievementDisplayItem[]> {
       data: { user },
     } = await supabase.auth.getUser();
 
-    // 1. Fetch from database or prepare canonical definitions
-    let { data: dbAchievements } = await supabase
-      .from('achievements')
-      .select('*')
-      .order('threshold', { ascending: true });
-
-    if (!dbAchievements || dbAchievements.length === 0) {
-      try {
-        await supabase.from('achievements').upsert(
-          CANONICAL_ACHIEVEMENTS.map((a) => ({
-            id: a.id,
-            name: a.name,
-            description: a.description,
-            trigger_type: a.trigger_type,
-            threshold: a.threshold,
-            reward_xp: a.reward_xp,
-            reward_gold: a.reward_gold,
-            metadata: { category: a.category, badge_icon: a.icon_name },
-          }))
-        );
-        const refetch = await supabase
-          .from('achievements')
-          .select('*')
-          .order('threshold', { ascending: true });
-        dbAchievements = refetch.data || [];
-      } catch {
-        dbAchievements = [];
+    // 1. Fetch from database if available (read-only)
+    let dbAchievements: any[] = [];
+    try {
+      const { data } = await supabase
+        .from('achievements')
+        .select('*')
+        .order('threshold', { ascending: true });
+      if (data && data.length > 0) {
+        dbAchievements = data;
       }
+    } catch {
+      // Fall back to canonical definitions
     }
 
     // 2. Fetch user's actual progression stats
@@ -157,36 +141,40 @@ export async function getAchievementsData(): Promise<AchievementDisplayItem[]> {
     const userAchMap = new Map<string, string>();
 
     if (user) {
-      const [charRes, userAchRes, completionsRes, questsRes] = await Promise.all([
-        supabase.from('characters').select('*').eq('user_id', user.id).maybeSingle(),
-        supabase.from('user_achievements').select('*').eq('user_id', user.id),
-        supabase
-          .from('quest_completions')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', user.id),
-        supabase
-          .from('quests')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', user.id)
-          .eq('status', 'completed'),
-      ]);
+      try {
+        const [charRes, userAchRes, completionsRes, questsRes] = await Promise.all([
+          supabase.from('characters').select('*').eq('user_id', user.id).maybeSingle(),
+          supabase.from('user_achievements').select('*').eq('user_id', user.id),
+          supabase
+            .from('quest_completions')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', user.id),
+          supabase
+            .from('quests')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', user.id)
+            .eq('status', 'completed'),
+        ]);
 
-      if (charRes.data) {
-        userStats.level = charRes.data.level || 1;
-        userStats.streak = Math.max(
-          charRes.data.current_streak || 0,
-          charRes.data.longest_streak || 0
-        );
-        userStats.gold = charRes.data.gold || 0;
-      }
+        if (charRes.data) {
+          userStats.level = charRes.data.level || 1;
+          userStats.streak = Math.max(
+            charRes.data.current_streak || 0,
+            charRes.data.longest_streak || 0
+          );
+          userStats.gold = charRes.data.gold || 0;
+        }
 
-      const totalCompleted = Math.max(completionsRes.count || 0, questsRes.count || 0);
-      userStats.completedQuestsCount = totalCompleted;
+        const totalCompleted = Math.max(completionsRes.count || 0, questsRes.count || 0);
+        userStats.completedQuestsCount = totalCompleted;
 
-      if (userAchRes.data) {
-        userAchRes.data.forEach((ua) => {
-          userAchMap.set(ua.achievement_id, ua.unlocked_at);
-        });
+        if (userAchRes.data) {
+          userAchRes.data.forEach((ua) => {
+            userAchMap.set(ua.achievement_id, ua.unlocked_at);
+          });
+        }
+      } catch {
+        // Fall back to default user stats
       }
     }
 
@@ -195,7 +183,7 @@ export async function getAchievementsData(): Promise<AchievementDisplayItem[]> {
       const dbMatch = (dbAchievements || []).find(
         (dba) =>
           dba.id === canonical.id ||
-          dba.name.toLowerCase() === canonical.name.toLowerCase()
+          dba.name?.toLowerCase() === canonical.name.toLowerCase()
       );
       return {
         ...canonical,
@@ -250,21 +238,7 @@ export async function getAchievementsData(): Promise<AchievementDisplayItem[]> {
             unlockedAtFormatted = 'Unlocked';
           }
         } else {
-          unlockedAtFormatted = 'Unlocked today';
-          // Auto-persist unlock to database if missing
-          if (user) {
-            try {
-              void supabase
-                .from('user_achievements')
-                .insert({
-                  user_id: user.id,
-                  achievement_id: ach.id,
-                  unlocked_at: new Date().toISOString(),
-                });
-            } catch {
-              // Ignore background insert error
-            }
-          }
+          unlockedAtFormatted = 'Unlocked';
         }
       }
 
