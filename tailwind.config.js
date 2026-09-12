@@ -8,31 +8,53 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        bgIvory: '#F3F1E8',
-        surfaceWhite: '#FFFDF7',
-        textPrimary: '#20231F',
-        textSecondary: '#70736B',
-        borderIvory: '#DFDDD2',
-        actionCoral: {
+        bgIvory: '#FAF8F5',
+        surfaceWarm: '#FFFFFF',
+        surfaceParchment: '#F6F2EA',
+        surfaceMuted: '#EFEBE1',
+        textPrimary: '#192420',
+        textSecondary: '#667770',
+        borderIvory: '#E8E1D3',
+        forestDark: {
+          DEFAULT: '#1B4332',
+          hover: '#133226',
+          soft: '#E8F1EC',
+        },
+        warmOchre: {
+          DEFAULT: '#D97706',
+          hover: '#B45309',
+          soft: '#FEF3C7',
+        },
+        terracotta: {
           DEFAULT: '#C85A3D',
-          hover: '#A94730',
-          soft: '#FBF0EC',
+          hover: '#A94328',
+          soft: '#FAECE7',
+        },
+        dustyTeal: {
+          DEFAULT: '#2A7A78',
+          hover: '#1F5B5A',
+          soft: '#E6F3F2',
+        },
+        actionCoral: {
+          DEFAULT: '#1B4332',
+          hover: '#133226',
+          soft: '#E8F1EC',
         },
         rewardGold: {
-          DEFAULT: '#D9A441',
-          hover: '#C28F2F',
-          soft: '#FAF4E6',
+          DEFAULT: '#D97706',
+          hover: '#B45309',
+          soft: '#FEF3C7',
         },
-        successGreen: '#668F72',
+        successGreen: '#1B4332',
         navyAccent: {
-          DEFAULT: '#344653',
-          soft: '#415565',
+          DEFAULT: '#223843',
+          soft: '#EEF2F4',
         },
         attribute: {
           strength: '#C85A3D',
-          intellect: '#344653',
-          discipline: '#668F72',
-          creativity: '#D9A441',
+          intellect: '#2A7A78',
+          discipline: '#1B4332',
+          creativity: '#D97706',
         },
       },
       fontFamily: {
@@ -43,4 +65,3 @@ module.exports = {
   },
   plugins: [],
 };
-

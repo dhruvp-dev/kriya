@@ -4,7 +4,7 @@ import './globals.css';
 import { ToastProvider } from '../components/ui/Toast';
 
 export const metadata: Metadata = {
-  title: 'KRIYA — Daily Progress Engine',
+  title: 'KRIYA: Daily Progress Engine',
   description: 'Turn real-life goals into daily achievements with a warm cozy retro-digital productivity system.',
   icons: {
     icon: [
@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#FAF9F6] text-[#1C1917] min-h-screen antialiased font-sans selection:bg-[#EA580C] selection:text-white">
+      <body className="bg-[#FAF8F5] text-[#192420] min-h-screen antialiased font-sans selection:bg-[#1B4332] selection:text-[#FAF8F5]">
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>

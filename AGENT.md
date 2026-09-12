@@ -123,3 +123,124 @@ If a task isn't covered by this file or the SRS, prefer the option that:
 3. Matches the "modern product with RPG mechanics" design direction (SRS §27) over literal fantasy-game UI.
 
 If a genuine product ambiguity comes up that isn't resolved by the SRS, flag it rather than silently deciding — the SRS is frozen and changes should be deliberate, not incidental to an implementation detail.
+
+---
+
+## 9. Design References — Study, Do Not Copy
+
+Use design references ONLY as sources of design principles, mood, interaction ideas, composition patterns, and visual inspiration.
+
+### Curated Reference Library
+
+* **[Chillbert Therapy](https://andrealmo.com/chillbert%20therapy%20design)** — Primary reference for Kriya's *professional + warm earthy palette + pixel characters* balance. Combines pixel characters with a professional grid/layout and warm earth tones.
+* **[Stardew Valley](https://www.stardewvalley.net/)** — Cozy world-building and pixel-art personality (not UI or artwork). Identity deeply tied to pixel art and progression.
+* **[FocusPixel](https://www.focuspixel.app/)** — Productivity/focus functionality coexisting with cozy pixel-art character and progression.
+* **[Pixeldoro](https://pixeldoro.io/)** — Turning productivity into a cozy game-like experience without turning the product into a conventional RPG.
+* **[A1 Pixelated Landing Pages](https://www.a1.gallery/websites/pixelated-landing)** — Modern pixel/retro-digital landing page composition.
+* **[One Page Love — Pixel Art Websites](https://onepagelove.com/style/pixel-art)** — Broad reference library of real pixel-art landing pages.
+* **[Webflow Pixel Collection](https://webflow.com/made-in-webflow/pixel)** — Modern interactions, pixel transitions, typography, and layout experiments.
+
+### Strict Originality & Anti-Copying Rules
+
+```text
+==================================================
+DESIGN REFERENCES — STUDY, DO NOT COPY
+==================================================
+
+Use the following references ONLY as sources of
+design principles, mood, interaction ideas,
+composition patterns, and visual inspiration:
+
+- Chillbert Therapy
+- Stardew Valley
+- FocusPixel
+- Pixeldoro
+- A1 Pixelated Landing Pages
+- One Page Love Pixel Art collection
+- Webflow Pixel collection
+
+IMPORTANT COPYRIGHT / ORIGINALITY RULE:
+
+Do NOT copy, trace, recreate, or closely imitate any
+reference's:
+
+- logo
+- brand identity
+- illustrations
+- characters
+- artwork
+- icons
+- layouts
+- exact component designs
+- typography combinations
+- copywriting
+- color palette as a complete system
+- distinctive visual motifs
+- screenshots
+- CSS
+- HTML
+- source code
+- proprietary assets
+
+Do NOT reproduce any recognizable character,
+environment, logo, mascot, illustration, or branded
+visual from these references.
+
+Do NOT create a KRIYA interface that could reasonably
+be mistaken for one of the referenced products.
+
+Instead, extract HIGH-LEVEL DESIGN PRINCIPLES.
+
+For example:
+
+From cozy pixel-art products:
+→ use pixel art as personality
+→ use warm restrained palettes
+→ create collectible visual elements
+→ use small moments of delight
+
+From modern productivity products:
+→ use strong hierarchy
+→ prioritize whitespace
+→ keep navigation simple
+→ make actions obvious
+→ minimize visual noise
+
+From retro-digital websites:
+→ use subtle pixel geometry
+→ use segmented visual elements
+→ use occasional bitmap-inspired details
+→ use nostalgic texture sparingly
+
+Then create an ORIGINAL KRIYA visual language.
+
+KRIYA must have its own:
+- logo
+- symbol
+- avatar characters
+- illustrations
+- iconography
+- typography system
+- color system
+- layouts
+- component shapes
+- copy
+- animations
+- interaction patterns
+
+The references are inspiration only.
+
+The final design must be recognizably KRIYA.
+```
+
+### Deconstruction & Translation Workflow
+
+If a reference contains a particularly attractive component, do not reproduce that component directly.
+
+Instead, ask:
+> **"What design principle makes this work?"**
+
+Then rebuild that principle using KRIYA's own visual language.
+
+* **BAD**: Copying a Stardew-style inventory screen.
+* **GOOD**: Studying why an inventory feels collectible and satisfying, then designing an original KRIYA inventory using KRIYA's warm parchment, terracotta, sage, and navy design system.
