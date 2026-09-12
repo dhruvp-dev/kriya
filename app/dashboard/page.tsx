@@ -2,28 +2,39 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import confetti from 'canvas-confetti';
-import { Plus, Coins, Trophy } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { CharacterProgressionCard } from '../../components/rpg/CharacterProgressionCard';
 import { QuestCard, QuestItem } from '../../components/rpg/QuestCard';
 import { RightSidebar, AttributeData, AchievementItem, ActivityItem } from '../../components/rpg/RightSidebar';
 import { CreateQuestModal } from '../../components/rpg/CreateQuestModal';
+import { CelebrationOverlay } from '../../components/rpg/CelebrationOverlay';
 import { useToast } from '../../components/ui/Toast';
 import { getDashboardData } from '../../lib/queries/dashboard';
 import { getQuestsData } from '../../lib/queries/quests';
-import { createQuestAction, completeQuestAction } from '../../lib/actions/quests';
-import { getXpThreshold, getRewardForDifficulty } from '../../lib/progression';
+import { completeQuestAction, createQuestAction } from '../../lib/actions/quests';
+import { getXpThreshold, getRewardForDifficulty, calculateLevel } from '../../lib/progression';
 
 export default function DashboardPage() {
   const { showToast } = useToast();
-  const [activeTab, setActiveTab] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [questFilter, setQuestFilter] = useState<'All' | 'Work' | 'Fitness' | 'Growth' | 'Completed'>('All');
+  const [activeFilter, setActiveFilter] = useState<'All' | 'Strength' | 'Intellect' | 'Discipline' | 'Creativity'>('All');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Real Database Character State
+  // Level Up Celebration state
+  const [celebrationState, setCelebrationState] = useState<{
+    isOpen: boolean;
+    newLevel: number;
+    rewardGold: number;
+  }>({
+    isOpen: false,
+    newLevel: 13,
+    rewardGold: 100,
+  });
+
+  // Database / Local Character State
   const [userStats, setUserStats] = useState({
     level: 12,
     currentXp: 2480,
@@ -40,36 +51,32 @@ export default function DashboardPage() {
     creativity: 10,
   });
 
-  // Real Quests State
+  // Quests State
   const [quests, setQuests] = useState<QuestItem[]>([
     {
       id: 'q-1',
-      title: 'Study React',
-      description: 'Build the API integration.',
+      title: 'Study React API Architecture',
+      description: 'Review custom hooks and state management patterns.',
       attribute: 'intellect',
       difficulty: 'MEDIUM',
       xp: 50,
       gold: 15,
       completed: false,
-      subtasks: [
-        { id: 'st-1', title: 'Review custom hooks logic', completed: true },
-        { id: 'st-2', title: 'Implement typed query handlers', completed: false },
-      ],
     },
     {
       id: 'q-2',
-      title: 'Workout for 30 minutes',
-      description: 'Move your body. Stronger you.',
+      title: '30 minute workout',
+      description: 'Build momentum through daily physical movement.',
       attribute: 'strength',
-      difficulty: 'EASY',
-      xp: 20,
-      gold: 5,
+      difficulty: 'MEDIUM',
+      xp: 50,
+      gold: 15,
       completed: false,
     },
     {
       id: 'q-3',
-      title: 'Read 20 pages',
-      description: 'Learn something new today.',
+      title: 'Read 20 pages of non-fiction',
+      description: 'Focus mindfully without digital distractions.',
       attribute: 'discipline',
       difficulty: 'EASY',
       xp: 20,
@@ -78,8 +85,8 @@ export default function DashboardPage() {
     },
     {
       id: 'q-4',
-      title: 'Design retro UI components',
-      description: 'Refine micro-typography and chamfered card borders.',
+      title: 'Design retro typography tokens',
+      description: 'Refine micro-spacing and chamfered card details.',
       attribute: 'creativity',
       difficulty: 'HARD',
       xp: 100,
@@ -88,8 +95,8 @@ export default function DashboardPage() {
     },
   ]);
 
-  // Real Achievements State
-  const [achievements, setAchievements] = useState<AchievementItem[]>([
+  // Achievements State
+  const [achievements] = useState<AchievementItem[]>([
     {
       id: 'ach-1',
       title: 'FIRST STEP',
@@ -121,7 +128,7 @@ export default function DashboardPage() {
     {
       id: 'act-1',
       title: 'Completed quest',
-      subtext: 'Study React',
+      subtext: 'Study React API Architecture',
       xp: 50,
       gold: 15,
       timeAgo: 'Just now',
@@ -133,16 +140,9 @@ export default function DashboardPage() {
       timeAgo: 'Yesterday',
       type: 'level',
     },
-    {
-      id: 'act-3',
-      title: 'Achievement unlocked',
-      subtext: 'Scholar',
-      timeAgo: '2 days ago',
-      type: 'achievement',
-    },
   ]);
 
-  // Load Real Supabase Database Data
+  // Load Database Data (Supabase Fallback)
   const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -152,8 +152,7 @@ export default function DashboardPage() {
       ]);
 
       if (dashData && dashData.character && dashData.profile) {
-        const { character, profile, attributes: dbAttr, recentAchievements } = dashData;
-
+        const { character, profile, attributes: dbAttr } = dashData;
         const nextThreshold = getXpThreshold(character.level + 1);
 
         setUserStats({
@@ -173,17 +172,6 @@ export default function DashboardPage() {
             creativity: dbAttr.creativity || 0,
           });
         }
-
-        if (recentAchievements && recentAchievements.length > 0) {
-          setAchievements(
-            recentAchievements.map((ua: any, i: number) => ({
-              id: ua.id || `ach-${i}`,
-              title: ua.achievement?.name || 'ACHIEVEMENT',
-              description: ua.achievement?.description || 'Unlocked milestone',
-              unlocked: true,
-            }))
-          );
-        }
       }
 
       if (dbQuests && dbQuests.length > 0) {
@@ -198,15 +186,15 @@ export default function DashboardPage() {
               description: q.description || undefined,
               attribute: (q.attribute as any) || 'intellect',
               difficulty: (q.difficulty?.toUpperCase() as any) || 'MEDIUM',
-              xp: q.xp_reward || reward.xp,
-              gold: q.gold_reward || reward.gold,
+              xp: reward.xp,
+              gold: reward.gold,
               completed: q.status === 'completed',
             };
           })
         );
       }
-    } catch {
-      // Keep real fallback state active if user is guest or not signed in
+    } catch (err) {
+      // Graceful fallback to client state
     } finally {
       setIsLoading(false);
     }
@@ -216,522 +204,247 @@ export default function DashboardPage() {
     loadData();
   }, [loadData]);
 
-  // Real Quest Completion Action
+  // Complete Quest Handler
   const handleCompleteQuest = async (questId: string) => {
-    const quest = quests.find((q) => q.id === questId);
-    if (!quest || quest.completed) return;
+    const targetQuest = quests.find((q) => q.id === questId);
+    if (!targetQuest || targetQuest.completed) return;
+
+    // 1. Optimistic UI update (Checkmark only)
+    setQuests((prev) =>
+      prev.map((q) => (q.id === questId ? { ...q, completed: true } : q))
+    );
 
     try {
-      confetti({
-        particleCount: 45,
-        spread: 55,
-        origin: { y: 0.7 },
-        colors: ['#F05A3C', '#FFB547', '#2E9B72', '#202B3C'],
-      });
-    } catch {
-      // Fallback
-    }
+      // Try database RPC completion
+      const dbResult = await completeQuestAction(questId);
 
-    // Try executing database complete action if real quest UUID
-    let dbSuccess = false;
-    if (questId.includes('-') && questId.length > 20) {
-      const res = await completeQuestAction(questId);
-      if (res.success && res.data) {
-        dbSuccess = true;
-        if (res.data.leveled_up) {
-          showToast(`🎉 LEVEL UP! You reached Level ${res.data.new_level}!`, 'success');
-        } else {
-          showToast(`+${res.data.xp_gained} XP & +${res.data.gold_gained} GOLD acquired!`, 'success');
+      if (dbResult && dbResult.success && dbResult.data) {
+        const res = dbResult.data;
+        setUserStats((prev) => ({
+          ...prev,
+          level: res.new_level,
+          currentXp: res.total_xp,
+          nextLevelXp: getXpThreshold(res.new_level + 1),
+          gold: prev.gold + res.gold_gained,
+          streak: res.current_streak,
+        }));
+
+        setAttributes((prev) => ({
+          ...prev,
+          [res.attribute_increased]:
+            (prev[res.attribute_increased as keyof AttributeData] || 0) + 1,
+        }));
+
+        if (res.leveled_up) {
+          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+          setCelebrationState({
+            isOpen: true,
+            newLevel: res.new_level,
+            rewardGold: 100,
+          });
         }
-        loadData();
-        return;
-      }
-    }
 
-    // Client state update
-    if (!dbSuccess) {
-      setQuests((prev) =>
-        prev.map((q) => (q.id === questId ? { ...q, completed: true } : q))
-      );
-
-      const newXp = userStats.currentXp + quest.xp;
-      const newGold = userStats.gold + quest.gold;
-      let newLevel = userStats.level;
-      let nextXpThreshold = userStats.nextLevelXp;
-
-      let leveledUp = false;
-      if (newXp >= userStats.nextLevelXp) {
-        newLevel += 1;
-        nextXpThreshold = getXpThreshold(newLevel + 1);
-        leveledUp = true;
-      }
-
-      setUserStats({
-        ...userStats,
-        level: newLevel,
-        currentXp: newXp,
-        nextLevelXp: nextXpThreshold,
-        gold: newGold,
-      });
-
-      setAttributes((prev) => ({
-        ...prev,
-        [quest.attribute]: prev[quest.attribute] + 1,
-      }));
-
-      setActivities((prev) => [
-        {
-          id: `act-${Date.now()}`,
-          title: 'Completed quest',
-          subtext: quest.title,
-          xp: quest.xp,
-          gold: quest.gold,
-          timeAgo: 'Just now',
-          type: 'quest',
-        },
-        ...prev,
-      ]);
-
-      if (leveledUp) {
-        showToast(`🎉 LEVEL UP! You reached Level ${newLevel}!`, 'success');
+        showToast(
+          'success',
+          'Quest Completed!',
+          `+${res.xp_gained} XP  •  +${res.gold_gained} Gold`
+        );
       } else {
-        showToast(`+${quest.xp} XP & +${quest.gold} GOLD acquired!`, 'success');
-      }
-    }
-  };
+        // Fallback local RPG Engine calculation
+        const reward = getRewardForDifficulty(targetQuest.difficulty.toLowerCase() as any);
+        const newXp = userStats.currentXp + reward.xp;
+        const newGold = userStats.gold + reward.gold;
+        const { newLevel, leveledUp } = calculateLevel(newXp, userStats.level);
+        const nextThreshold = getXpThreshold(newLevel + 1);
 
-  // Toggle Subtask
-  const handleToggleSubtask = (questId: string, subtaskId: string) => {
-    setQuests((prev) =>
-      prev.map((q) => {
-        if (q.id === questId && q.subtasks) {
-          return {
-            ...q,
-            subtasks: q.subtasks.map((st) =>
-              st.id === subtaskId ? { ...st, completed: !st.completed } : st
-            ),
-          };
+        setUserStats((prev) => ({
+          ...prev,
+          level: newLevel,
+          currentXp: newXp,
+          nextLevelXp: nextThreshold,
+          gold: newGold,
+        }));
+
+        setAttributes((prev) => ({
+          ...prev,
+          [targetQuest.attribute]:
+            (prev[targetQuest.attribute as keyof AttributeData] || 0) + 1,
+        }));
+
+        if (leveledUp) {
+          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+          setCelebrationState({
+            isOpen: true,
+            newLevel,
+            rewardGold: 100,
+          });
         }
-        return q;
-      })
-    );
-  };
 
-  // Real Create Quest Action
-  const handleCreateQuest = async (newQuestData: {
-    title: string;
-    description: string;
-    attribute: 'strength' | 'intellect' | 'discipline' | 'creativity';
-    difficulty: 'EASY' | 'MEDIUM' | 'HARD' | 'EPIC';
-    xp: number;
-    gold: number;
-    subtasks?: string[];
-  }) => {
-    const res = await createQuestAction({
-      title: newQuestData.title,
-      description: newQuestData.description,
-      attribute: newQuestData.attribute,
-      difficulty: newQuestData.difficulty.toLowerCase() as any,
-      category: 'general',
-      is_recurring: false,
-      recurrence: 'none',
-    });
-
-    if (res.success && res.data) {
-      showToast('Quest created in database!', 'success');
-      loadData();
-      return;
+        showToast(
+          'success',
+          'Quest Completed!'
+        );
+      }
+    } catch (err) {
+      // Rollback optimistic completion state
+      setQuests((prev) =>
+        prev.map((q) => (q.id === questId ? { ...q, completed: false } : q))
+      );
+      showToast('error', 'Quest Completion Failed');
     }
-
-    const newQuest: QuestItem = {
-      id: `q-${Date.now()}`,
-      title: newQuestData.title,
-      description: newQuestData.description,
-      attribute: newQuestData.attribute,
-      difficulty: newQuestData.difficulty,
-      xp: newQuestData.xp,
-      gold: newQuestData.gold,
-      completed: false,
-      subtasks: newQuestData.subtasks?.map((stTitle, idx) => ({
-        id: `st-new-${idx}`,
-        title: stTitle,
-        completed: false,
-      })),
-    };
-
-    setQuests([newQuest, ...quests]);
   };
 
-  // Filtered Quests
-  const filteredQuests = quests.filter((q) => {
-    if (questFilter === 'Completed') return q.completed;
-    if (questFilter === 'Work') return q.attribute === 'intellect';
-    if (questFilter === 'Fitness') return q.attribute === 'strength';
-    if (questFilter === 'Growth') return q.attribute === 'discipline' || q.attribute === 'creativity';
-    return true;
-  });
+  const handleCreateQuest = async (newQuestData: any) => {
+    try {
+      const dbResult = await createQuestAction(newQuestData);
 
-  const activeCount = quests.filter((q) => !q.completed).length;
+      if (dbResult && dbResult.success && dbResult.data) {
+        const qData = dbResult.data;
+        const reward = getRewardForDifficulty(qData.difficulty.toLowerCase() as any);
+        const newQuest: QuestItem = {
+          id: qData.id,
+          title: qData.title,
+          description: qData.description || undefined,
+          attribute: qData.attribute as any,
+          difficulty: qData.difficulty.toUpperCase() as any,
+          xp: reward.xp,
+          gold: reward.gold,
+          completed: false,
+        };
+        setQuests((prev) => [newQuest, ...prev]);
+      } else {
+        const reward = getRewardForDifficulty(newQuestData.difficulty.toLowerCase() as any);
+        const newQuest: QuestItem = {
+          id: `q-${Date.now()}`,
+          title: newQuestData.title,
+          description: newQuestData.description || undefined,
+          attribute: newQuestData.attribute,
+          difficulty: newQuestData.difficulty.toUpperCase() as any,
+          xp: reward.xp,
+          gold: reward.gold,
+          completed: false,
+        };
+        setQuests((prev) => [newQuest, ...prev]);
+      }
+
+      setIsCreateModalOpen(false);
+      showToast('success', 'Quest Created');
+    } catch (err) {
+      setIsCreateModalOpen(false);
+      showToast('error', 'Failed to create quest.');
+    }
+  };
+
+  const pendingQuests = quests.filter((q) => !q.completed);
+  const filteredTodayQuests = pendingQuests.filter((q) =>
+    activeFilter === 'All' ? true : q.attribute.toLowerCase() === activeFilter.toLowerCase()
+  );
 
   return (
-    <div className="min-h-screen bg-editorial-grid text-[#171A21] flex font-sans">
-      {/* Quiet Retro-Product Navigation Rail */}
+    <div className="min-h-screen bg-[#F7F5F0] text-[#171A21] flex flex-col lg:flex-row font-sans">
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        activeTab={activeTab}
-        onSelectTab={(tab) => setActiveTab(tab)}
+        activeTab="home"
         userStats={userStats}
       />
 
-      {/* Main Shell */}
-      <div className="flex-1 lg:pl-60 flex flex-col min-w-0">
-        {/* Header */}
+      <main className="flex-1 lg:pl-60 min-w-0 flex flex-col min-h-screen">
         <Header
-          displayName={userStats.displayName}
-          gold={userStats.gold}
-          streak={userStats.streak}
-          level={userStats.level}
-          onToggleMobileMenu={() => setIsMobileMenuOpen(true)}
-          onOpenCreateQuest={() => setIsCreateModalOpen(true)}
+          userStats={userStats}
+          onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
+          onOpenCreateModal={() => setIsCreateModalOpen(true)}
         />
 
-        {/* Dynamic Main Body */}
-        <main className="flex-1 p-4 lg:p-8 max-w-[1600px] w-full mx-auto space-y-8">
-          {(activeTab === 'home' || activeTab === 'dashboard') && (
-            <div className="flex flex-col xl:flex-row gap-8 items-start">
-              {/* Main Content Column */}
-              <div className="flex-1 min-w-0 space-y-8 w-full">
-                {/* Visual Centerpiece: Main Progression */}
-                <CharacterProgressionCard
-                  level={userStats.level}
-                  currentXp={userStats.currentXp}
-                  nextLevelXp={userStats.nextLevelXp}
-                  gold={userStats.gold}
-                  streak={userStats.streak}
-                />
+        <div className="p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Main Content Column */}
+          <div className="lg:col-span-8 space-y-6">
+            {/* Progression Hero Card */}
+            <CharacterProgressionCard userStats={userStats} />
 
-                {/* TODAY'S QUESTS Section */}
-                <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[#E5E1D9]">
-                    <div className="flex items-baseline gap-3">
-                      <h2 className="text-xl font-extrabold text-[#171A21] tracking-tight">
-                        TODAY'S QUESTS
-                      </h2>
-                      <span className="text-xs font-semibold text-[#686C73]">
-                        {activeCount} active
-                      </span>
-                    </div>
+            {/* Today's Quests Section */}
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-extrabold text-[#171A21] tracking-tight">
+                    Today’s quests
+                  </h2>
+                  <p className="text-xs text-[#686C73] font-medium mt-0.5">
+                    Small actions. Real progress.
+                  </p>
+                </div>
 
-                    {/* Filter Tabs */}
-                    <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0">
-                      {(['All', 'Work', 'Fitness', 'Growth', 'Completed'] as const).map((filter) => (
-                        <button
-                          key={filter}
-                          onClick={() => setQuestFilter(filter)}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${
-                            questFilter === filter
-                              ? 'bg-[#171A21] text-white shadow-2xs'
-                              : 'bg-[#FFFFFF] text-[#686C73] hover:text-[#171A21] border border-[#E5E1D9]'
-                          }`}
-                        >
-                          {filter}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Quest List */}
-                  {filteredQuests.length === 0 ? (
-                    <div className="bg-[#FFFFFF] border border-[#E5E1D9] rounded-xl p-8 text-center space-y-3">
-                      <p className="text-sm font-medium text-[#686C73]">No quests match this filter.</p>
+                {/* Attribute Filters */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+                  {(['All', 'Strength', 'Intellect', 'Discipline', 'Creativity'] as const).map(
+                    (filter) => (
                       <button
-                        onClick={() => setIsCreateModalOpen(true)}
-                        className="px-4 py-2 bg-[#F05A3C] text-white font-semibold text-xs rounded-lg uppercase tracking-wider"
+                        key={filter}
+                        onClick={() => setActiveFilter(filter)}
+                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                          activeFilter === filter
+                            ? 'bg-[#171A21] text-white shadow-2xs'
+                            : 'text-[#686C73] hover:text-[#171A21] hover:bg-[#EAE6DE]'
+                        }`}
                       >
-                        + Create Quest
+                        {filter}
                       </button>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {filteredQuests.map((quest) => (
-                        <QuestCard
-                          key={quest.id}
-                          quest={quest}
-                          onComplete={handleCompleteQuest}
-                          onToggleSubtask={handleToggleSubtask}
-                        />
-                      ))}
-                    </div>
+                    )
                   )}
                 </div>
               </div>
 
-              {/* Right Sidebar (Character & Achievements) */}
-              <RightSidebar
-                level={userStats.level}
-                attributes={attributes}
-                achievements={achievements}
-                activities={activities}
-              />
-            </div>
-          )}
-
-          {/* QUESTS VIEW */}
-          {activeTab === 'quests' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#FFFFFF] border border-[#E5E1D9] p-6 rounded-xl">
-                <div>
-                  <h2 className="text-2xl font-bold text-[#171A21]">Quests Log</h2>
-                  <p className="text-xs text-[#686C73] mt-0.5">Manage daily task missions & objectives.</p>
+              {/* Quest Cards */}
+              {filteredTodayQuests.length > 0 ? (
+                <div className="grid grid-cols-1 gap-3.5">
+                  {filteredTodayQuests.map((quest) => (
+                    <QuestCard
+                      key={quest.id}
+                      quest={quest}
+                      onComplete={handleCompleteQuest}
+                    />
+                  ))}
                 </div>
-                <button
-                  onClick={() => setIsCreateModalOpen(true)}
-                  className="px-4 py-2.5 bg-[#F05A3C] text-white font-bold text-xs rounded-lg uppercase tracking-wider flex items-center gap-2"
-                >
-                  <Plus className="w-4 h-4" /> Create Quest
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {quests.map((quest) => (
-                  <QuestCard
-                    key={quest.id}
-                    quest={quest}
-                    onComplete={handleCompleteQuest}
-                    onToggleSubtask={handleToggleSubtask}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* CHARACTER VIEW */}
-          {activeTab === 'character' && (
-            <div className="space-y-6 max-w-4xl">
-              <div className="bg-[#FFFFFF] border border-[#E5E1D9] p-6 rounded-xl space-y-6">
-                <div className="flex items-center justify-between border-b border-[#E5E1D9] pb-4">
-                  <div>
-                    <h2 className="text-2xl font-bold text-[#171A21]">Character Sheet</h2>
-                    <p className="text-xs text-[#686C73] mt-0.5">Level {userStats.level} Architect Operative</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex flex-col items-center justify-center p-8 bg-[#F7F5F0] border border-[#E5E1D9] rounded-xl text-center">
-                    <div className="w-28 h-28 rounded-full bg-[#202B3C] flex items-center justify-center border-4 border-[#F05A3C]">
-                      <svg className="w-20 h-20" viewBox="0 0 100 100" fill="none">
-                        <rect x="25" y="20" width="50" height="45" rx="8" fill="#283548" />
-                        <rect x="30" y="32" width="40" height="10" rx="3" fill="#F05A3C" />
-                        <path d="M15 85 C15 65 30 65 50 65 C70 65 85 65 85 85 Z" fill="#202B3C" />
-                      </svg>
-                    </div>
-                    <h3 className="text-xl font-bold text-[#171A21] mt-4">{userStats.displayName}</h3>
-                    <p className="text-xs font-semibold text-[#686C73] mt-0.5">ARCHITECT</p>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-[#171A21] uppercase tracking-wider">Attributes Breakdown</h3>
-                    <div className="p-3.5 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg space-y-1">
-                      <div className="flex justify-between text-xs font-bold text-[#DC2626]">
-                        <span>STRENGTH</span>
-                        <span>{String(attributes.strength).padStart(2, '0')}</span>
-                      </div>
-                      <p className="text-xs text-[#686C73]">Physical stamina, workouts, fitness endurance.</p>
-                    </div>
-
-                    <div className="p-3.5 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg space-y-1">
-                      <div className="flex justify-between text-xs font-bold text-[#2563EB]">
-                        <span>INTELLECT</span>
-                        <span>{String(attributes.intellect).padStart(2, '0')}</span>
-                      </div>
-                      <p className="text-xs text-[#686C73]">Coding, logic, system engineering, studying.</p>
-                    </div>
-
-                    <div className="p-3.5 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg space-y-1">
-                      <div className="flex justify-between text-xs font-bold text-[#2E9B72]">
-                        <span>DISCIPLINE</span>
-                        <span>{String(attributes.discipline).padStart(2, '0')}</span>
-                      </div>
-                      <p className="text-xs text-[#686C73]">Reading, habit consistency, streak building.</p>
-                    </div>
-
-                    <div className="p-3.5 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg space-y-1">
-                      <div className="flex justify-between text-xs font-bold text-[#7C3AED]">
-                        <span>CREATIVITY</span>
-                        <span>{String(attributes.creativity).padStart(2, '0')}</span>
-                      </div>
-                      <p className="text-xs text-[#686C73]">UI design, writing, side projects, exploration.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ACHIEVEMENTS VIEW */}
-          {activeTab === 'achievements' && (
-            <div className="space-y-6">
-              <div className="bg-[#FFFFFF] border border-[#E5E1D9] p-6 rounded-xl">
-                <h2 className="text-2xl font-bold text-[#171A21]">Achievements</h2>
-                <p className="text-xs text-[#686C73] mt-0.5">Unlocked milestones and badges.</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {achievements.map((item) => (
-                  <div
-                    key={item.id}
-                    className="bg-[#FFFFFF] border border-[#E5E1D9] p-5 rounded-xl flex items-start gap-4"
+              ) : (
+                <div className="bg-white border border-[#E5E1D9] rounded-2xl p-8 text-center space-y-2">
+                  <h3 className="text-sm font-bold text-[#171A21]">No quests pending</h3>
+                  <p className="text-xs text-[#686C73]">
+                    Nothing planned yet. Create your first quest and start building momentum.
+                  </p>
+                  <button
+                    onClick={() => setIsCreateModalOpen(true)}
+                    className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#F05A3C] hover:bg-[#D9482B] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer mt-2"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-center shrink-0">
-                      <Trophy className="w-5 h-5 text-[#D97706]" />
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-bold text-[#171A21]">{item.title}</h3>
-                      <p className="text-xs text-[#686C73] mt-0.5">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* SHOP VIEW */}
-          {activeTab === 'shop' && (
-            <div className="space-y-6">
-              <div className="flex justify-between items-center bg-[#FFFFFF] border border-[#E5E1D9] p-6 rounded-xl">
-                <div>
-                  <h2 className="text-2xl font-bold text-[#171A21]">Shop</h2>
-                  <p className="text-xs text-[#686C73] mt-0.5">Exchange Gold for avatar cosmetics and perks.</p>
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Create Quest</span>
+                  </button>
                 </div>
-                <div className="flex items-center gap-2 text-sm font-bold text-[#D97706] bg-[#FFFBEB] px-3 py-1.5 rounded-lg border border-[#FDE68A]">
-                  <Coins className="w-4 h-4 text-[#FFB547]" />
-                  <span>{userStats.gold} Gold</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[
-                  { title: 'Cyber Visor Cosmetic', cost: 100, type: 'AVATAR ITEM' },
-                  { title: 'Golden Aura Frame', cost: 250, type: 'COSMETIC' },
-                  { title: 'Streak Shield Booster', cost: 500, type: 'PERK' },
-                ].map((item, idx) => (
-                  <div key={idx} className="bg-[#FFFFFF] border border-[#E5E1D9] p-6 rounded-xl space-y-4">
-                    <span className="text-[10px] font-bold text-[#F05A3C] uppercase">{item.type}</span>
-                    <h3 className="text-base font-bold text-[#171A21]">{item.title}</h3>
-                    <div className="flex items-center justify-between pt-4 border-t border-[#E5E1D9]">
-                      <span className="text-xs font-bold text-[#D97706]">{item.cost} Gold</span>
-                      <button
-                        onClick={() => showToast(`Purchased ${item.title}!`, 'success')}
-                        className="px-3 py-1.5 bg-[#171A21] hover:bg-[#F05A3C] text-white text-xs font-semibold rounded-lg transition-colors"
-                      >
-                        Purchase
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              )}
             </div>
-          )}
+          </div>
 
-          {/* INVENTORY VIEW */}
-          {activeTab === 'inventory' && (
-            <div className="space-y-6">
-              <div className="bg-[#FFFFFF] border border-[#E5E1D9] p-6 rounded-xl">
-                <h2 className="text-2xl font-bold text-[#171A21]">Inventory</h2>
-                <p className="text-xs text-[#686C73] mt-0.5">Equipped gear and active items.</p>
-              </div>
-              <div className="bg-[#FFFFFF] border border-[#E5E1D9] p-8 rounded-xl text-center text-xs text-[#686C73]">
-                Default Operative equipment equipped.
-              </div>
-            </div>
-          )}
+          {/* Right Sidebar Widgets */}
+          <div className="lg:col-span-4">
+            <RightSidebar
+              attributes={attributes}
+              achievements={achievements}
+              activities={activities}
+            />
+          </div>
+        </div>
+      </main>
 
-          {/* LEADERBOARD VIEW */}
-          {activeTab === 'leaderboard' && (
-            <div className="space-y-6">
-              <div className="bg-[#FFFFFF] border border-[#E5E1D9] p-6 rounded-xl">
-                <h2 className="text-2xl font-bold text-[#171A21]">Leaderboard</h2>
-                <p className="text-xs text-[#686C73] mt-0.5">Community XP rankings.</p>
-              </div>
-              <div className="bg-[#FFFFFF] border border-[#E5E1D9] rounded-xl overflow-hidden">
-                <table className="w-full text-left text-xs">
-                  <thead>
-                    <tr className="bg-[#F7F5F0] border-b border-[#E5E1D9] text-[11px] text-[#686C73] uppercase font-bold">
-                      <th className="p-4">Rank</th>
-                      <th className="p-4">Operative</th>
-                      <th className="p-4">Level</th>
-                      <th className="p-4">Streak</th>
-                      <th className="p-4">Total XP</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#E5E1D9]">
-                    <tr className="bg-[#FFF7ED]">
-                      <td className="p-4 font-bold text-[#F05A3C]">#01</td>
-                      <td className="p-4 font-bold text-[#171A21]">Dhruv (You)</td>
-                      <td className="p-4">Level {userStats.level}</td>
-                      <td className="p-4 text-[#F05A3C]">🔥 {userStats.streak} days</td>
-                      <td className="p-4 font-bold text-[#D97706]">{userStats.currentXp} XP</td>
-                    </tr>
-                    <tr>
-                      <td className="p-4 text-[#686C73]">#02</td>
-                      <td className="p-4 font-medium text-[#171A21]">Alex Vance</td>
-                      <td className="p-4">Level 11</td>
-                      <td className="p-4 text-[#F05A3C]">🔥 10 days</td>
-                      <td className="p-4 font-bold text-[#D97706]">2,150 XP</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* HISTORY VIEW */}
-          {activeTab === 'history' && (
-            <div className="space-y-6">
-              <div className="bg-[#FFFFFF] border border-[#E5E1D9] p-6 rounded-xl">
-                <h2 className="text-2xl font-bold text-[#171A21]">History</h2>
-                <p className="text-xs text-[#686C73] mt-0.5">Completed activity log.</p>
-              </div>
-              <div className="space-y-2">
-                {activities.map((act) => (
-                  <div key={act.id} className="bg-[#FFFFFF] border border-[#E5E1D9] p-4 rounded-xl flex items-center justify-between text-xs">
-                    <div>
-                      <span className="font-semibold text-[#171A21]">{act.title}</span>
-                      {act.subtext && <span className="text-[#686C73] ml-2">• {act.subtext}</span>}
-                    </div>
-                    <span className="text-[11px] text-[#A8A29E] font-technical">{act.timeAgo}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* SETTINGS VIEW */}
-          {activeTab === 'settings' && (
-            <div className="space-y-6 max-w-3xl">
-              <div className="bg-[#FFFFFF] border border-[#E5E1D9] p-6 rounded-xl space-y-4">
-                <h2 className="text-2xl font-bold text-[#171A21]">Settings</h2>
-                <div className="space-y-4 pt-4 border-t border-[#E5E1D9]">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="text-sm font-bold text-[#171A21]">Sound Effects</h4>
-                      <p className="text-xs text-[#686C73]">Audio chime on quest completion.</p>
-                    </div>
-                    <input type="checkbox" defaultChecked className="w-4 h-4 accent-[#F05A3C]" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </main>
-      </div>
-
-      {/* Create Quest Modal */}
       <CreateQuestModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        onCreated={handleCreateQuest}
+        onCreateQuest={handleCreateQuest}
+      />
+
+      <CelebrationOverlay
+        isOpen={celebrationState.isOpen}
+        onClose={() => setCelebrationState((prev) => ({ ...prev, isOpen: false }))}
+        newLevel={celebrationState.newLevel}
+        rewardGold={celebrationState.rewardGold}
       />
     </div>
   );

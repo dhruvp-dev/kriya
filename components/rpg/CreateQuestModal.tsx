@@ -8,15 +8,8 @@ import { useToast } from '../ui/Toast';
 export interface CreateQuestModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreated?: (newQuest: {
-    title: string;
-    description: string;
-    attribute: 'strength' | 'intellect' | 'discipline' | 'creativity';
-    difficulty: 'EASY' | 'MEDIUM' | 'HARD' | 'EPIC';
-    xp: number;
-    gold: number;
-    subtasks?: string[];
-  }) => void;
+  onCreated?: (newQuest: any) => void;
+  onCreateQuest?: (newQuest: any) => void;
 }
 
 const REWARD_MAP = {
@@ -26,7 +19,8 @@ const REWARD_MAP = {
   EPIC: { xp: 200, gold: 60 },
 };
 
-export function CreateQuestModal({ isOpen, onClose, onCreated }: CreateQuestModalProps) {
+export function CreateQuestModal({ isOpen, onClose, onCreated, onCreateQuest }: CreateQuestModalProps) {
+  const handleQuestCreated = onCreated || onCreateQuest;
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [attribute, setAttribute] = useState<'strength' | 'intellect' | 'discipline' | 'creativity'>('intellect');
@@ -54,8 +48,8 @@ export function CreateQuestModal({ isOpen, onClose, onCreated }: CreateQuestModa
 
     const reward = REWARD_MAP[difficulty];
 
-    if (onCreated) {
-      onCreated({
+    if (handleQuestCreated) {
+      handleQuestCreated({
         title: title.trim(),
         description: description.trim(),
         attribute,

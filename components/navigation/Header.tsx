@@ -10,8 +10,16 @@ export interface HeaderProps {
   level?: number;
   character?: any;
   profile?: any;
+  userStats?: {
+    level?: number;
+    gold?: number;
+    streak?: number;
+    displayName?: string;
+  };
   onToggleMobileMenu?: () => void;
+  onOpenMobileMenu?: () => void;
   onOpenCreateQuest?: () => void;
+  onOpenCreateModal?: () => void;
 }
 
 export function Header({
@@ -21,13 +29,19 @@ export function Header({
   level,
   character,
   profile,
+  userStats,
   onToggleMobileMenu,
+  onOpenMobileMenu,
   onOpenCreateQuest,
+  onOpenCreateModal,
 }: HeaderProps) {
-  const activeName = displayName || profile?.display_name || 'Dhruv';
-  const activeGold = gold ?? character?.gold ?? 680;
-  const activeStreak = streak ?? character?.current_streak ?? 14;
-  const activeLevel = level ?? character?.level ?? 12;
+  const activeName = displayName || userStats?.displayName || profile?.display_name || 'Dhruv';
+  const activeGold = gold ?? userStats?.gold ?? character?.gold ?? 680;
+  const activeStreak = streak ?? userStats?.streak ?? character?.current_streak ?? 14;
+  const activeLevel = level ?? userStats?.level ?? character?.level ?? 12;
+
+  const handleMobileMenu = onOpenMobileMenu || onToggleMobileMenu;
+  const handleCreateQuest = onOpenCreateModal || onOpenCreateQuest;
 
   // Greeting
   const hour = new Date().getHours();
@@ -39,9 +53,9 @@ export function Header({
     <header className="sticky top-0 z-30 w-full bg-[#F7F5F0]/90 backdrop-blur-xs border-b border-[#E5E1D9] px-4 lg:px-8 py-4 flex items-center justify-between gap-4 select-none font-sans">
       {/* Left Greeting & Human Metadata */}
       <div className="flex items-center gap-3 min-w-0">
-        {onToggleMobileMenu && (
+        {handleMobileMenu && (
           <button
-            onClick={onToggleMobileMenu}
+            onClick={handleMobileMenu}
             className="lg:hidden p-2 text-[#686C73] hover:text-[#171A21] hover:bg-[#EFECE6] rounded-lg transition-colors border border-[#E5E1D9]"
             aria-label="Toggle menu"
           >
@@ -93,10 +107,10 @@ export function Header({
         </div>
 
         {/* Primary Action Button (Electric Coral #F05A3C) */}
-        {onOpenCreateQuest && (
+        {handleCreateQuest && (
           <button
-            onClick={onOpenCreateQuest}
-            className="flex items-center gap-1.5 bg-[#F05A3C] hover:bg-[#D9482D] text-white px-4 py-2 rounded-lg font-semibold text-xs transition-colors shadow-2xs active:translate-y-0.5"
+            onClick={handleCreateQuest}
+            className="flex items-center gap-1.5 bg-[#F05A3C] hover:bg-[#D9482D] text-white px-4 py-2 rounded-lg font-semibold text-xs transition-colors shadow-2xs active:translate-y-0.5 cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>+ Create Quest</span>
