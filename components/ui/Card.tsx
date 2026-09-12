@@ -9,7 +9,7 @@ export function Card({ className, hoverEffect = false, children, ...props }: Car
   return (
     <div
       className={cn(
-        'glass-panel rounded-2xl p-5 border border-slate-800/80',
+        'glass-panel rounded-2xl p-6 border border-[#453D33]/60 shadow-sm transition-all',
         hoverEffect && 'glass-panel-hover',
         className
       )}
