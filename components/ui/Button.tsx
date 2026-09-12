@@ -25,36 +25,35 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-semibold rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#161310] disabled:opacity-50 disabled:cursor-not-allowed select-none';
+      'inline-flex items-center justify-center font-bold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#F7F5F0] disabled:opacity-50 disabled:cursor-not-allowed select-none font-sans';
 
     const variants = {
       primary:
-        'bg-[#EA580C] hover:bg-[#C2410C] text-white shadow-sm shadow-[#EA580C]/20 focus:ring-[#EA580C]',
+        'bg-[#F05A3C] hover:bg-[#D9482D] text-white shadow-2xs focus:ring-[#F05A3C]',
       secondary:
-        'bg-[#26221D] hover:bg-[#2E2822] text-[#F5F2ED] border border-[#453D33] focus:ring-[#453D33]',
-      ghost: 'bg-transparent hover:bg-[#26221D]/60 text-[#A89F8F] focus:ring-[#453D33]',
+        'bg-[#FFFFFF] hover:bg-[#F7F5F0] text-[#171A21] border border-[#E5E1D9] focus:ring-[#202B3C]',
+      ghost: 'bg-transparent hover:bg-[#EFECE6] text-[#686C73] hover:text-[#171A21] focus:ring-[#E5E1D9]',
       danger:
-        'bg-rose-600 hover:bg-rose-500 text-white shadow-sm shadow-rose-600/20 focus:ring-rose-500',
-      gold: 'bg-[#F59E0B] hover:bg-[#D97706] text-[#161310] font-bold shadow-sm shadow-[#F59E0B]/20 focus:ring-[#F59E0B]',
+        'bg-[#DC2626] hover:bg-[#B91C1C] text-white shadow-2xs focus:ring-[#DC2626]',
+      gold: 'bg-[#FFB547] hover:bg-[#D97706] text-[#171A21] font-bold shadow-2xs focus:ring-[#FFB547]',
     };
 
     const sizes = {
-      sm: 'px-3 py-1.5 h-9 text-xs gap-1.5',
-      md: 'px-4 py-2.5 h-11 text-sm gap-2',
-      lg: 'px-6 py-3.5 h-12 text-base gap-2.5',
+      sm: 'px-3 py-1.5 h-8 text-xs gap-1.5',
+      md: 'px-4 py-2 h-10 text-xs uppercase tracking-wider gap-2',
+      lg: 'px-5 py-2.5 h-11 text-xs uppercase tracking-wider gap-2.5',
     };
 
     return (
       <motion.button
         ref={ref}
         whileTap={{ scale: disabled || isLoading ? 1 : 0.98 }}
-        whileHover={{ scale: disabled || isLoading ? 1 : 1.01 }}
         className={cn(baseStyles, variants[variant], sizes[size], className)}
         disabled={disabled || isLoading}
         {...props}
       >
         {isLoading ? (
-          <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-1" />
+          <span className="inline-block w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin mr-1" />
         ) : null}
         {children}
       </motion.button>
