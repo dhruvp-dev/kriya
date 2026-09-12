@@ -14,7 +14,7 @@ DECLARE
   v_timezone TEXT;
   v_xp_reward INT;
   v_gold_reward INT;
-  v_new_xp INT;
+  v_new_xp INT; 
   v_new_gold INT;
   v_new_attr_value INT;
   v_user_tz TEXT;
