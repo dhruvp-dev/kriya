@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react'; // Lucide for UI chrome per rule!
+import { X } from 'lucide-react';
 import { cn } from '../../lib/utils/cn';
 
 export interface ModalProps {
@@ -31,33 +31,37 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 font-sans">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-[#171A21]/30 backdrop-blur-xs"
           />
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            initial={{ opacity: 0, scale: 0.96, y: 8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            transition={{ type: 'spring', duration: 0.3 }}
+            exit={{ opacity: 0, scale: 0.96, y: 8 }}
+            transition={{ type: 'spring', duration: 0.25 }}
             className={cn(
-              'relative z-10 w-full max-w-lg glass-panel bg-slate-900/95 border border-slate-700/80 rounded-2xl p-6 shadow-2xl overflow-hidden',
+              'relative z-10 w-full max-w-lg bg-[#FFFFFF] border border-[#E5E1D9] rounded-xl p-6 shadow-xl overflow-hidden',
               className
             )}
           >
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
-              {title && <h2 className="text-xl font-bold text-slate-100">{title}</h2>}
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#E5E1D9]">
+              {title && (
+                <h2 className="font-bold text-base text-[#171A21] tracking-tight">
+                  {title}
+                </h2>
+              )}
               <button
                 onClick={onClose}
-                className="p-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors ml-auto"
+                className="p-1 text-[#686C73] hover:text-[#171A21] hover:bg-[#F7F5F0] rounded-md transition-colors ml-auto border border-[#E5E1D9]"
                 aria-label="Close modal"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 

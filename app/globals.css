@@ -4,73 +4,72 @@
 
 @layer base {
   body {
-    @apply bg-[#161310] text-[#F5F2ED] antialiased font-sans selection:bg-brand selection:text-white;
+    @apply bg-[#F7F5F0] text-[#171A21] antialiased font-sans selection:bg-[#F05A3C] selection:text-white;
     min-height: 100vh;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.02em;
   }
 }
 
-.glass-panel {
-  background: rgba(31, 27, 23, 0.75);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(69, 61, 51, 0.6);
+/* Faint Warm Ivory Editorial Grid Background */
+.bg-editorial-grid {
+  background-color: #F7F5F0;
+  background-image: 
+    linear-gradient(to right, rgba(32, 43, 60, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(32, 43, 60, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
-.glass-panel-hover {
-  transition: all 0.2s ease-in-out;
+/* Chamfered corner utilities (Subtle background details) */
+.chamfer-panel {
+  clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
 }
 
-.glass-panel-hover:hover {
-  background: rgba(38, 34, 29, 0.9);
-  border-color: rgba(69, 61, 51, 0.9);
-  transform: translateY(-1px);
+.chamfer-button {
+  clip-path: polygon(0 4px, 4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%);
 }
 
-.tabular-stat {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum";
+/* Monospace font - STRICTLY 5% of UI (only tiny metadata numbers like LV. 12, +50 XP, 02:42) */
+.font-technical {
+  font-family: 'JetBrains Mono', monospace;
 }
 
-.glow-gold {
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.35);
+/* Segmented progress bar tick pattern for editorial retro instrumentation */
+.segmented-ticks {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 255, 255, 0.5) 10px,
+    rgba(255, 255, 255, 0.5) 12px
+  );
 }
 
-.glow-brand {
-  box-shadow: 0 0 15px rgba(234, 88, 12, 0.35);
+.segmented-bg-grid {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 10px,
+    rgba(23, 26, 33, 0.07) 10px,
+    rgba(23, 26, 33, 0.07) 12px
+  );
 }
 
-.glow-xp {
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
-}
-
-.glow-streak {
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
-}
-
-/* Custom scrollbar */
+/* Custom Editorial Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #161310;
+  background: #F7F5F0;
 }
 ::-webkit-scrollbar-thumb {
-  background: #453D33;
-  border-radius: 9999px;
+  background: #E5E1D9;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #6B6255;
-}
-
-@keyframes pixel-bounce {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-2px);
-  }
-}
-
-.animate-pixel-bounce {
-  animation: pixel-bounce 1.6s ease-in-out infinite;
+  background: #C8C3B8;
 }

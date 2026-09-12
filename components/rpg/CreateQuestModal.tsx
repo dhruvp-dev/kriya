@@ -1,195 +1,218 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { QuestDifficulty, AttributeType } from '../../types/database.types';
 import { Modal } from '../ui/Modal';
-import { Button } from '../ui/Button';
-import { createQuestAction } from '../../lib/actions/quests';
+import { Coins, Sparkles, X } from 'lucide-react';
 import { useToast } from '../ui/Toast';
-import { Coins, Sparkle } from '@phosphor-icons/react';
 
 export interface CreateQuestModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreated?: () => void;
+  onCreated?: (newQuest: {
+    title: string;
+    description: string;
+    attribute: 'strength' | 'intellect' | 'discipline' | 'creativity';
+    difficulty: 'EASY' | 'MEDIUM' | 'HARD' | 'EPIC';
+    xp: number;
+    gold: number;
+    subtasks?: string[];
+  }) => void;
 }
 
 const REWARD_MAP = {
-  easy: { xp: 20, gold: 5 },
-  medium: { xp: 50, gold: 15 },
-  hard: { xp: 100, gold: 30 },
-  epic: { xp: 200, gold: 60 },
+  EASY: { xp: 20, gold: 5 },
+  MEDIUM: { xp: 50, gold: 15 },
+  HARD: { xp: 100, gold: 30 },
+  EPIC: { xp: 200, gold: 60 },
 };
 
 export function CreateQuestModal({ isOpen, onClose, onCreated }: CreateQuestModalProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('general');
-  const [difficulty, setDifficulty] = useState<QuestDifficulty>('medium');
-  const [attribute, setAttribute] = useState<AttributeType>('intellect');
-  const [isRecurring, setIsRecurring] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [attribute, setAttribute] = useState<'strength' | 'intellect' | 'discipline' | 'creativity'>('intellect');
+  const [difficulty, setDifficulty] = useState<'EASY' | 'MEDIUM' | 'HARD' | 'EPIC'>('MEDIUM');
+  const [subtaskInput, setSubtaskInput] = useState('');
+  const [subtasks, setSubtasks] = useState<string[]>([]);
   const { showToast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleAddSubtask = () => {
+    if (!subtaskInput.trim()) return;
+    setSubtasks([...subtasks, subtaskInput.trim()]);
+    setSubtaskInput('');
+  };
+
+  const handleRemoveSubtask = (index: number) => {
+    setSubtasks(subtasks.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
-      showToast('Quest title cannot be empty.', 'error');
+      showToast('Quest title is required.', 'error');
       return;
     }
 
-    setIsSubmitting(true);
-    const res = await createQuestAction({
-      title: title.trim(),
-      description: description.trim(),
-      category: category.trim() || 'general',
-      difficulty,
-      attribute,
-      is_recurring: isRecurring,
-      recurrence: isRecurring ? 'daily' : 'none',
-    });
+    const reward = REWARD_MAP[difficulty];
 
-    setIsSubmitting(false);
-
-    if (!res.success) {
-      showToast(res.error || 'Failed to create quest.', 'error');
-      return;
+    if (onCreated) {
+      onCreated({
+        title: title.trim(),
+        description: description.trim(),
+        attribute,
+        difficulty,
+        xp: reward.xp,
+        gold: reward.gold,
+        subtasks: subtasks.length > 0 ? subtasks : undefined,
+      });
     }
 
-    showToast('Quest created successfully!', 'success');
+    showToast('New Quest created!', 'success');
     setTitle('');
     setDescription('');
-    setCategory('general');
-    setDifficulty('medium');
-    setAttribute('intellect');
-    setIsRecurring(false);
+    setSubtasks([]);
     onClose();
-    if (onCreated) onCreated();
   };
 
   const currentRewards = REWARD_MAP[difficulty];
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Create New Quest">
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 font-sans">
+        {/* Title */}
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1">
-            Quest Title <span className="text-rose-400">*</span>
+          <label className="text-xs font-semibold text-[#171A21] block mb-1">
+            Quest Title <span className="text-[#F05A3C]">*</span>
           </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. Read 30 minutes of technical book"
-            className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            placeholder="e.g. Build API integration module"
+            className="w-full px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg text-sm text-[#171A21] placeholder-[#A8A29E] focus:outline-none focus:border-[#F05A3C] focus:ring-1 focus:ring-[#F05A3C]"
             required
-            maxLength={120}
           />
         </div>
 
+        {/* Description */}
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1">
-            Description (Optional)
-          </label>
+          <label className="text-xs font-semibold text-[#171A21] block mb-1">Description (Optional)</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Details or notes about your task..."
+            placeholder="Define objectives and notes..."
             rows={2}
-            className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            className="w-full px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg text-sm text-[#171A21] placeholder-[#A8A29E] focus:outline-none focus:border-[#F05A3C] focus:ring-1 focus:ring-[#F05A3C]"
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+        {/* Subtasks */}
+        <div>
+          <label className="text-xs font-semibold text-[#171A21] block mb-1">Subtasks / Checklist</label>
+          <div className="flex items-center gap-2 mb-2">
             <input
               type="text"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="coding, fitness, health..."
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 capitalize"
+              value={subtaskInput}
+              onChange={(e) => setSubtaskInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleAddSubtask();
+                }
+              }}
+              placeholder="e.g. Setup authentication endpoints"
+              className="flex-1 px-3 py-1.5 bg-[#FFFFFF] border border-[#E5E1D9] rounded-md text-xs text-[#171A21] placeholder-[#A8A29E] focus:outline-none focus:border-[#F05A3C]"
             />
+            <button
+              type="button"
+              onClick={handleAddSubtask}
+              className="px-3 py-1.5 bg-[#F7F5F0] border border-[#E5E1D9] hover:bg-[#EFECE6] text-xs font-bold text-[#171A21] rounded-md transition-colors"
+            >
+              Add
+            </button>
+          </div>
+
+          {subtasks.length > 0 && (
+            <div className="space-y-1 pl-1">
+              {subtasks.map((st, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between text-xs text-[#686C73] bg-[#F7F5F0] px-2.5 py-1 rounded border border-[#E5E1D9]"
+                >
+                  <span>• {st}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSubtask(idx)}
+                    className="text-[#686C73] hover:text-[#DC2626]"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Attribute & Difficulty Grid */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs font-semibold text-[#171A21] block mb-1">Target Attribute</label>
+            <select
+              value={attribute}
+              onChange={(e) => setAttribute(e.target.value as any)}
+              className="w-full px-3 py-2 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg text-xs font-semibold text-[#171A21] focus:outline-none focus:border-[#F05A3C]"
+            >
+              <option value="strength">Strength (Red)</option>
+              <option value="intellect">Intellect (Blue)</option>
+              <option value="discipline">Discipline (Green)</option>
+              <option value="creativity">Creativity (Purple)</option>
+            </select>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">
-              Target Attribute
-            </label>
+            <label className="text-xs font-semibold text-[#171A21] block mb-1">Difficulty</label>
             <select
-              value={attribute}
-              onChange={(e) => setAttribute(e.target.value as AttributeType)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 capitalize"
+              value={difficulty}
+              onChange={(e) => setDifficulty(e.target.value as any)}
+              className="w-full px-3 py-2 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg text-xs font-semibold text-[#171A21] focus:outline-none focus:border-[#F05A3C]"
             >
-              <option value="strength">Strength</option>
-              <option value="intellect">Intellect</option>
-              <option value="discipline">Discipline</option>
-              <option value="creativity">Creativity</option>
+              <option value="EASY">Easy (+20 XP)</option>
+              <option value="MEDIUM">Medium (+50 XP)</option>
+              <option value="HARD">Hard (+100 XP)</option>
+              <option value="EPIC">Epic (+200 XP)</option>
             </select>
           </div>
         </div>
 
-        <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-            Difficulty Level (Reward Tier)
-          </label>
-          <div className="grid grid-cols-4 gap-2">
-            {(['easy', 'medium', 'hard', 'epic'] as QuestDifficulty[]).map((d) => (
-              <button
-                key={d}
-                type="button"
-                onClick={() => setDifficulty(d)}
-                className={`py-2 px-1 text-center rounded-xl text-xs font-semibold border capitalize transition-all ${
-                  difficulty === d
-                    ? d === 'easy'
-                      ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-md shadow-emerald-500/10'
-                      : d === 'medium'
-                      ? 'bg-blue-500/20 border-blue-500 text-blue-300 shadow-md shadow-blue-500/10'
-                      : d === 'hard'
-                      ? 'bg-purple-500/20 border-purple-500 text-purple-300 shadow-md shadow-purple-500/10'
-                      : 'bg-amber-500/20 border-amber-500 text-amber-300 shadow-md shadow-amber-500/10'
-                    : 'bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800'
-                }`}
-              >
-                {d}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="p-3 bg-slate-950/60 border border-slate-800 rounded-xl flex items-center justify-between text-xs">
-          <span className="text-slate-400 font-medium">Server Reward Preview:</span>
-          <div className="flex items-center gap-3 font-semibold">
-            <span className="text-purple-400">+{currentRewards.xp} XP</span>
-            <span className="text-amber-400 flex items-center gap-1">
-              <Coins weight="fill" size={14} /> +{currentRewards.gold} Gold
+        {/* Reward Output Preview */}
+        <div className="p-3 bg-[#F7F5F0] border border-[#E5E1D9] rounded-lg flex items-center justify-between text-xs font-medium">
+          <span className="text-[#686C73]">Reward preview:</span>
+          <div className="flex items-center gap-3 font-technical font-bold text-[#D97706]">
+            <span className="flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5 text-[#FFB547]" />
+              +{currentRewards.xp} XP
             </span>
-            <span className="text-emerald-400 flex items-center gap-1">
-              <Sparkle weight="fill" size={14} /> +1 {attribute}
+            <span className="flex items-center gap-1">
+              <Coins className="w-3.5 h-3.5 text-[#FFB547]" />
+              +{currentRewards.gold} Gold
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 pt-1">
-          <input
-            type="checkbox"
-            id="is_recurring"
-            checked={isRecurring}
-            onChange={(e) => setIsRecurring(e.target.checked)}
-            className="w-4 h-4 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-indigo-500"
-          />
-          <label htmlFor="is_recurring" className="text-xs text-slate-300 cursor-pointer">
-            Make this a Daily Recurring Quest (resets status daily)
-          </label>
-        </div>
-
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
-          <Button type="button" variant="ghost" onClick={onClose}>
+        {/* Action Buttons */}
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#E5E1D9]">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 text-xs font-bold text-[#686C73] hover:text-[#171A21] transition-colors"
+          >
             Cancel
-          </Button>
-          <Button type="submit" variant="primary" isLoading={isSubmitting}>
+          </button>
+          <button
+            type="submit"
+            className="px-5 py-2 bg-[#F05A3C] hover:bg-[#D9482D] text-white text-xs font-bold rounded-lg transition-colors shadow-2xs"
+          >
             Create Quest
-          </Button>
+          </button>
         </div>
       </form>
     </Modal>
