@@ -111,21 +111,25 @@ export function QuestCard({
               </p>
             )}
 
-            {/* Restrained Metadata: Attribute · Difficulty */}
-            <div className="flex items-center gap-1.5 text-xs text-[#8B8B8B] pt-0.5">
+            {/* Restrained Metadata: Attribute · Difficulty · XP & Gold */}
+            <div className="flex items-center flex-wrap gap-1.5 text-xs text-[#8B8B8B] pt-0.5">
               <span>{formatCapital(quest.attribute)}</span>
               <span>·</span>
               <span>{formatCapital(quest.difficulty)}</span>
+              <span className="inline-flex sm:hidden items-center gap-1.5 font-semibold text-[#070709] bg-[#F7F7F8] px-2 py-0.5 rounded text-[11px] ml-1">
+                <span>+{quest.xp} XP</span>
+                <span className="text-[#D9A441]">+{quest.gold} Gold</span>
+              </span>
             </div>
           </div>
         </div>
 
         {/* Right: Reward Numbers + Complete Action Button */}
-        <div className="flex items-center gap-4 shrink-0">
-          {/* Rewards */}
-          <div className="hidden sm:flex items-center gap-2.5 text-xs font-semibold tabular-nums">
-            <span className="text-[#070709]">+{quest.xp} XP</span>
-            <span className="text-[#D9A441]">+{quest.gold} Gold</span>
+        <div className="flex items-center gap-3.5 shrink-0">
+          {/* Rewards on tablet/desktop */}
+          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold tabular-nums">
+            <span className="px-2 py-0.5 rounded bg-[#F7F7F8] text-[#070709]">+{quest.xp} XP</span>
+            <span className="px-2 py-0.5 rounded bg-[#FDF8EC] text-[#D9A441]">+{quest.gold} Gold</span>
           </div>
 
           {/* Action Button */}
@@ -139,8 +143,8 @@ export function QuestCard({
               Complete
             </button>
           ) : (
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-[#668F72] px-2.5 py-1 bg-[#F1F6F3] rounded-md">
-              <Check className="w-3.5 h-3.5 stroke-[2]" />
+            <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#668F72] px-2.5 py-1 bg-[#F1F6F3] rounded-md">
+              <Check className="w-3.5 h-3.5 stroke-[2.5]" />
               <span>Done</span>
             </span>
           )}

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { Trophy, CheckCircle2, Lock, ArrowUpRight, Clock } from 'lucide-react';
 import { cn } from '../../lib/utils/cn';
 import { Avatar } from '../avatars/Avatar';
@@ -181,11 +182,15 @@ export function RightSidebar({
       {/* 2. ACHIEVEMENTS PREVIEW */}
       <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl p-5 shadow-2xs space-y-3.5">
         <div className="flex items-center justify-between pb-2.5 border-b border-[#E6E6E8]">
-          <h3 className="text-xs font-semibold text-[#8B8B8B] tracking-wider uppercase">
-            Achievements
-          </h3>
+          <Link
+            href="/achievements"
+            className="group flex items-center gap-1.5 text-xs font-semibold text-[#8B8B8B] hover:text-[#070709] tracking-wider uppercase transition-colors"
+          >
+            <span>Achievements</span>
+            <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Link>
           <span className="text-xs font-semibold text-[#070709] tabular-nums">
-            {achievements.filter((a) => a.unlocked).length}/{achievements.length || 4}
+            {achievements.filter((a) => a.unlocked).length}/{achievements.length || 7}
           </span>
         </div>
 

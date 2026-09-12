@@ -8,7 +8,7 @@ import {
   type EditQuestInput,
 } from '../validations/quest';
 import type { ActionResponse } from '../../types/actions.types';
-import type { Quest, CompleteQuestResult, AttributeType } from '../../types/database.types';
+import type { Quest, CompleteQuestResult, AttributeType, AchievementTriggerType } from '../../types/database.types';
 import { getRewardForDifficulty, calculateLevel, getXpThreshold } from '../progression';
 
 export async function createQuestAction(
@@ -341,6 +341,66 @@ export async function completeQuestAction(
       // Table insert completed
     }
 
+    // Evaluate and persist unlocked achievements
+    const newlyUnlockedAchievements: Array<{
+      id: string;
+      name: string;
+      description: string;
+      trigger_type: AchievementTriggerType;
+      reward_xp: number;
+      reward_gold: number;
+    }> = [];
+
+    try {
+      const { count: completedCount } = await supabase
+        .from('quest_completions')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+
+      const { data: userAchRows } = await supabase
+        .from('user_achievements')
+        .select('achievement_id')
+        .eq('user_id', user.id);
+
+      const unlockedSet = new Set((userAchRows || []).map((r) => r.achievement_id));
+
+      const { data: allAchievements } = await supabase
+        .from('achievements')
+        .select('*');
+
+      if (allAchievements && allAchievements.length > 0) {
+        for (const ach of allAchievements) {
+          if (unlockedSet.has(ach.id)) continue;
+
+          let shouldUnlock = false;
+          if (ach.trigger_type === 'first_quest_completed' && (completedCount || 1) >= 1) shouldUnlock = true;
+          if (ach.trigger_type === 'level_reached' && newLevel >= ach.threshold) shouldUnlock = true;
+          if (ach.trigger_type === 'streak_reached' && newStreak >= ach.threshold) shouldUnlock = true;
+          if (ach.trigger_type === 'quest_count_reached' && (completedCount || 1) >= ach.threshold) shouldUnlock = true;
+          if (ach.trigger_type === 'gold_earned_total' && newGold >= ach.threshold) shouldUnlock = true;
+
+          if (shouldUnlock) {
+            await supabase.from('user_achievements').insert({
+              user_id: user.id,
+              achievement_id: ach.id,
+              unlocked_at: new Date().toISOString(),
+            });
+
+            newlyUnlockedAchievements.push({
+              id: ach.id,
+              name: ach.name,
+              description: ach.description,
+              trigger_type: ach.trigger_type as AchievementTriggerType,
+              reward_xp: ach.reward_xp || 0,
+              reward_gold: ach.reward_gold || 0,
+            });
+          }
+        }
+      }
+    } catch {
+      // Background achievement check failure
+    }
+
     return {
       success: true,
       data: {
@@ -358,7 +418,7 @@ export async function completeQuestAction(
         new_attribute_value: newAttrValue,
         current_streak: newStreak,
         longest_streak: longestStreak,
-        unlocked_achievements: [],
+        unlocked_achievements: newlyUnlockedAchievements,
       },
     };
   } catch (err: any) {

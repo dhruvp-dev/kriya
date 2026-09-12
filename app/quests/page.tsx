@@ -257,15 +257,24 @@ export default function QuestsPage() {
     }
   };
 
-  const filteredQuests = quests.filter((quest) => {
+  const matchingQuests = quests.filter((quest) => {
     if (activeFilter === 'Completed') return quest.completed;
     if (activeFilter !== 'All' && quest.attribute.toLowerCase() !== activeFilter.toLowerCase()) return false;
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       return quest.title.toLowerCase().includes(q) || (quest.description || '').toLowerCase().includes(q);
     }
-    return !quest.completed;
+    return true;
   });
+
+  const activeQuestsList = activeFilter === 'Completed' ? [] : matchingQuests.filter((q) => !q.completed);
+  const completedQuestsList = activeFilter === 'Completed' ? matchingQuests : matchingQuests.filter((q) => q.completed);
+
+  const getFilterCount = (filter: string) => {
+    if (filter === 'All') return quests.length;
+    if (filter === 'Completed') return quests.filter((q) => q.completed).length;
+    return quests.filter((q) => q.attribute.toLowerCase() === filter.toLowerCase()).length;
+  };
 
   const getFilterIcon = (filter: string) => {
     switch (filter) {
@@ -338,6 +347,11 @@ export default function QuestsPage() {
                 >
                   {getFilterIcon(filter)}
                   <span>{filter}</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                    activeFilter === filter ? 'bg-[#070709] text-white' : 'bg-[#E6E6E8] text-[#60606C]'
+                  }`}>
+                    {getFilterCount(filter)}
+                  </span>
                 </button>
               ))}
             </div>
@@ -375,15 +389,49 @@ export default function QuestsPage() {
                 </div>
               ))}
             </div>
-          ) : filteredQuests.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredQuests.map((quest) => (
-                <QuestCard
-                  key={quest.id}
-                  quest={quest}
-                  onComplete={handleCompleteQuest}
-                />
-              ))}
+          ) : activeQuestsList.length > 0 || completedQuestsList.length > 0 ? (
+            <div className="space-y-6">
+              {/* Active Quests Section */}
+              {activeQuestsList.length > 0 && (
+                <div className="space-y-3">
+                  {completedQuestsList.length > 0 && activeFilter !== 'Completed' && (
+                    <h3 className="text-xs font-bold text-[#60606C] uppercase tracking-wider">
+                      Active Quests ({activeQuestsList.length})
+                    </h3>
+                  )}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {activeQuestsList.map((quest) => (
+                      <QuestCard
+                        key={quest.id}
+                        quest={quest}
+                        onComplete={handleCompleteQuest}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Completed Quests Section */}
+              {completedQuestsList.length > 0 && (
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center gap-2 pt-2 border-t border-[#E6E6E8]">
+                    <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#ECFDF5] text-[#059669]">
+                      <CheckCircle2 className="w-3 h-3 stroke-[2.5]" />
+                    </span>
+                    <h3 className="text-xs font-bold text-[#60606C] uppercase tracking-wider">
+                      Completed Quests ({completedQuestsList.length})
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {completedQuestsList.map((quest) => (
+                      <QuestCard
+                        key={quest.id}
+                        quest={quest}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="bg-white border border-[#E6E6E8] rounded-2xl p-12 text-center space-y-3 shadow-xs">

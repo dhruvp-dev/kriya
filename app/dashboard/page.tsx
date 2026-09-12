@@ -13,6 +13,7 @@ import { CelebrationOverlay } from '../../components/rpg/CelebrationOverlay';
 import { SubmissionCelebrationModal } from '../../components/rpg/SubmissionCelebrationModal';
 import { useToast } from '../../components/ui/Toast';
 import { getDashboardData } from '../../lib/queries/dashboard';
+import { getAchievementsData } from '../../lib/queries/achievements';
 import { getQuestsData } from '../../lib/queries/quests';
 import { completeQuestAction, createQuestAction } from '../../lib/actions/quests';
 import { getXpThreshold, getRewardForDifficulty, calculateLevel } from '../../lib/progression';
@@ -83,9 +84,10 @@ export default function DashboardPage() {
   const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const [dashData, dbQuests] = await Promise.all([
+      const [dashData, dbQuests, achData] = await Promise.all([
         getDashboardData(),
         getQuestsData(),
+        getAchievementsData(),
       ]);
 
       if (dashData && dashData.character && dashData.profile) {
@@ -127,8 +129,8 @@ export default function DashboardPage() {
                 id: `act-${q.id}`,
                 title: 'Completed quest',
                 subtext: q.title,
-                xp: reward.xp,
-                gold: reward.gold,
+                xp: q.xp_reward || reward.xp,
+                gold: q.gold_reward || reward.gold,
                 timeAgo: 'Today',
                 type: 'quest',
               };
@@ -138,11 +140,20 @@ export default function DashboardPage() {
           setActivities([]);
         }
 
-        if (dashData.recentAchievements && dashData.recentAchievements.length > 0) {
+        if (achData && achData.length > 0) {
+          setAchievements(
+            achData.slice(0, 4).map((a) => ({
+              id: a.id,
+              title: a.title || a.name,
+              description: a.description,
+              unlocked: a.unlocked,
+            }))
+          );
+        } else if (dashData.recentAchievements && dashData.recentAchievements.length > 0) {
           setAchievements(
             dashData.recentAchievements.map((ua: any) => ({
               id: ua.id || ua.achievement_id,
-              title: ua.achievements?.title || 'Achievement Unlocked',
+              title: ua.achievements?.name || ua.achievements?.title || 'Achievement Unlocked',
               description: ua.achievements?.description || 'Milestone reached',
               unlocked: true,
             }))

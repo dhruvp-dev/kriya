@@ -3,8 +3,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
-import { Trophy, Lock, CheckCircle2, Star, Flame, Award, Shield } from 'lucide-react';
+import {
+  Trophy,
+  Lock,
+  CheckCircle2,
+  Star,
+  Flame,
+  Award,
+  Shield,
+  Coins,
+  Footprints,
+  Sword,
+  Zap,
+} from 'lucide-react';
 import { getDashboardData } from '../../lib/queries/dashboard';
+import { getAchievementsData, AchievementDisplayItem } from '../../lib/queries/achievements';
 import { getXpThreshold } from '../../lib/progression';
 
 export default function AchievementsPage() {
@@ -21,10 +34,16 @@ export default function AchievementsPage() {
     avatarVariant?: string;
   } | null>(null);
 
+  const [achievements, setAchievements] = useState<AchievementDisplayItem[]>([]);
+
   const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const dashData = await getDashboardData();
+      const [dashData, achData] = await Promise.all([
+        getDashboardData(),
+        getAchievementsData(),
+      ]);
+
       if (dashData && dashData.character && dashData.profile) {
         const { character, profile } = dashData;
         const nextThreshold = getXpThreshold(character.level + 1);
@@ -32,7 +51,10 @@ export default function AchievementsPage() {
         let avatarVariant = 'architect';
         if (profile.avatar_config) {
           try {
-            const parsed = typeof profile.avatar_config === 'string' ? JSON.parse(profile.avatar_config) : profile.avatar_config;
+            const parsed =
+              typeof profile.avatar_config === 'string'
+                ? JSON.parse(profile.avatar_config)
+                : profile.avatar_config;
             if (parsed?.baseModel) avatarVariant = parsed.baseModel;
           } catch {}
         }
@@ -57,6 +79,8 @@ export default function AchievementsPage() {
           avatarVariant: 'architect',
         });
       }
+
+      setAchievements(achData || []);
     } catch {
       setUserStats({
         level: 1,
@@ -67,6 +91,7 @@ export default function AchievementsPage() {
         displayName: 'Hero',
         avatarVariant: 'architect',
       });
+      setAchievements([]);
     } finally {
       setIsLoading(false);
     }
@@ -76,62 +101,28 @@ export default function AchievementsPage() {
     loadData();
   }, [loadData]);
 
-  const achievements = [
-    {
-      id: 'ach-1',
-      title: 'First Step',
-      description: 'Complete your first quest.',
-      category: 'Beginner',
-      unlocked: true,
-      unlockedAt: 'Sep 1, 2026',
-      icon: Star,
-    },
-    {
-      id: 'ach-2',
-      title: 'Week Warrior',
-      description: 'Maintain a 7-day streak.',
-      category: 'Streak',
-      unlocked: true,
-      unlockedAt: 'Sep 7, 2026',
-      icon: Flame,
-    },
-    {
-      id: 'ach-3',
-      title: 'Getting Serious',
-      description: 'Reach Level 10.',
-      category: 'Level',
-      unlocked: true,
-      unlockedAt: 'Sep 10, 2026',
-      icon: Trophy,
-    },
-    {
-      id: 'ach-4',
-      title: 'Discipline Master',
-      description: 'Complete 25 Discipline quests.',
-      category: 'Attributes',
-      unlocked: false,
-      progress: '15 / 25',
-      icon: Shield,
-    },
-    {
-      id: 'ach-5',
-      title: 'Polymath',
-      description: 'Reach score 10 in all 4 attributes.',
-      category: 'Attributes',
-      unlocked: false,
-      progress: '3 / 4',
-      icon: Award,
-    },
-    {
-      id: 'ach-6',
-      title: 'Gold Hoarder',
-      description: 'Accumulate 1,000 total Gold.',
-      category: 'Economy',
-      unlocked: false,
-      progress: '680 / 1,000',
-      icon: Star,
-    },
-  ];
+  const getAchievementIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'footsteps':
+        return Footprints;
+      case 'flame':
+        return Flame;
+      case 'star':
+        return Star;
+      case 'shield':
+        return Shield;
+      case 'sword':
+        return Sword;
+      case 'coins':
+        return Coins;
+      case 'zap':
+        return Zap;
+      case 'trophy':
+        return Trophy;
+      default:
+        return Award;
+    }
+  };
 
   const unlockedCount = achievements.filter((a) => a.unlocked).length;
 
@@ -165,63 +156,99 @@ export default function AchievementsPage() {
 
             <div className="flex items-center gap-2 px-3.5 py-2 bg-white border border-[#E6E6E8] rounded-xl shadow-xs text-xs font-semibold text-[#070709]">
               <Trophy className="w-4 h-4 text-[#D9A441]" />
-              <span className="tabular-nums">{unlockedCount} of {achievements.length} Unlocked</span>
+              <span className="tabular-nums">
+                {unlockedCount} of {achievements.length} Unlocked
+              </span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {achievements.map((ach) => {
-              const Icon = ach.icon;
-
-              return (
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div
-                  key={ach.id}
-                  className={`border rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4 transition-all ${
-                    ach.unlocked
-                      ? 'bg-white border-[#E6E6E8]'
-                      : 'bg-[#F7F7F8] border-[#E6E6E8] opacity-75'
-                  }`}
+                  key={i}
+                  className="border border-[#E6E6E8] rounded-2xl p-5 bg-white space-y-4 animate-pulse"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                          ach.unlocked
-                            ? 'bg-[#FDF8EC] text-[#D9A441] border border-[#D9A441]/20'
-                            : 'bg-white text-[#8B8B8B] border border-[#E6E6E8]'
-                        }`}
-                      >
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="text-sm font-bold text-[#070709]">{ach.title}</h4>
-                          <span className="text-[10px] uppercase font-semibold text-[#8B8B8B] tracking-wider">
-                            {ach.category}
-                          </span>
-                        </div>
-                        <p className="text-xs text-[#60606C] mt-0.5 leading-relaxed">{ach.description}</p>
-                      </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#F3F4F5] shrink-0" />
+                    <div className="space-y-2 flex-1 min-w-0">
+                      <div className="h-4 w-28 bg-[#E6E6E8] rounded" />
+                      <div className="h-3 w-40 bg-[#F3F4F5] rounded" />
                     </div>
                   </div>
-
-                  <div className="pt-3 border-t border-[#E6E6E8] flex items-center justify-between text-xs font-medium">
-                    {ach.unlocked ? (
-                      <span className="inline-flex items-center gap-1.5 text-[#668F72] font-semibold">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Unlocked {ach.unlockedAt}
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 text-[#8B8B8B] tabular-nums">
-                        <Lock className="w-3.5 h-3.5" />
-                        Progress: {ach.progress || 'Locked'}
-                      </span>
-                    )}
-                  </div>
+                  <div className="h-3 w-20 bg-[#F3F4F5] rounded pt-2" />
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {achievements.map((ach) => {
+                const Icon = getAchievementIcon(ach.icon_name);
+
+                return (
+                  <div
+                    key={ach.id}
+                    className={`border rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4 transition-all ${
+                      ach.unlocked
+                        ? 'bg-white border-[#E6E6E8]'
+                        : 'bg-[#F7F7F8] border-[#E6E6E8] opacity-75'
+                    }`}
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-start gap-3">
+                          <div
+                            className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
+                              ach.unlocked
+                                ? 'bg-[#FDF8EC] text-[#D9A441] border border-[#D9A441]/20'
+                                : 'bg-white text-[#8B8B8B] border border-[#E6E6E8]'
+                            }`}
+                          >
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <h4 className="text-sm font-bold text-[#070709] truncate">
+                                {ach.title || ach.name}
+                              </h4>
+                              <span className="text-[10px] uppercase font-semibold text-[#8B8B8B] tracking-wider shrink-0">
+                                {ach.category}
+                              </span>
+                            </div>
+                            <p className="text-xs text-[#60606C] mt-0.5 leading-relaxed">
+                              {ach.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Rewards row */}
+                      <div className="flex items-center gap-2 text-[11px] font-semibold text-[#8B8B8B]">
+                        <span>Reward:</span>
+                        <span className="text-[#070709]">+{ach.reward_xp} XP</span>
+                        <span>•</span>
+                        <span className="text-[#D9A441]">+{ach.reward_gold} Gold</span>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-[#E6E6E8] flex items-center justify-between text-xs font-medium">
+                      {ach.unlocked ? (
+                        <span className="inline-flex items-center gap-1.5 text-[#668F72] font-semibold">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          {ach.unlocked_at || 'Unlocked'}
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 text-[#8B8B8B] tabular-nums font-medium">
+                          <Lock className="w-3.5 h-3.5" />
+                          Progress: {ach.progress}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </main>
     </div>
