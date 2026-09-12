@@ -16,32 +16,32 @@ export function KriyaLogo({
   variant = 'primary',
   size = 'md',
   showTagline = true,
-  taglineText = 'DAILY PROGRESS ENGINE',
+  taglineText = 'ACTION INTO PROGRESS',
   className = '',
   onClick,
 }: KriyaLogoProps) {
   // Determine pixel sizes based on preset or explicit number
-  const iconSize = typeof size === 'number' 
-    ? size 
+  const iconSize = typeof size === 'number'
+    ? size
     : variant === 'navbar' || variant === 'compact' || size === 'sm'
-    ? 28
+    ? 26
     : size === 'lg'
-    ? 44
-    : 36;
+    ? 40
+    : 32;
 
   const isDark = variant === 'dark';
   const isMono = variant === 'mono';
   const isCompact = variant === 'navbar' || variant === 'compact';
   const isStacked = variant === 'stacked';
 
-  const textColor = isDark ? 'text-[#FFFDF7]' : isMono ? 'text-[#20231F]' : 'text-[#20231F]';
-  const taglineColor = isDark ? 'text-[#DFDDD2]' : 'text-[#70736B]';
-  const dotColor = isDark ? 'bg-[#E26A4B]' : isMono ? 'bg-[#20231F]' : 'bg-[#C85A3D]';
+  const textColor = isDark ? 'text-white' : isMono ? 'text-current' : 'text-[#070709]';
+  const taglineColor = isDark ? 'text-[#8B8B8B]' : 'text-[#60606C]';
+  const dotColor = isDark ? 'bg-[#E26A4B]' : isMono ? 'bg-current' : 'bg-[#C85A3D]';
 
   return (
     <div
       onClick={onClick}
-      className={`inline-flex items-center gap-3 select-none ${
+      className={`inline-flex items-center gap-2.5 select-none font-sans ${
         isStacked ? 'flex-col items-start gap-1.5' : ''
       } ${onClick ? 'cursor-pointer group' : ''} ${className}`}
     >
@@ -54,13 +54,12 @@ export function KriyaLogo({
 
       {/* Typography Block */}
       <div className="flex flex-col justify-center leading-none">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <span
-            className={`font-black tracking-tight ${textColor}`}
+            className={`font-extrabold tracking-tight ${textColor}`}
             style={{
-              fontSize: iconSize * 0.88,
+              fontSize: iconSize * 0.82,
               lineHeight: 1,
-              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
             }}
           >
             KRIYA
@@ -68,7 +67,7 @@ export function KriyaLogo({
           {/* Stepped Accent Micro-Dot on Wordmark */}
           {!isCompact && (
             <span
-              className={`w-1.5 h-1.5 rounded-2xs ${dotColor} ${
+              className={`w-1.5 h-1.5 rounded-full ${dotColor} ${
                 onClick ? 'group-hover:scale-125 transition-transform' : ''
               }`}
             />
@@ -78,10 +77,9 @@ export function KriyaLogo({
         {/* Tagline / Sub-label (Excluded in Compact/Navbar mode) */}
         {!isCompact && showTagline && (
           <span
-            className={`font-bold tracking-[0.25em] uppercase mt-1 ${taglineColor}`}
+            className={`font-bold tracking-[0.22em] uppercase mt-1 ${taglineColor}`}
             style={{
-              fontSize: Math.max(9, Math.round(iconSize * 0.28)),
-              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+              fontSize: Math.max(9, Math.round(iconSize * 0.26)),
             }}
           >
             {taglineText}

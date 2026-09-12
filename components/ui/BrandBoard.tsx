@@ -7,15 +7,9 @@ import {
   Copy,
   Check,
   Download,
-  Layers,
   Sparkles,
   Zap,
-  ArrowUpRight,
-  Maximize2,
-  Grid,
   Shield,
-  Eye,
-  Sliders,
   Palette,
 } from 'lucide-react';
 
@@ -31,96 +25,85 @@ export function BrandBoard() {
   };
 
   const primarySvgCode = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 120" width="460" height="120" fill="none">
-  <g transform="translate(16, 15) scale(2.8)">
-    <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D" />
-    <path d="M 9.5 4 L 11 4 L 11 28 L 9.5 28 Z" fill="#A94730" opacity="0.4" />
-    <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#C85A3D" />
-    <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#C85A3D" />
-    <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#D9A441" />
-    <rect x="26" y="2" width="2" height="2" fill="#668F72" />
-    <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#A94730" />
-    <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#A94730" />
+  <g transform="translate(18, 16) scale(2.75)">
+    <rect x="5.5" y="4.5" width="4.5" height="23" rx="2.25" fill="#070709" />
+    <path d="M 13.5 14.5 L 23.5 4.5" stroke="#C85A3D" stroke-width="4.5" stroke-linecap="round" />
+    <path d="M 13.5 17.5 L 23.5 27.5" stroke="#070709" stroke-width="4.5" stroke-linecap="round" />
+    <circle cx="26.5" cy="2.5" r="1.5" fill="#D9A441" />
   </g>
-  <g transform="translate(116, 0)">
-    <text x="0" y="66" font-family="'Plus Jakarta Sans', sans-serif" font-size="46" font-weight="800" letter-spacing="-1.5" fill="#20231F">KRIYA</text>
-    <rect x="154" y="28" width="6" height="6" fill="#C85A3D" rx="1" />
-    <text x="2" y="90" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" letter-spacing="3.5" fill="#70736B">DAILY PROGRESS ENGINE</text>
+  <g transform="translate(122, 16)">
+    <text x="0" y="52" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="44" font-weight="800" letter-spacing="-1.5" fill="#070709">KRIYA</text>
+    <circle cx="154" cy="40" r="4" fill="#C85A3D" />
+    <text x="2" y="78" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" letter-spacing="3" fill="#60606C">ACTION INTO PROGRESS</text>
   </g>
 </svg>`;
 
   const navbarSvgCode = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 36" width="160" height="36" fill="none">
   <g transform="translate(2, 2)">
-    <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D" />
-    <path d="M 9.5 4 L 11 4 L 11 28 L 9.5 28 Z" fill="#A94730" opacity="0.4" />
-    <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#C85A3D" />
-    <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#C85A3D" />
-    <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#D9A441" />
-    <rect x="26" y="2" width="2" height="2" fill="#668F72" />
-    <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#A94730" />
-    <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#A94730" />
+    <rect x="5.5" y="4.5" width="4.5" height="23" rx="2.25" fill="#070709" />
+    <path d="M 13.5 14.5 L 23.5 4.5" stroke="#C85A3D" stroke-width="4.5" stroke-linecap="round" />
+    <path d="M 13.5 17.5 L 23.5 27.5" stroke="#070709" stroke-width="4.5" stroke-linecap="round" />
+    <circle cx="26.5" cy="2.5" r="1.5" fill="#D9A441" />
   </g>
-  <text x="42" y="25" font-family="'Plus Jakarta Sans', sans-serif" font-size="20" font-weight="800" fill="#20231F">KRIYA</text>
+  <text x="42" y="24" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="20" font-weight="800" letter-spacing="-0.6" fill="#070709">KRIYA</text>
+  <circle cx="112" cy="18" r="2" fill="#C85A3D" />
 </svg>`;
 
   const iconSvgCode = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
-  <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D" />
-  <path d="M 9.5 4 L 11 4 L 11 28 L 9.5 28 Z" fill="#A94730" opacity="0.4" />
-  <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#C85A3D" />
-  <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#C85A3D" />
-  <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#D9A441" />
-  <rect x="26" y="2" width="2" height="2" fill="#668F72" />
-  <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#A94730" />
-  <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#A94730" />
+  <rect x="5.5" y="4.5" width="4.5" height="23" rx="2.25" fill="#070709" />
+  <path d="M 13.5 14.5 L 23.5 4.5" stroke="#C85A3D" stroke-width="4.5" stroke-linecap="round" />
+  <path d="M 13.5 17.5 L 23.5 27.5" stroke="#070709" stroke-width="4.5" stroke-linecap="round" />
+  <circle cx="26.5" cy="2.5" r="1.5" fill="#D9A441" />
 </svg>`;
 
   return (
-    <div className="min-h-screen bg-[#F3F1E8] text-[#20231F] font-sans antialiased p-4 md:p-8 lg:p-12 selection:bg-[#C85A3D] selection:text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#070709] font-sans antialiased p-4 md:p-8 lg:p-12 selection:bg-[#070709] selection:text-white">
       {/* Brand Board Container */}
       <div className="max-w-7xl mx-auto space-y-10">
         
-        {/* Header Header Navigation & Metainfo */}
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-[#DFDDD2] pb-6">
+        {/* Header Navigation & Metainfo */}
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-[#E6E6E8] pb-6">
           <div>
-            <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-[#70736B] mb-2">
-              <span className="w-2 h-2 rounded-full bg-[#C85A3D] animate-pulse" />
-              KRIYA DESIGN SYSTEM v1.0 • BRAND SPECIFICATION
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#60606C] mb-2">
+              <span className="w-2 h-2 rounded-full bg-[#C85A3D]" />
+              KRIYA DESIGN SYSTEM v2.0 • BRAND SPECIFICATION
             </div>
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-[#20231F]">
+            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#070709]">
               Logo System Specification
             </h1>
-            <p className="text-sm md:text-base text-[#70736B] font-medium mt-1 max-w-2xl">
-              Cozy retro-digital visual identity built around <span className="text-[#C85A3D] font-bold">Action → Progress → Growth</span>. Modern brand geometry with restrained pixel culture.
+            <p className="text-sm md:text-base text-[#60606C] font-medium mt-1 max-w-2xl">
+              Minimally abstract visual identity built around <span className="text-[#C85A3D] font-bold">Action → Progress → Elevation</span>. Modern geometric monogram with architectural stability and kinetic momentum.
             </p>
           </div>
 
           {/* Quick Action Navigation */}
-          <div className="flex items-center gap-2 bg-[#FFFDF7] p-1.5 rounded-xl border border-[#DFDDD2] shadow-2xs">
+          <div className="flex items-center gap-1.5 bg-[#F7F7F8] p-1.5 rounded-xl border border-[#E6E6E8]">
             <button
               onClick={() => setActiveTab('board')}
-              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'board'
-                  ? 'bg-[#C85A3D] text-white shadow-2xs'
-                  : 'text-[#70736B] hover:text-[#20231F] hover:bg-[#EBE8DD]'
+                  ? 'bg-[#070709] text-white shadow-xs'
+                  : 'text-[#60606C] hover:text-[#070709] hover:bg-white'
               }`}
             >
               Logo System
             </button>
             <button
               onClick={() => setActiveTab('spec')}
-              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'spec'
-                  ? 'bg-[#C85A3D] text-white shadow-2xs'
-                  : 'text-[#70736B] hover:text-[#20231F] hover:bg-[#EBE8DD]'
+                  ? 'bg-[#070709] text-white shadow-xs'
+                  : 'text-[#60606C] hover:text-[#070709] hover:bg-white'
               }`}
             >
               Design Rationale
             </button>
             <button
               onClick={() => setActiveTab('assets')}
-              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'assets'
-                  ? 'bg-[#C85A3D] text-white shadow-2xs'
-                  : 'text-[#70736B] hover:text-[#20231F] hover:bg-[#EBE8DD]'
+                  ? 'bg-[#070709] text-white shadow-xs'
+                  : 'text-[#60606C] hover:text-[#070709] hover:bg-white'
               }`}
             >
               Raw SVG Assets
@@ -128,24 +111,25 @@ export function BrandBoard() {
           </div>
         </header>
 
+        {/* LOGO SYSTEM BOARD TAB */}
         {activeTab === 'board' && (
-          <div className="space-y-12 animate-in fade-in duration-300">
+          <div className="space-y-10 animate-in fade-in duration-300">
 
             {/* SECTION 1: PRIMARY BRAND LOGO (HERO) */}
-            <section className="bg-[#FFFDF7] rounded-3xl border border-[#DFDDD2] p-8 lg:p-12 shadow-xs relative overflow-hidden">
-              <div className="absolute top-0 right-0 px-4 py-2 bg-[#EBE8DD] border-b border-l border-[#DFDDD2] rounded-bl-xl text-[10px] font-mono font-bold text-[#70736B] tracking-wider uppercase">
-                01 • PRIMARY BRAND LOGO
+            <section className="bg-white rounded-3xl border border-[#E6E6E8] p-8 lg:p-12 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 px-4 py-2 bg-[#F7F7F8] border-b border-l border-[#E6E6E8] rounded-bl-xl text-[10px] font-bold text-[#60606C] tracking-wider uppercase">
+                01 • Primary Brand Logo
               </div>
 
               <div className="grid lg:grid-cols-12 gap-8 items-center">
                 {/* Visual Canvas */}
-                <div className="lg:col-span-8 bg-[#F3F1E8]/70 rounded-2xl border border-[#DFDDD2]/80 p-8 lg:p-16 flex items-center justify-center min-h-[260px] relative group">
+                <div className="lg:col-span-8 bg-[#F7F7F8] rounded-2xl border border-[#E6E6E8] p-8 lg:p-16 flex items-center justify-center min-h-[260px] relative group">
                   <div className="transform group-hover:scale-102 transition-transform duration-300">
                     <KriyaLogo variant="primary" size="lg" showTagline={true} />
                   </div>
                   <button
                     onClick={() => handleCopySvg('primary', primarySvgCode)}
-                    className="absolute bottom-4 right-4 bg-[#FFFDF7] hover:bg-[#20231F] hover:text-white text-[#20231F] border border-[#DFDDD2] px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all shadow-2xs"
+                    className="absolute bottom-4 right-4 bg-white hover:bg-[#070709] hover:text-white text-[#070709] border border-[#E6E6E8] px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
                   >
                     {copiedId === 'primary' ? (
                       <>
@@ -164,54 +148,57 @@ export function BrandBoard() {
                   <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C85A3D]">
                     <Sparkles className="w-4 h-4" /> Core Identity Mark
                   </div>
-                  <h2 className="text-2xl font-black text-[#20231F]">Primary Brand Logo</h2>
-                  <p className="text-xs text-[#70736B] leading-relaxed">
-                    Designed for official brand headers, marketing touchpoints, landing pages, and launch collateral. Combines the stepped growth mark with humanized geometric letterforms.
+                  <h2 className="text-2xl font-bold text-[#070709]">Primary Brand Logo</h2>
+                  <p className="text-xs text-[#60606C] leading-relaxed">
+                    Designed for official brand headers, marketing collateral, landing pages, and application navigation. Combines the grounded stability pillar with an ascending terracotta momentum vector.
                   </p>
                   
-                  <div className="pt-2 space-y-2 text-xs font-mono">
-                    <div className="flex justify-between py-1.5 border-b border-[#DFDDD2]">
-                      <span className="text-[#70736B]">Primary Color</span>
+                  <div className="pt-2 space-y-2 text-xs">
+                    <div className="flex justify-between py-1.5 border-b border-[#E6E6E8]">
+                      <span className="text-[#60606C]">Foundation Pillar</span>
+                      <span className="font-bold text-[#070709]">Near Black (#070709)</span>
+                    </div>
+                    <div className="flex justify-between py-1.5 border-b border-[#E6E6E8]">
+                      <span className="text-[#60606C]">Momentum Vector</span>
                       <span className="font-bold text-[#C85A3D]">Terracotta (#C85A3D)</span>
                     </div>
-                    <div className="flex justify-between py-1.5 border-b border-[#DFDDD2]">
-                      <span className="text-[#70736B]">Accent Spark</span>
+                    <div className="flex justify-between py-1.5 border-b border-[#E6E6E8]">
+                      <span className="text-[#60606C]">Milestone Spark</span>
                       <span className="font-bold text-[#D9A441]">Ochre (#D9A441)</span>
                     </div>
-                    <div className="flex justify-between py-1.5 border-b border-[#DFDDD2]">
-                      <span className="text-[#70736B]">Wordmark Font</span>
-                      <span className="font-bold text-[#20231F]">Plus Jakarta Sans (800)</span>
+                    <div className="flex justify-between py-1.5 border-b border-[#E6E6E8]">
+                      <span className="text-[#60606C]">Wordmark Font</span>
+                      <span className="font-bold text-[#070709]">Plus Jakarta Sans (800)</span>
                     </div>
                   </div>
                 </div>
               </div>
             </section>
 
-
             {/* SECTION 2 & SECTION 3: NAVBAR VERSION & STANDALONE APP ICON */}
             <div className="grid md:grid-cols-2 gap-8">
               
               {/* SECTION 2: COMPACT NAVBAR LOGO */}
-              <section className="bg-[#FFFDF7] rounded-3xl border border-[#DFDDD2] p-6 md:p-8 shadow-xs relative flex flex-col justify-between">
-                <div className="flex items-center justify-between border-b border-[#DFDDD2] pb-4 mb-6">
+              <section className="bg-white rounded-3xl border border-[#E6E6E8] p-6 md:p-8 shadow-xs relative flex flex-col justify-between">
+                <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
                   <div>
-                    <span className="text-[10px] font-mono font-bold text-[#C85A3D] uppercase tracking-wider block">
-                      02 • APPLICATION NAVIGATION
+                    <span className="text-[10px] font-bold text-[#C85A3D] uppercase tracking-wider block">
+                      02 • Application Navigation
                     </span>
-                    <h3 className="text-xl font-bold text-[#20231F]">Navbar / Sidebar Version</h3>
+                    <h3 className="text-xl font-bold text-[#070709]">Navbar / Sidebar Version</h3>
                   </div>
-                  <span className="text-xs font-mono bg-[#EBE8DD] text-[#70736B] px-2.5 py-1 rounded-md font-bold">
-                    Target: 28-40px
+                  <span className="text-xs bg-[#F7F7F8] text-[#60606C] px-2.5 py-1 rounded-md font-semibold tabular-nums">
+                    Target: 26-40px
                   </span>
                 </div>
 
                 {/* Simulated Header Rail */}
                 <div className="space-y-4">
-                  <div className="text-xs text-[#70736B] font-medium">Live Navigation Rail Preview:</div>
-                  <div className="bg-[#EBE8DD] p-3 rounded-2xl border border-[#DFDDD2] flex items-center justify-between">
-                    <KriyaLogo variant="navbar" size={28} />
+                  <div className="text-xs text-[#60606C] font-medium">Live Navigation Rail Preview:</div>
+                  <div className="bg-[#F7F7F8] p-3.5 rounded-2xl border border-[#E6E6E8] flex items-center justify-between">
+                    <KriyaLogo variant="navbar" size={26} />
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono font-bold bg-[#FFFDF7] px-2 py-1 rounded-md border border-[#DFDDD2] text-[#70736B]">
+                      <span className="text-[10px] font-bold bg-white px-2 py-0.5 rounded-md border border-[#E6E6E8] text-[#60606C] tabular-nums">
                         LV.12
                       </span>
                       <span className="w-2 h-2 rounded-full bg-[#C85A3D]" />
@@ -219,18 +206,18 @@ export function BrandBoard() {
                   </div>
 
                   {/* Size Matrix */}
-                  <div className="pt-4 grid grid-cols-4 gap-2 text-center">
-                    {[28, 32, 36, 40].map((sz) => (
+                  <div className="pt-2 grid grid-cols-4 gap-2 text-center">
+                    {[24, 28, 32, 36].map((sz) => (
                       <button
                         key={sz}
                         onClick={() => setActiveScale(sz)}
-                        className={`p-2.5 rounded-xl border transition-all ${
+                        className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
                           activeScale === sz
-                            ? 'bg-[#F3F1E8] border-[#C85A3D] shadow-2xs'
-                            : 'bg-white border-[#DFDDD2] hover:bg-[#F3F1E8]'
+                            ? 'bg-white border-[#070709] shadow-xs ring-1 ring-[#070709]'
+                            : 'bg-[#F7F7F8] border-[#E6E6E8] hover:bg-white'
                         }`}
                       >
-                        <div className="text-[10px] font-mono text-[#70736B] mb-1">{sz}px</div>
+                        <div className="text-[10px] text-[#8B8B8B] mb-1 tabular-nums">{sz}px</div>
                         <div className="flex justify-center">
                           <KriyaLogo variant="navbar" size={sz} />
                         </div>
@@ -239,11 +226,11 @@ export function BrandBoard() {
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#DFDDD2] flex items-center justify-between text-xs">
-                  <span className="text-[#70736B]">Simplified for high density UI rail</span>
+                <div className="mt-6 pt-4 border-t border-[#E6E6E8] flex items-center justify-between text-xs">
+                  <span className="text-[#60606C]">Optimized for dense UI headers</span>
                   <button
                     onClick={() => handleCopySvg('navbar', navbarSvgCode)}
-                    className="text-[#C85A3D] font-bold flex items-center gap-1 hover:underline"
+                    className="text-[#C85A3D] font-bold flex items-center gap-1 hover:underline cursor-pointer"
                   >
                     {copiedId === 'navbar' ? 'Copied!' : 'Copy Code →'}
                   </button>
@@ -251,44 +238,44 @@ export function BrandBoard() {
               </section>
 
               {/* SECTION 3: STANDALONE APP ICON */}
-              <section className="bg-[#FFFDF7] rounded-3xl border border-[#DFDDD2] p-6 md:p-8 shadow-xs relative flex flex-col justify-between">
-                <div className="flex items-center justify-between border-b border-[#DFDDD2] pb-4 mb-6">
+              <section className="bg-white rounded-3xl border border-[#E6E6E8] p-6 md:p-8 shadow-xs relative flex flex-col justify-between">
+                <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
                   <div>
-                    <span className="text-[10px] font-mono font-bold text-[#C85A3D] uppercase tracking-wider block">
-                      03 • STANDALONE APP ICON
+                    <span className="text-[10px] font-bold text-[#C85A3D] uppercase tracking-wider block">
+                      03 • Standalone App Icon
                     </span>
-                    <h3 className="text-xl font-bold text-[#20231F]">App Icon & Favicon</h3>
+                    <h3 className="text-xl font-bold text-[#070709]">App Icon & Favicon</h3>
                   </div>
-                  <span className="text-xs font-mono bg-[#EBE8DD] text-[#70736B] px-2.5 py-1 rounded-md font-bold">
-                     Favicon • App Tile
+                  <span className="text-xs bg-[#F7F7F8] text-[#60606C] px-2.5 py-1 rounded-md font-semibold">
+                    Favicon • App Tile
                   </span>
                 </div>
 
-                <div className="flex items-center justify-around py-4 bg-[#F3F1E8]/60 rounded-2xl border border-[#DFDDD2]/80">
-                  {/* Tile 1: Warm Squircle */}
+                <div className="flex items-center justify-around py-4 bg-[#F7F7F8] rounded-2xl border border-[#E6E6E8]">
+                  {/* Tile 1: White Squircle */}
                   <div className="flex flex-col items-center gap-2">
                     <KriyaIcon size={44} withContainer={true} variant="default" />
-                    <span className="text-[10px] font-mono text-[#70736B] font-bold">App Tile</span>
+                    <span className="text-[10px] text-[#60606C] font-semibold">Light Surface</span>
                   </div>
 
                   {/* Tile 2: Dark Charcoal */}
                   <div className="flex flex-col items-center gap-2">
                     <KriyaIcon size={44} withContainer={true} variant="dark" />
-                    <span className="text-[10px] font-mono text-[#70736B] font-bold">Dark Mode</span>
+                    <span className="text-[10px] text-[#60606C] font-semibold">Dark Surface</span>
                   </div>
 
                   {/* Tile 3: Terracotta Solid */}
                   <div className="flex flex-col items-center gap-2">
                     <KriyaIcon size={44} withContainer={true} variant="on-terracotta" />
-                    <span className="text-[10px] font-mono text-[#70736B] font-bold">Brand Tile</span>
+                    <span className="text-[10px] text-[#60606C] font-semibold">Brand Accent</span>
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#DFDDD2] flex items-center justify-between text-xs">
-                  <span className="text-[#70736B]">Instant silhouette recognition</span>
+                <div className="mt-6 pt-4 border-t border-[#E6E6E8] flex items-center justify-between text-xs">
+                  <span className="text-[#60606C]">Instant silhouette recognition</span>
                   <button
                     onClick={() => handleCopySvg('icon', iconSvgCode)}
-                    className="text-[#C85A3D] font-bold flex items-center gap-1 hover:underline"
+                    className="text-[#C85A3D] font-bold flex items-center gap-1 hover:underline cursor-pointer"
                   >
                     {copiedId === 'icon' ? 'Copied!' : 'Copy Code →'}
                   </button>
@@ -297,129 +284,122 @@ export function BrandBoard() {
 
             </div>
 
-
             {/* SECTION 4 & SECTION 5: DARK AND LIGHT BACKGROUND VERSIONS */}
             <div className="grid md:grid-cols-2 gap-8">
-              
               {/* SECTION 4: DARK BACKGROUND VERSION */}
-              <section className="bg-[#20231F] rounded-3xl border border-[#344653] p-8 shadow-md relative overflow-hidden text-white">
-                <div className="text-[10px] font-mono font-bold text-[#E26A4B] uppercase tracking-wider mb-4 block">
-                  04 • DARK BACKGROUND VERSION
+              <section className="bg-[#070709] rounded-3xl border border-[#202025] p-8 shadow-md relative overflow-hidden text-white">
+                <div className="text-[10px] font-bold text-[#E26A4B] uppercase tracking-wider mb-4 block">
+                  04 • Dark Mode Lockup
                 </div>
-                <div className="bg-[#181A17] rounded-2xl border border-[#344653]/60 p-8 flex items-center justify-center min-h-[160px]">
+                <div className="bg-[#121215] rounded-2xl border border-[#202025] p-8 flex items-center justify-center min-h-[160px]">
                   <KriyaLogo variant="dark" size="md" />
                 </div>
-                <p className="text-xs text-[#DFDDD2] mt-4 font-medium">
-                  Optimized for dark mode interfaces, IDE themes, night headers, and dark promotional assets. High contrast warm terracotta stem with golden spark.
+                <p className="text-xs text-[#8B8B8B] mt-4 font-medium leading-relaxed">
+                  Engineered for dark mode interfaces, code editors, and high-contrast night surfaces. High-contrast white pillar with bright terracotta momentum vector.
                 </p>
               </section>
 
               {/* SECTION 5: LIGHT BACKGROUND VERSION */}
-              <section className="bg-[#FFFDF7] rounded-3xl border border-[#DFDDD2] p-8 shadow-xs relative overflow-hidden text-[#20231F]">
-                <div className="text-[10px] font-mono font-bold text-[#C85A3D] uppercase tracking-wider mb-4 block">
-                  05 • LIGHT BACKGROUND VERSION
+              <section className="bg-white rounded-3xl border border-[#E6E6E8] p-8 shadow-xs relative overflow-hidden text-[#070709]">
+                <div className="text-[10px] font-bold text-[#C85A3D] uppercase tracking-wider mb-4 block">
+                  05 • Light Mode Lockup
                 </div>
-                <div className="bg-[#F3F1E8] rounded-2xl border border-[#DFDDD2] p-8 flex items-center justify-center min-h-[160px]">
+                <div className="bg-[#F7F7F8] rounded-2xl border border-[#E6E6E8] p-8 flex items-center justify-center min-h-[160px]">
                   <KriyaLogo variant="primary" size="md" />
                 </div>
-                <p className="text-xs text-[#70736B] mt-4 font-medium">
-                  Optimized for light editorial surfaces, parchment cards, paper backgrounds, and light application headers.
+                <p className="text-xs text-[#60606C] mt-4 font-medium leading-relaxed">
+                  Engineered for pristine white SaaS dashboards, editorial docs, settings panels, and standard application navigation.
                 </p>
               </section>
-
             </div>
 
-
-            {/* SECTION 6 & SECTION 7: SMALL FAVICON GRID & MONOCHROME VERSION */}
+            {/* SECTION 6 & SECTION 7: SMALL SCALE GRID & MONOCHROME */}
             <div className="grid md:grid-cols-12 gap-8">
-              
-              {/* SECTION 6: SMALL FAVICON / ICON SCALE GRID */}
-              <section className="md:col-span-7 bg-[#FFFDF7] rounded-3xl border border-[#DFDDD2] p-8 shadow-xs">
-                <div className="flex items-center justify-between border-b border-[#DFDDD2] pb-4 mb-6">
+              {/* SECTION 6: SCALE INTEGRITY TEST GRID */}
+              <section className="md:col-span-7 bg-white rounded-3xl border border-[#E6E6E8] p-8 shadow-xs">
+                <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
                   <div>
-                    <span className="text-[10px] font-mono font-bold text-[#C85A3D] uppercase tracking-wider block">
-                      06 • SCALE INTEGRITY TEST GRID
+                    <span className="text-[10px] font-bold text-[#C85A3D] uppercase tracking-wider block">
+                      06 • Scale Integrity Grid
                     </span>
-                    <h3 className="text-xl font-bold text-[#20231F]">Micro-scale Legibility</h3>
+                    <h3 className="text-xl font-bold text-[#070709]">Micro-scale Legibility</h3>
                   </div>
-                  <span className="text-xs font-mono text-[#70736B] font-bold">16px to 64px</span>
+                  <span className="text-xs text-[#60606C] font-semibold tabular-nums">16px to 64px</span>
                 </div>
 
-                <div className="grid grid-cols-5 gap-4 items-end justify-items-center bg-[#F3F1E8]/70 p-6 rounded-2xl border border-[#DFDDD2]">
+                <div className="grid grid-cols-5 gap-4 items-end justify-items-center bg-[#F7F7F8] p-6 rounded-2xl border border-[#E6E6E8]">
                   {[16, 24, 32, 48, 64].map((s) => (
                     <div key={s} className="flex flex-col items-center gap-2">
-                      <div className="bg-white p-2 rounded-lg border border-[#DFDDD2] flex items-center justify-center">
+                      <div className="bg-white p-2 rounded-xl border border-[#E6E6E8] flex items-center justify-center shadow-2xs">
                         <KriyaIcon size={s} />
                       </div>
-                      <span className="text-[10px] font-mono font-bold text-[#70736B]">{s}px</span>
+                      <span className="text-[10px] font-semibold tabular-nums text-[#8B8B8B]">{s}px</span>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-[#70736B] mt-4">
-                  Grid coordinates aligned strictly to integer pixel intervals on a 32x32 master grid, preventing anti-aliasing blur even at 16x16 browser tab sizes.
+                <p className="text-xs text-[#60606C] mt-4 leading-relaxed">
+                  Geometry is defined with optical negative clearance, preventing blur or muddy strokes at low resolution favicon sizes.
                 </p>
               </section>
 
               {/* SECTION 7: MONOCHROME VERSION */}
-              <section className="md:col-span-5 bg-[#FFFDF7] rounded-3xl border border-[#DFDDD2] p-8 shadow-xs">
-                <div className="flex items-center justify-between border-b border-[#DFDDD2] pb-4 mb-6">
+              <section className="md:col-span-5 bg-white rounded-3xl border border-[#E6E6E8] p-8 shadow-xs">
+                <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
                   <div>
-                    <span className="text-[10px] font-mono font-bold text-[#C85A3D] uppercase tracking-wider block">
-                      07 • MONOCHROME VERSION
+                    <span className="text-[10px] font-bold text-[#C85A3D] uppercase tracking-wider block">
+                      07 • Monochrome Version
                     </span>
-                    <h3 className="text-xl font-bold text-[#20231F]">Single-Color Stamp</h3>
+                    <h3 className="text-xl font-bold text-[#070709]">Single-Color Stamp</h3>
                   </div>
-                  <span className="text-xs font-mono text-[#70736B] font-bold">1-Color</span>
+                  <span className="text-xs text-[#60606C] font-semibold">1-Color</span>
                 </div>
 
-                <div className="bg-[#F3F1E8] p-6 rounded-2xl border border-[#DFDDD2] flex justify-center items-center min-h-[110px]">
+                <div className="bg-[#F7F7F8] p-6 rounded-2xl border border-[#E6E6E8] flex justify-center items-center min-h-[110px]">
                   <KriyaLogo variant="mono" size="md" />
                 </div>
-                <p className="text-xs text-[#70736B] mt-4">
-                  Single-color vector path with micro separation gaps. Engineered for physical stamping, letterpress, hardware engraving, or single-color vinyl cutouts.
+                <p className="text-xs text-[#60606C] mt-4 leading-relaxed">
+                  Single-color vector path with optical separation gaps. Designed for physical merchandise, letterpress, hardware engraving, and laser marking.
                 </p>
               </section>
-
             </div>
 
-
             {/* COLOR PALETTE SWATCH SYSTEM */}
-            <section className="bg-[#FFFDF7] rounded-3xl border border-[#DFDDD2] p-8 shadow-xs">
-              <div className="flex items-center justify-between border-b border-[#DFDDD2] pb-4 mb-6">
+            <section className="bg-white rounded-3xl border border-[#E6E6E8] p-8 shadow-xs">
+              <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
                 <div>
-                  <span className="text-[10px] font-mono font-bold text-[#C85A3D] uppercase tracking-wider block">
-                    BRAND PALETTE SYSTEM
+                  <span className="text-[10px] font-bold text-[#C85A3D] uppercase tracking-wider block">
+                    Brand Palette System
                   </span>
-                  <h3 className="text-2xl font-bold text-[#20231F]">Warm Cozy Retro-Digital Palette</h3>
+                  <h3 className="text-2xl font-bold text-[#070709]">Aesthetic SaaS Palette</h3>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs font-bold text-[#70736B]">
-                  <Palette className="w-4 h-4 text-[#C85A3D]" /> 10 Curated Tokens
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#60606C]">
+                  <Palette className="w-4 h-4 text-[#C85A3D]" /> Curated Tokens
                 </div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                 {[
-                  { name: 'Terracotta (Primary)', hex: '#C85A3D', role: 'Main Brand Identity', textDark: false },
-                  { name: 'Terracotta Dark', hex: '#A94730', role: 'Depth & Shadow', textDark: false },
-                  { name: 'Ochre (Spark)', hex: '#D9A441', role: 'Growth & Level Up', textDark: true },
-                  { name: 'Sage (Growth)', hex: '#668F72', role: 'Daily Habit Accent', textDark: false },
-                  { name: 'Dusty Navy', hex: '#344653', role: 'Structural Trim', textDark: false },
-                  { name: 'Warm Parchment', hex: '#F3F1E8', role: 'Main App Canvas', textDark: true },
-                  { name: 'Surface Cream', hex: '#FFFDF7', role: 'Card Container', textDark: true },
-                  { name: 'Charcoal', hex: '#20231F', role: 'Primary Typography', textDark: false },
-                  { name: 'Border Taupe', hex: '#DFDDD2', role: 'Divider & Outline', textDark: true },
-                  { name: 'Secondary Text', hex: '#70736B', role: 'Metadata & Labels', textDark: false },
+                  { name: 'Near Black (Pillar)', hex: '#070709', role: 'Foundation & Text', textDark: false },
+                  { name: 'Terracotta (Momentum)', hex: '#C85A3D', role: 'Action & Primary Accent', textDark: false },
+                  { name: 'Reward Ochre', hex: '#D9A441', role: 'Milestones & Gold', textDark: true },
+                  { name: 'Success Sage', hex: '#668F72', role: 'Completed & Growth', textDark: false },
+                  { name: 'Deep Slate', hex: '#344653', role: 'Secondary Accents', textDark: false },
+                  { name: 'Pure White', hex: '#FFFFFF', role: 'Base Background', textDark: true },
+                  { name: 'Cool Surface', hex: '#F7F7F8', role: 'Secondary Containers', textDark: true },
+                  { name: 'Subtle Surface', hex: '#F3F4F5', role: 'Input & Bar Fills', textDark: true },
+                  { name: 'Border Subtle', hex: '#E6E6E8', role: 'Dividers & Outlines', textDark: true },
+                  { name: 'Secondary Text', hex: '#60606C', role: 'Subtitles & Labels', textDark: false },
                 ].map((color) => (
                   <div
                     key={color.hex}
-                    className="p-3.5 rounded-2xl border border-[#DFDDD2] bg-[#F3F1E8]/50 flex flex-col justify-between space-y-3"
+                    className="p-3.5 rounded-2xl border border-[#E6E6E8] bg-[#F7F7F8]/60 flex flex-col justify-between space-y-3"
                   >
                     <div
-                      className="h-16 rounded-xl border border-black/10 shadow-2xs p-2 flex items-end justify-end"
+                      className="h-14 rounded-xl border border-black/5 shadow-2xs p-2 flex items-end justify-end"
                       style={{ backgroundColor: color.hex }}
                     >
                       <span
-                        className={`text-[9px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                        className={`text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded ${
                           color.textDark ? 'bg-black/10 text-black' : 'bg-white/20 text-white'
                         }`}
                       >
@@ -427,8 +407,8 @@ export function BrandBoard() {
                       </span>
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-[#20231F]">{color.name}</div>
-                      <div className="text-[10px] text-[#70736B] font-medium">{color.role}</div>
+                      <div className="text-xs font-bold text-[#070709]">{color.name}</div>
+                      <div className="text-[10px] text-[#60606C] font-medium mt-0.5">{color.role}</div>
                     </div>
                   </div>
                 ))}
@@ -440,42 +420,42 @@ export function BrandBoard() {
 
         {/* DESIGN RATIONALE TAB */}
         {activeTab === 'spec' && (
-          <div className="bg-[#FFFDF7] rounded-3xl border border-[#DFDDD2] p-8 lg:p-12 space-y-8 animate-in fade-in duration-300">
+          <div className="bg-white rounded-3xl border border-[#E6E6E8] p-8 lg:p-12 space-y-8 animate-in fade-in duration-300">
             <div>
-              <span className="text-xs font-mono font-bold text-[#C85A3D] tracking-widest uppercase">
-                BRAND DESIGN SYSTEM SPECIFICATION
+              <span className="text-xs font-bold text-[#C85A3D] tracking-widest uppercase">
+                Brand Design Rationale
               </span>
-              <h2 className="text-3xl font-black text-[#20231F] mt-1">Design Rationale & Philosophy</h2>
+              <h2 className="text-3xl font-extrabold text-[#070709] mt-1">Design Philosophy & Anatomy</h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="p-6 bg-[#F3F1E8]/70 rounded-2xl border border-[#DFDDD2] space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-[#C85A3D] text-white flex items-center justify-center font-black">
+              <div className="p-6 bg-[#F7F7F8] rounded-2xl border border-[#E6E6E8] space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-[#070709] text-white flex items-center justify-center font-bold">
                   01
                 </div>
-                <h3 className="text-base font-bold text-[#20231F]">Action → Progress → Growth</h3>
-                <p className="text-xs text-[#70736B] leading-relaxed">
-                  The mark is structured as an ascending staircase of block steps. The left pillar represents foundational daily action, rising into progress steps, culminating in an golden Ochre spark block at the top right symbolizing personal growth and level-up.
+                <h3 className="text-base font-bold text-[#070709]">Action → Progress → Elevation</h3>
+                <p className="text-xs text-[#60606C] leading-relaxed">
+                  In Sanskrit, Kriya means purposeful action. The logo mark translates this directly: a grounding vertical pillar representing daily discipline, paired with an ascending terracotta momentum vector rising toward milestone achievement.
                 </p>
               </div>
 
-              <div className="p-6 bg-[#F3F1E8]/70 rounded-2xl border border-[#DFDDD2] space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-[#344653] text-white flex items-center justify-center font-black">
+              <div className="p-6 bg-[#F7F7F8] rounded-2xl border border-[#E6E6E8] space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-[#C85A3D] text-white flex items-center justify-center font-bold">
                   02
                 </div>
-                <h3 className="text-base font-bold text-[#20231F]">Restrained Pixel Culture</h3>
-                <p className="text-xs text-[#70736B] leading-relaxed">
-                  Avoids low-res 8-bit arcade clichés, swords, or generic gaming tropes. Pixel influence comes strictly from block geometry, stepped chamfer edges, and micro-grid alignment to deliver a cozy retro-digital feel.
+                <h3 className="text-base font-bold text-[#070709]">Architectural Precision</h3>
+                <p className="text-xs text-[#60606C] leading-relaxed">
+                  Avoids decorative clutter, generic gaming swords, or pixelated arcade noise. The mark relies on pure Swiss geometric alignment, optical negative space clearance, and calibrated stroke radii.
                 </p>
               </div>
 
-              <div className="p-6 bg-[#F3F1E8]/70 rounded-2xl border border-[#DFDDD2] space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-[#D9A441] text-white flex items-center justify-center font-black">
+              <div className="p-6 bg-[#F7F7F8] rounded-2xl border border-[#E6E6E8] space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-[#D9A441] text-white flex items-center justify-center font-bold">
                   03
                 </div>
-                <h3 className="text-base font-bold text-[#20231F]">Modern Geometric Wordmark</h3>
-                <p className="text-xs text-[#70736B] leading-relaxed">
-                  Set in high-clarity humanist geometric sans-serif (Plus Jakarta Sans). Clean, friendly, confident, and highly readable across all platforms.
+                <h3 className="text-base font-bold text-[#070709]">Modern Plus Jakarta Sans</h3>
+                <p className="text-xs text-[#60606C] leading-relaxed">
+                  The wordmark is set in heavy Plus Jakarta Sans with subtle negative letter spacing. Confident, modern, and perfectly aligned with the aesthetic SaaS interface.
                 </p>
               </div>
             </div>
@@ -484,38 +464,38 @@ export function BrandBoard() {
 
         {/* RAW ASSETS TAB */}
         {activeTab === 'assets' && (
-          <div className="bg-[#FFFDF7] rounded-3xl border border-[#DFDDD2] p-8 lg:p-12 space-y-6 animate-in fade-in duration-300">
+          <div className="bg-white rounded-3xl border border-[#E6E6E8] p-8 lg:p-12 space-y-6 animate-in fade-in duration-300">
             <div>
-              <span className="text-xs font-mono font-bold text-[#C85A3D] tracking-widest uppercase">
-                PRODUCTION READY VECTOR FILES
+              <span className="text-xs font-bold text-[#C85A3D] tracking-widest uppercase">
+                Production Vector Files
               </span>
-              <h2 className="text-3xl font-black text-[#20231F] mt-1">Raw SVG Downloads & Code</h2>
+              <h2 className="text-3xl font-extrabold text-[#070709] mt-1">Raw SVG Downloads</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4">
               {[
-                { name: 'kriya-symbol.svg', path: '/brand/kriya-symbol.svg', desc: 'Standalone 32x32 Icon Mark' },
-                { name: 'kriya-app-icon.svg', path: '/brand/kriya-app-icon.svg', desc: '512x512 App Tile Icon' },
-                { name: 'kriya-primary-logo.svg', path: '/brand/kriya-primary-logo.svg', desc: 'Primary Full Brand Logo' },
-                { name: 'kriya-navbar-logo.svg', path: '/brand/kriya-navbar-logo.svg', desc: 'Compact Navbar Logo' },
-                { name: 'kriya-logo-dark.svg', path: '/brand/kriya-logo-dark.svg', desc: 'Dark Background Version' },
-                { name: 'kriya-logo-mono.svg', path: '/brand/kriya-logo-mono.svg', desc: 'Monochrome Version' },
-                { name: 'kriya-favicon.svg', path: '/brand/kriya-favicon.svg', desc: 'Optimized 32x32 Favicon' },
+                { name: 'kriya-symbol.svg', path: '/brand/kriya-symbol.svg', desc: 'Standalone 32x32 Kinetic Icon Mark' },
+                { name: 'kriya-app-icon.svg', path: '/brand/kriya-app-icon.svg', desc: '512x512 Master App Tile Icon' },
+                { name: 'kriya-primary-logo.svg', path: '/brand/kriya-primary-logo.svg', desc: 'Primary Full Brand Logo Lockup' },
+                { name: 'kriya-navbar-logo.svg', path: '/brand/kriya-navbar-logo.svg', desc: 'Compact Navbar / Sidebar Logo' },
+                { name: 'kriya-logo-dark.svg', path: '/brand/kriya-logo-dark.svg', desc: 'Dark Mode Brand Logo Lockup' },
+                { name: 'kriya-logo-mono.svg', path: '/brand/kriya-logo-mono.svg', desc: 'Single-Color Stamp Logo' },
+                { name: 'kriya-favicon.svg', path: '/brand/kriya-favicon.svg', desc: 'Optimized 32x32 Browser Favicon' },
               ].map((asset) => (
-                <div key={asset.name} className="p-4 rounded-2xl border border-[#DFDDD2] bg-[#F3F1E8]/40 flex items-center justify-between">
+                <div key={asset.name} className="p-4 rounded-2xl border border-[#E6E6E8] bg-[#F7F7F8] flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-white rounded-xl border border-[#DFDDD2] flex items-center justify-center text-[#C85A3D]">
+                    <div className="w-10 h-10 bg-white rounded-xl border border-[#E6E6E8] flex items-center justify-center text-[#070709] shadow-2xs">
                       <KriyaIcon size={20} />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-[#20231F]">{asset.name}</div>
-                      <div className="text-[10px] text-[#70736B]">{asset.desc}</div>
+                      <div className="text-xs font-bold text-[#070709]">{asset.name}</div>
+                      <div className="text-[10px] text-[#60606C]">{asset.desc}</div>
                     </div>
                   </div>
                   <a
                     href={asset.path}
                     download={asset.name}
-                    className="px-3 py-1.5 bg-[#FFFDF7] hover:bg-[#C85A3D] hover:text-white border border-[#DFDDD2] text-[#20231F] rounded-lg text-xs font-bold transition-all flex items-center gap-1"
+                    className="px-3 py-1.5 bg-white hover:bg-[#070709] hover:text-white border border-[#E6E6E8] text-[#070709] rounded-xl text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" /> SVG
                   </a>
@@ -526,10 +506,10 @@ export function BrandBoard() {
         )}
 
         {/* Footer info */}
-        <footer className="pt-8 border-t border-[#DFDDD2] flex flex-col sm:flex-row items-center justify-between text-xs text-[#70736B] gap-4">
-          <div>© 2026 KRIYA Design System • Cozy Retro-Digital Productivity</div>
-          <div className="flex items-center gap-4 font-mono font-bold">
-            <span>Palette: #C85A3D / #FFFDF7 / #20231F</span>
+        <footer className="pt-8 border-t border-[#E6E6E8] flex flex-col sm:flex-row items-center justify-between text-xs text-[#8B8B8B] gap-4">
+          <div>© 2026 KRIYA Design System • Aesthetic SaaS Productivity</div>
+          <div className="flex items-center gap-4 font-semibold">
+            <span>Palette: #070709 / #C85A3D / #D9A441 / #FFFFFF</span>
           </div>
         </footer>
 
