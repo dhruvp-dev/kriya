@@ -128,38 +128,36 @@ export function QuestCard({
             )}
 
             {/* 3. Attribute + Difficulty & 4. Rewards */}
-            <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-semibold">
-              <span className="flex items-center gap-1.5 text-[#686C73]">
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#E5E1D9]/70 text-xs font-semibold">
+              <div className="flex items-center gap-2 text-[#686C73]">
                 <span className={cn('w-2 h-2 rounded-full', attrInfo.dotBg)} />
                 <span className={attrInfo.color}>{attrInfo.name}</span>
                 <span className="text-[#E5E1D9]">·</span>
-                <span>{quest.difficulty}</span>
-              </span>
-
-              <span className="text-[#E5E1D9]">|</span>
+                <span className="capitalize">{quest.difficulty.toLowerCase()}</span>
+              </div>
 
               {/* Rewards */}
-              <div className="flex items-center gap-3 font-technical text-xs font-bold text-[#D97706]">
-                <span>+{quest.xp} XP</span>
-                <span>+{quest.gold} GOLD</span>
+              <div className="flex items-center gap-3 font-technical text-xs font-bold">
+                <span className="text-[#171A21]">+{quest.xp} XP</span>
+                <span className="text-[#FFB547]">+{quest.gold} Gold</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 5. Primary Action: Complete Button (Electric Coral #F05A3C) */}
+        {/* 5. Primary Action: Complete Button (Action Coral #F05A3C) */}
         <div className="flex flex-col items-end shrink-0 sm:self-center">
           {!quest.completed ? (
             <button
               onClick={handleCompleteClick}
               disabled={isCompleting}
-              className="bg-[#F05A3C] hover:bg-[#D9482D] text-white px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-colors shadow-2xs active:translate-y-0.5"
+              className="bg-[#F05A3C] hover:bg-[#D9482B] text-white px-4 py-2 rounded-xl font-extrabold text-xs transition-all shadow-2xs active:translate-y-0.5 cursor-pointer"
             >
-              [ Complete ]
+              Complete
             </button>
           ) : (
-            <span className="text-xs font-bold text-[#2E9B72] bg-[#ECFDF5] px-3 py-1.5 rounded-lg border border-[#A7F3D0]">
-              ✓ Completed
+            <span className="text-xs font-bold text-[#2E9B72] bg-[#F0FDF4] px-3 py-1.5 rounded-xl border border-[#2E9B72]/20">
+              Completed
             </span>
           )}
         </div>

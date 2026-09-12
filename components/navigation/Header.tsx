@@ -64,17 +64,12 @@ export function Header({
         )}
 
         <div className="flex flex-col min-w-0">
-          <h1 className="text-lg lg:text-xl font-bold text-[#171A21] tracking-tight">
+          <h1 className="text-lg lg:text-xl font-extrabold text-[#171A21] tracking-tight">
             {greeting}, {activeName}
           </h1>
 
-          <div className="flex items-center gap-2 text-xs text-[#686C73] mt-0.5 font-medium">
-            <span className="font-technical text-[11px]">Sun, Sep 13, 2026</span>
-            <span>•</span>
-            <span className="inline-flex items-center gap-1.5 text-[#2E9B72] font-semibold text-[11px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#2E9B72]" />
-              System Status: Normal
-            </span>
+          <div className="text-xs text-[#686C73] mt-0.5 font-medium">
+            Sun, Sep 13, 2026
           </div>
         </div>
       </div>

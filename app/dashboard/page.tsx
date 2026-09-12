@@ -406,17 +406,17 @@ export default function DashboardPage() {
                   ))}
                 </div>
               ) : (
-                <div className="bg-white border border-[#E5E1D9] rounded-2xl p-8 text-center space-y-2">
-                  <h3 className="text-sm font-bold text-[#171A21]">No quests pending</h3>
-                  <p className="text-xs text-[#686C73]">
+                <div className="bg-white border border-[#E5E1D9] rounded-2xl p-12 text-center space-y-3">
+                  <h3 className="text-base font-extrabold text-[#171A21]">No quests pending</h3>
+                  <p className="text-xs text-[#686C73] max-w-xs mx-auto font-medium leading-relaxed">
                     Nothing planned yet. Create your first quest and start building momentum.
                   </p>
                   <button
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#F05A3C] hover:bg-[#D9482B] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer mt-2"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#F05A3C] hover:bg-[#D9482B] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer mt-2"
                   >
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>Create Quest</span>
+                    <Plus className="w-4 h-4 stroke-[2.5]" />
+                    <span>+ Create Quest</span>
                   </button>
                 </div>
               )}

@@ -35,6 +35,8 @@ export interface RightSidebarProps {
   activities?: ActivityItem[];
 }
 
+import { Avatar } from './avatar/Avatar';
+
 export function RightSidebar({
   level = 12,
   attributes = {
@@ -73,7 +75,7 @@ export function RightSidebar({
     {
       id: 'act-1',
       title: 'Completed quest',
-      subtext: 'Study React',
+      subtext: 'Study React API Architecture',
       xp: 50,
       gold: 15,
       timeAgo: '12m ago',
@@ -99,29 +101,34 @@ export function RightSidebar({
   return (
     <aside className="w-full xl:w-80 space-y-6 shrink-0 select-none font-sans">
       {/* 1. CHARACTER PANEL */}
-      <div className="bg-[#FFFFFF] border border-[#E5E1D9] rounded-xl p-5 shadow-2xs space-y-5">
+      <div className="bg-[#FFFFFF] border border-[#E5E1D9] rounded-2xl p-6 shadow-2xs space-y-5">
         <div className="flex items-center justify-between pb-3 border-b border-[#E5E1D9]">
           <h3 className="text-xs font-bold text-[#171A21] tracking-wider uppercase">
             CHARACTER
           </h3>
-          <span className="text-xs font-semibold text-[#686C73] font-technical">
+          <span className="text-xs font-bold text-[#171A21] font-technical">
             LV. {level}
           </span>
         </div>
 
-        {/* Clean Vector Illustrated Character Portrait in Deep Navy & Coral */}
-        <div className="flex flex-col items-center justify-center p-4 bg-[#F7F5F0] border border-[#E5E1D9] rounded-lg text-center">
-          <div className="relative w-20 h-20 rounded-full bg-[#202B3C] flex items-center justify-center border-2 border-[#E5E1D9] shadow-2xs">
-            <svg className="w-16 h-16" viewBox="0 0 100 100" fill="none">
-              <rect x="25" y="20" width="50" height="45" rx="8" fill="#283548" />
-              <rect x="30" y="32" width="40" height="10" rx="3" fill="#F05A3C" />
-              <path d="M15 85 C15 65 30 65 50 65 C70 65 85 65 85 85 Z" fill="#202B3C" />
-            </svg>
-          </div>
+        {/* Minimal Pixel Character Portrait */}
+        <div className="flex flex-col items-center justify-center p-4 bg-[#F7F5F0] border border-[#E5E1D9] rounded-xl text-center">
+          <Avatar
+            size="lg"
+            config={{
+              baseModel: 'warrior',
+              tint: '#F05A3C',
+              hat: 'none',
+              weapon: 'none',
+              back: 'none',
+            }}
+            animate={false}
+            className="w-20 h-20 rounded-2xl bg-[#202B3C] border-2 border-[#E5E1D9] shadow-2xs"
+          />
 
           <div className="mt-3">
             <h4 className="text-base font-extrabold text-[#171A21] tracking-tight">DHRUV</h4>
-            <p className="text-[11px] font-semibold text-[#686C73] uppercase tracking-wider mt-0.5">
+            <p className="text-[10px] font-bold text-[#686C73] uppercase tracking-wider mt-0.5">
               ARCHITECT
             </p>
           </div>

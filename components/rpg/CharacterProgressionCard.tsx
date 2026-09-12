@@ -36,21 +36,21 @@ export function CharacterProgressionCard({
   const xpPercent = Math.min(100, Math.round((activeCurrentXp / activeNextLevelXp) * 100));
 
   return (
-    <div className="relative bg-[#FFFFFF] border border-[#E5E1D9] rounded-xl p-6 sm:p-7 shadow-2xs overflow-hidden chamfer-panel font-sans">
-      {/* Visual Header: Human Title, Level & XP Counter */}
+    <div className="relative bg-[#FFFFFF] border border-[#E5E1D9] rounded-2xl p-6 sm:p-7 shadow-2xs overflow-hidden font-sans">
+      {/* Visual Header: YOUR PROGRESS, LEVEL & XP Counter */}
       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-4">
         <div>
-          <span className="text-xs font-semibold text-[#686C73]">
-            Your progress
+          <span className="text-xs font-bold tracking-wider text-[#686C73] uppercase">
+            YOUR PROGRESS
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#171A21] tracking-tight mt-0.5">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#171A21] tracking-tight mt-1">
             LEVEL {activeLevel}
           </h2>
         </div>
 
         <div className="text-left sm:text-right">
           <span className="font-technical text-xl sm:text-2xl font-bold text-[#171A21]">
-            <span className="text-[#D97706]">{activeCurrentXp.toLocaleString()}</span>
+            <span className="text-[#FFB547]">{activeCurrentXp.toLocaleString()}</span>
             <span className="text-[#686C73] font-normal"> / {activeNextLevelXp.toLocaleString()} XP</span>
           </span>
         </div>
@@ -58,38 +58,42 @@ export function CharacterProgressionCard({
 
       {/* Segmented XP Progress Bar (Warm Amber #FFB547 with Retro Ticks) */}
       <div className="relative mb-5">
-        <div className="h-5 w-full bg-[#F7F5F0] border border-[#E5E1D9] rounded-lg p-0.5 overflow-hidden relative shadow-inner">
-          {/* Segmented Grid Overlay */}
-          <div className="absolute inset-0 z-10 pointer-events-none segmented-bg-grid opacity-60" />
+        <div className="h-4 w-full bg-[#F7F5F0] border border-[#E5E1D9] rounded-lg p-0.5 overflow-hidden relative shadow-inner">
+          {/* Subtle Segmented Grid Overlay */}
+          <div className="absolute inset-0 z-10 pointer-events-none segmented-bg-grid opacity-50" />
 
           {/* Warm Amber Progress Fill (#FFB547) */}
           <div
-            className="h-full bg-gradient-to-r from-[#FFB547] to-[#FCD34D] rounded-md transition-all duration-700 ease-out segmented-ticks relative"
+            className="h-full bg-[#FFB547] rounded-md transition-all duration-700 ease-out segmented-ticks relative"
             style={{ width: `${xpPercent}%` }}
           />
         </div>
 
-        <div className="flex justify-between items-center text-xs font-technical text-[#686C73] mt-1.5 font-medium">
-          <span>{xpPercent}% COMPLETE TO LEVEL {activeLevel + 1}</span>
-          <span>{Math.max(0, activeNextLevelXp - activeCurrentXp).toLocaleString()} XP REMAINING</span>
+        <div className="flex justify-between items-center text-xs text-[#686C73] mt-2 font-medium">
+          <span>
+            <span className="font-technical font-bold text-[#171A21]">{xpPercent}%</span> complete to Level {activeLevel + 1}
+          </span>
+          <span>
+            <span className="font-technical font-bold text-[#171A21]">{Math.max(0, activeNextLevelXp - activeCurrentXp).toLocaleString()}</span> XP remaining
+          </span>
         </div>
       </div>
 
-      {/* Below Bar Readout: 14 DAY STREAK & 680 GOLD */}
+      {/* Below Bar Readout: STREAK & GOLD */}
       <div className="flex flex-wrap items-center gap-6 pt-4 border-t border-[#E5E1D9]">
         {/* Streak */}
         <div className="flex items-center gap-2">
           <Flame className="w-4 h-4 text-[#F05A3C] fill-[#F05A3C]" />
-          <span className="text-sm font-bold text-[#171A21]">
-            {activeStreak} DAY STREAK
+          <span className="text-xs font-bold text-[#171A21] uppercase tracking-wider">
+            <span className="font-technical font-bold text-sm text-[#F05A3C]">{activeStreak}</span> DAY STREAK
           </span>
         </div>
 
         {/* Gold */}
         <div className="flex items-center gap-2">
           <Coins className="w-4 h-4 text-[#FFB547]" />
-          <span className="text-sm font-bold text-[#171A21]">
-            {activeGold} GOLD
+          <span className="text-xs font-bold text-[#171A21] uppercase tracking-wider">
+            <span className="font-technical font-bold text-sm text-[#FFB547]">{activeGold}</span> GOLD
           </span>
         </div>
       </div>
