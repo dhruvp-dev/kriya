@@ -4,8 +4,8 @@ import './globals.css';
 import { ToastProvider } from '../components/ui/Toast';
 
 export const metadata: Metadata = {
-  title: 'KRIYA: Daily Progress Engine',
-  description: 'Turn real-life goals into daily achievements with a warm cozy retro-digital productivity system.',
+  title: 'KRIYA: Premium Productivity & Progression',
+  description: 'Turn everyday actions into visible progress. Modern productivity software with character.',
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -26,14 +26,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#FAF8F5] text-[#192420] min-h-screen antialiased font-sans selection:bg-[#1B4332] selection:text-[#FAF8F5]">
+      <body className="bg-[#FFFFFF] text-[#070709] min-h-screen antialiased font-sans selection:bg-[#070709] selection:text-[#FFFFFF]">
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );
 }
-

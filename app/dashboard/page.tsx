@@ -341,7 +341,7 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F3F1E8] text-[#20231F] flex flex-col lg:flex-row font-sans">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#070709] flex flex-col lg:flex-row font-sans">
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -349,7 +349,7 @@ export default function DashboardPage() {
         userStats={userStats}
       />
 
-      <main className="flex-1 lg:pl-60 min-w-0 flex flex-col min-h-screen">
+      <main className="flex-1 lg:pl-60 min-w-0 flex flex-col min-h-screen bg-[#FFFFFF]">
         <Header
           userStats={userStats}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
@@ -359,32 +359,33 @@ export default function DashboardPage() {
         <div className="p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Main Content Column */}
           <div className="lg:col-span-8 space-y-6">
-            {/* Progression Hero Card */}
+            {/* Progression Component */}
             <CharacterProgressionCard userStats={userStats} />
 
             {/* Today's Quests Section */}
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <h2 className="text-xl font-extrabold text-[#20231F] tracking-tight">
-                    Today’s quests
+                  <h2 className="text-lg sm:text-xl font-bold text-[#151515] tracking-tight">
+                    Today&apos;s Quests
                   </h2>
-                  <p className="text-xs text-[#70736B] font-medium mt-0.5">
-                    Small actions. Real progress.
+                  <p className="text-xs text-[#8B8B8B] mt-0.5">
+                    Small actions. Visible progress.
                   </p>
                 </div>
 
                 {/* Attribute Filters */}
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
                   {(['All', 'Strength', 'Intellect', 'Discipline', 'Creativity'] as const).map(
                     (filter) => (
                       <button
                         key={filter}
+                        type="button"
                         onClick={() => setActiveFilter(filter)}
-                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                        className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
                           activeFilter === filter
-                            ? 'bg-[#20231F] text-white shadow-2xs'
-                            : 'text-[#70736B] hover:text-[#20231F] hover:bg-[#EBE8DD]'
+                            ? 'bg-[#070709] text-white'
+                            : 'text-[#60606C] hover:text-[#070709] hover:bg-[#F3F4F5]'
                         }`}
                       >
                         {filter}
@@ -394,9 +395,9 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Quest Cards */}
+              {/* Quest Rows */}
               {filteredTodayQuests.length > 0 ? (
-                <div className="grid grid-cols-1 gap-3.5">
+                <div className="grid grid-cols-1 gap-3">
                   {filteredTodayQuests.map((quest) => (
                     <QuestCard
                       key={quest.id}
@@ -406,17 +407,18 @@ export default function DashboardPage() {
                   ))}
                 </div>
               ) : (
-                <div className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-2xl p-12 text-center space-y-3">
-                  <h3 className="text-base font-extrabold text-[#20231F]">No quests pending</h3>
-                  <p className="text-xs text-[#70736B] max-w-xs mx-auto font-medium leading-relaxed">
-                    Nothing planned yet. Create your first quest and start building momentum.
+                <div className="bg-[#F7F7F8] border border-[#E6E6E8] rounded-2xl p-10 text-center space-y-3">
+                  <h3 className="text-base font-bold text-[#151515]">No quests pending</h3>
+                  <p className="text-xs text-[#60606C] max-w-xs mx-auto leading-relaxed">
+                    Turn something you want to accomplish into your first quest today.
                   </p>
                   <button
+                    type="button"
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#C85A3D] hover:bg-[#A94730] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer mt-2"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#070709] hover:bg-[#1B1C1F] text-white text-xs font-semibold rounded-lg transition-all shadow-xs cursor-pointer mt-1"
                   >
-                    <Plus className="w-4 h-4 stroke-[2.5]" />
-                    <span>+ Create Quest</span>
+                    <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>Create Quest</span>
                   </button>
                 </div>
               )}

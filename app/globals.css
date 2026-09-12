@@ -4,75 +4,50 @@
 
 @layer base {
   body {
-    @apply bg-[#FAF8F5] text-[#192420] antialiased font-sans selection:bg-[#1B4332] selection:text-[#FAF8F5];
+    @apply bg-[#FFFFFF] text-[#070709] antialiased font-sans selection:bg-[#070709] selection:text-[#FFFFFF];
     min-height: 100vh;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
+    color: #151515;
   }
 }
 
-/* Warm Ivory Paper Dot Grid Background */
-.bg-warm-paper-grid {
-  background-color: #FAF8F5;
-  background-image: radial-gradient(#E2D9C8 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-/* Subtle Editorial Border & Card Shadows */
-.editorial-card {
+/* Subtle elevation card utilities */
+.saas-card {
   background: #FFFFFF;
-  border: 1px solid #EAE4D6;
-  box-shadow: 0 4px 20px -4px rgba(44, 39, 32, 0.05), 0 2px 6px -2px rgba(44, 39, 32, 0.03);
+  border: 1px solid #E6E6E8;
+  box-shadow: 0 1px 3px 0 rgba(7, 7, 9, 0.02), 0 1px 2px -1px rgba(7, 7, 9, 0.02);
 }
 
-.editorial-card-hover {
+.saas-card-hover {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.editorial-card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px -6px rgba(44, 39, 32, 0.08), 0 4px 10px -2px rgba(44, 39, 32, 0.04);
+.saas-card-hover:hover {
+  border-color: #D0D1D4;
+  box-shadow: 0 8px 24px -4px rgba(7, 7, 9, 0.05), 0 2px 6px -1px rgba(7, 7, 9, 0.02);
+  transform: translateY(-1px);
 }
 
-/* Chamfered pixel-accent utilities */
-.chamfer-panel {
-  clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+/* Tabular numbers for clean numeric layout without introducing monospace */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
-.chamfer-button {
-  clip-path: polygon(0 4px, 4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%);
-}
-
-/* Monospace font for small metadata numbers (+50 XP, LV. 10) */
-.font-technical {
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* Segmented progress bar tick pattern */
-.segmented-ticks {
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 8px,
-    rgba(255, 255, 255, 0.4) 8px,
-    rgba(255, 255, 255, 0.4) 10px
-  );
-}
-
-/* Custom Warm Editorial Scrollbar */
+/* Restrained, barely noticeable scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF8F5;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D8CEBC;
-  border-radius: 4px;
+  background: #E6E6E8;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #1B4332;
+  background: #D0D1D4;
 }

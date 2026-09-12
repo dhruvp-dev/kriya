@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Compass, Bookmarks, Trophy, Sparkle, SealCheck } from '@phosphor-icons/react';
+import { Compass, Bookmark, Trophy, Award, Sparkles } from 'lucide-react';
 
 interface KeepsakeItem {
   id: string;
@@ -10,22 +10,22 @@ interface KeepsakeItem {
   category: string;
   origin: string;
   description: string;
-  icon: React.ElementType;
+  icon: any;
 }
 
 const KEEPSAKES: KeepsakeItem[] = [
   {
     id: 'badge',
     name: 'Mastery Achievement Badge',
-    category: 'BADGE',
+    category: 'Badge',
     origin: 'Completed 50 consecutive quests',
     description: 'A framed miniature badge honoring persistent daily focus.',
-    icon: SealCheck,
+    icon: Award,
   },
   {
     id: 'compass',
     name: 'Polished Brass Compass',
-    category: 'COLLECTIBLE',
+    category: 'Collectible',
     origin: 'Explored 5 new skill domains',
     description: 'A tactile reminder to stay aligned with your true north.',
     icon: Compass,
@@ -33,57 +33,53 @@ const KEEPSAKES: KeepsakeItem[] = [
   {
     id: 'hourglass',
     name: 'Sand Timer Hourglass',
-    category: 'COSMETIC',
+    category: 'Cosmetic',
     origin: 'Logged 100 hours of deep work',
     description: 'Measures intentional moments of undisturbed creative flow.',
     icon: Trophy,
   },
   {
     id: 'quill',
-    name: 'Scholar Quill & Inkwell',
-    category: 'TITLE ITEM',
+    name: 'Scholar Quill & Bookmark',
+    category: 'Title Item',
     origin: 'Read 1,000 pages of books',
     description: 'Earned by those who write, reflect, and document their journey.',
-    icon: Bookmarks,
+    icon: Bookmark,
   },
 ];
 
 export function RewardsShelfSection() {
   const [selectedItem, setSelectedItem] = useState<string>('badge');
-  const activeKeepsake = KEEPSAKES.find((k) => k.id === selectedItem) || KEEPSAKES[0];
 
   return (
-    <section id="shelf" className="py-20 bg-[#FAF8F5] border-t border-[#E8E1D3]">
+    <section id="shelf" className="py-20 bg-[#F7F7F8] border-t border-[#E6E6E8] font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         {/* Section Header */}
         <div className="max-w-3xl mb-12 space-y-3">
-          <div className="text-xs font-semibold uppercase tracking-wider text-[#1B4332]">
-            PERSONAL COLLECTION
+          <div className="text-xs font-bold uppercase tracking-wider text-[#C85A3D]">
+            Personal Collection
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#192420] tracking-tight leading-tight">
-            PROGRESS LEAVES <br />
-            SOMETHING BEHIND.
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#070709] tracking-tight">
+            Progress leaves something behind.
           </h2>
-          <p className="text-base sm:text-lg text-[#667770]">
-            Not virtual clutter or an ecommerce storefront. A personal shelf of keepsakes, badges, and honors reflecting seasons of focused effort.
+          <p className="text-base text-[#60606C]">
+            Not ecommerce storefront clutter. A personal collection of keepsakes and badges reflecting seasons of focused effort.
           </p>
         </div>
 
         {/* Illustrated Shelf + Keepsake Highlights */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
           {/* LEFT: Illustrated Keepsake Shelf */}
           <div className="lg:col-span-7">
-            <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-[#E8E1D3] bg-[#FFFFFF] shadow-md group">
+            <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-[#E6E6E8] bg-white shadow-sm">
               <Image
                 src="/illustrations/shelf_collectibles.jpg"
                 alt="Cozy wooden wall shelf with personal collectibles including an achievement frame, brass compass, succulent, hourglass, and quill"
                 fill
                 className="object-cover"
               />
-              <div className="absolute bottom-3 left-3 px-3 py-1 bg-[#FFFFFF]/90 backdrop-blur-sm border border-[#E8E1D3] rounded-md text-[11px] font-technical font-bold text-[#192420]">
-                STUDY DISPLAY SHELF
+              <div className="absolute bottom-3 left-3 px-3 py-1 bg-white/95 backdrop-blur-sm border border-[#E6E6E8] rounded-xl text-xs font-bold text-[#070709]">
+                Study Display Shelf
               </div>
             </div>
           </div>
@@ -98,29 +94,29 @@ export function RewardsShelfSection() {
                 <div
                   key={item.id}
                   onClick={() => setSelectedItem(item.id)}
-                  className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                  className={`p-4 rounded-2xl border cursor-pointer transition-all ${
                     isSelected
-                      ? 'bg-[#FFFFFF] border-[#1B4332] shadow-sm ring-1 ring-[#1B4332]/20'
-                      : 'bg-[#FFFFFF]/60 hover:bg-[#FFFFFF] border-[#E8E1D3]'
+                      ? 'bg-white border-[#070709] shadow-sm ring-1 ring-[#070709]'
+                      : 'bg-white/80 hover:bg-white border-[#E6E6E8]'
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] border border-[#E8E1D3] flex items-center justify-center text-[#1B4332] shrink-0 mt-0.5">
-                      <IconComponent weight="bold" className="w-4 h-4" />
+                    <div className="w-8 h-8 rounded-xl bg-[#F7F7F8] border border-[#E6E6E8] flex items-center justify-center text-[#070709] shrink-0 mt-0.5">
+                      <IconComponent className="w-4 h-4" />
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-sm text-[#192420] leading-snug">
+                        <span className="font-bold text-sm text-[#070709] leading-snug">
                           {item.name}
                         </span>
-                        <span className="text-[10px] font-technical uppercase px-1.5 py-0.5 rounded bg-[#FAF8F5] border border-[#E8E1D3] text-[#667770]">
+                        <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-[#F7F7F8] border border-[#E6E6E8] text-[#60606C]">
                           {item.category}
                         </span>
                       </div>
-                      <p className="text-xs text-[#667770] leading-relaxed">
+                      <p className="text-xs text-[#60606C] leading-relaxed">
                         {item.description}
                       </p>
-                      <div className="text-[11px] font-medium text-[#1B4332] pt-0.5">
+                      <div className="text-xs font-semibold text-[#070709] pt-0.5">
                         Unlocked by: {item.origin}
                       </div>
                     </div>
@@ -129,9 +125,7 @@ export function RewardsShelfSection() {
               );
             })}
           </div>
-
         </div>
-
       </div>
     </section>
   );

@@ -77,7 +77,7 @@ export default function AchievementsPage() {
   const unlockedCount = achievements.filter((a) => a.unlocked).length;
 
   return (
-    <div className="min-h-screen bg-[#F3F1E8] text-[#20231F] flex flex-col lg:flex-row font-sans">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#070709] flex flex-col lg:flex-row font-sans">
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -94,17 +94,17 @@ export default function AchievementsPage() {
         <div className="p-4 sm:p-6 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#20231F] tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#070709] tracking-tight">
                 Achievements
               </h1>
-              <p className="text-sm text-[#70736B] mt-1 font-medium">
+              <p className="text-sm text-[#60606C] mt-1 font-medium">
                 Milestones unlocked through real-world habit execution.
               </p>
             </div>
 
-            <div className="flex items-center gap-2 px-3.5 py-2 bg-[#FFFDF7] border border-[#DFDDD2] rounded-xl shadow-2xs text-xs font-bold text-[#20231F]">
+            <div className="flex items-center gap-2 px-3.5 py-2 bg-white border border-[#E6E6E8] rounded-xl shadow-xs text-xs font-semibold text-[#070709]">
               <Trophy className="w-4 h-4 text-[#D9A441]" />
-              <span>{unlockedCount} of {achievements.length} Unlocked</span>
+              <span className="tabular-nums">{unlockedCount} of {achievements.length} Unlocked</span>
             </div>
           </div>
 
@@ -115,10 +115,10 @@ export default function AchievementsPage() {
               return (
                 <div
                   key={ach.id}
-                  className={`bg-[#FFFDF7] border rounded-2xl p-5 shadow-2xs flex flex-col justify-between space-y-4 transition-all ${
+                  className={`border rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4 transition-all ${
                     ach.unlocked
-                      ? 'border-[#DFDDD2]'
-                      : 'border-[#DFDDD2]/60 opacity-60 bg-[#F3F1E8]'
+                      ? 'bg-white border-[#E6E6E8]'
+                      : 'bg-[#F7F7F8] border-[#E6E6E8] opacity-75'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -126,29 +126,34 @@ export default function AchievementsPage() {
                       <div
                         className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                           ach.unlocked
-                            ? 'bg-[#FAF4E6] text-[#D9A441] border border-[#D9A441]/30'
-                            : 'bg-[#DFDDD2]/40 text-[#70736B]'
+                            ? 'bg-[#FDF8EC] text-[#D9A441] border border-[#D9A441]/20'
+                            : 'bg-white text-[#8B8B8B] border border-[#E6E6E8]'
                         }`}
                       >
                         <Icon className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="text-sm font-extrabold text-[#20231F]">{ach.title}</h4>
-                        <p className="text-xs text-[#70736B] mt-0.5">{ach.description}</p>
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-sm font-bold text-[#070709]">{ach.title}</h4>
+                          <span className="text-[10px] uppercase font-semibold text-[#8B8B8B] tracking-wider">
+                            {ach.category}
+                          </span>
+                        </div>
+                        <p className="text-xs text-[#60606C] mt-0.5 leading-relaxed">{ach.description}</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-[#DFDDD2]/60 flex items-center justify-between text-xs font-medium text-[#70736B]">
+                  <div className="pt-3 border-t border-[#E6E6E8] flex items-center justify-between text-xs font-medium">
                     {ach.unlocked ? (
                       <span className="inline-flex items-center gap-1.5 text-[#668F72] font-semibold">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         Unlocked {ach.unlockedAt}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 text-[#70736B]">
+                      <span className="inline-flex items-center gap-1.5 text-[#8B8B8B] tabular-nums">
                         <Lock className="w-3.5 h-3.5" />
-                        {ach.progress || 'Locked'}
+                        Progress: {ach.progress || 'Locked'}
                       </span>
                     )}
                   </div>

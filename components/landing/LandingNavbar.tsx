@@ -2,36 +2,34 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { List, X, ArrowRight } from '@phosphor-icons/react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 import { KriyaLogo } from '../ui/KriyaLogo';
 
 export function LandingNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: 'How It Works', href: '#how-it-works' },
-    { label: 'The Loop', href: '#loop' },
+    { label: 'Product', href: '#preview' },
     { label: 'Archetypes', href: '#archetypes' },
-    { label: 'World', href: '#world' },
-    { label: 'Quests', href: '#quests' },
-    { label: 'Shelf', href: '#shelf' },
+    { label: 'Core Loop', href: '#loop' },
+    { label: 'Philosophy', href: '#philosophy' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#FAF8F5]/90 backdrop-blur-md border-b border-[#E8E1D3] transition-colors">
+    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-[#E6E6E8] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Mark */}
-        <Link href="/" className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#1B4332]/40 rounded-sm">
-          <KriyaLogo variant="navbar" size={28} showTagline={false} />
+        <Link href="/" className="flex items-center gap-2.5 focus:outline-none rounded-lg">
+          <KriyaLogo variant="navbar" size={26} showTagline={false} />
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#667770]">
+        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-[#60606C]">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="hover:text-[#192420] transition-colors duration-150"
+              className="hover:text-[#070709] transition-colors"
             >
               {link.label}
             </a>
@@ -42,51 +40,51 @@ export function LandingNavbar() {
         <div className="hidden md:flex items-center gap-4">
           <Link
             href="/login"
-            className="text-sm font-medium text-[#667770] hover:text-[#192420] transition-colors px-2 py-1"
+            className="text-xs font-semibold text-[#60606C] hover:text-[#070709] transition-colors px-2 py-1"
           >
-            Log In
+            Sign In
           </Link>
 
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-2 bg-[#1B4332] hover:bg-[#133226] text-[#FAF8F5] font-semibold text-sm px-4 py-2 rounded-lg transition-all duration-150 shadow-sm active:scale-[0.98]"
+            className="inline-flex items-center gap-2 bg-[#070709] hover:bg-[#202025] text-white font-semibold text-xs px-4 py-2 rounded-xl transition-all shadow-xs active:scale-[0.98]"
           >
-            <span>Start Your Journey</span>
-            <ArrowRight weight="bold" className="w-4 h-4" />
+            <span>Open Dashboard</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         {/* Mobile Hamburger Toggle */}
-        <div className="flex md:hidden items-center gap-3">
+        <div className="flex md:hidden items-center gap-2.5">
           <Link
             href="/dashboard"
-            className="bg-[#1B4332] hover:bg-[#133226] text-[#FAF8F5] text-xs font-semibold px-3 py-1.5 rounded-md"
+            className="bg-[#070709] text-white text-xs font-semibold px-3 py-1.5 rounded-xl"
           >
-            Start
+            Launch
           </Link>
 
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-[#192420] hover:bg-[#EFEBE1] rounded-md transition-colors"
+            className="p-2 text-[#070709] hover:bg-[#F7F7F8] rounded-xl transition-colors cursor-pointer"
             aria-label="Toggle Navigation Menu"
             aria-expanded={isMobileMenuOpen}
           >
-            {isMobileMenuOpen ? <X weight="bold" className="w-5 h-5" /> : <List weight="bold" className="w-5 h-5" />}
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu Panel */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-[#FAF8F5] border-b border-[#E8E1D3] px-4 pt-3 pb-6 space-y-3 shadow-lg">
+        <div className="md:hidden bg-white border-b border-[#E6E6E8] px-4 pt-3 pb-6 space-y-3 shadow-lg animate-fadeIn">
           <nav className="flex flex-col space-y-2">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-base font-medium text-[#192420] hover:text-[#1B4332] py-2 border-b border-[#E8E1D3]/60"
+                className="text-sm font-semibold text-[#070709] hover:text-[#C85A3D] py-2 border-b border-[#E6E6E8]/60"
               >
                 {link.label}
               </a>
@@ -94,9 +92,9 @@ export function LandingNavbar() {
             <Link
               href="/login"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-base font-medium text-[#667770] hover:text-[#192420] py-2"
+              className="text-sm font-semibold text-[#60606C] hover:text-[#070709] py-2"
             >
-              Log In
+              Sign In
             </Link>
           </nav>
 
@@ -104,10 +102,10 @@ export function LandingNavbar() {
             <Link
               href="/dashboard"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center gap-2 bg-[#1B4332] text-[#FAF8F5] font-semibold text-base py-3 rounded-lg"
+              className="w-full flex items-center justify-center gap-2 bg-[#070709] text-white font-semibold text-sm py-3 rounded-xl shadow-xs"
             >
-              <span>Start Your Journey</span>
-              <ArrowRight weight="bold" className="w-4 h-4" />
+              <span>Open Dashboard</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

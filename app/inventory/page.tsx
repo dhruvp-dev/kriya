@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
-import { Package, Check, Sparkles } from 'lucide-react';
+import { Package, Check } from 'lucide-react';
 import { useToast } from '../../components/ui/Toast';
 
 export default function InventoryPage() {
@@ -29,10 +29,17 @@ export default function InventoryPage() {
     },
     {
       id: 'inv-2',
-      name: 'Standard Oak Frame',
+      name: 'Gold Tier Frame',
       type: 'Avatar Frame',
-      description: 'Default warm wood avatar frame border.',
+      description: 'Metallic gold border with studs cosmetic avatar frame.',
       equipped: true,
+    },
+    {
+      id: 'inv-3',
+      name: 'Default Frame',
+      type: 'Avatar Frame',
+      description: 'Clean minimalist border.',
+      equipped: false,
     },
   ]);
 
@@ -54,7 +61,7 @@ export default function InventoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F3F1E8] text-[#20231F] flex flex-col lg:flex-row font-sans">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#070709] flex flex-col lg:flex-row font-sans">
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -69,36 +76,43 @@ export default function InventoryPage() {
         />
 
         <div className="p-4 sm:p-6 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#20231F] tracking-tight">
-              Inventory
-            </h1>
-            <p className="text-sm text-[#70736B] mt-1 font-medium">
-              Manage and equip your acquired titles, avatar frames, and accessories.
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#070709] tracking-tight">
+                Inventory
+              </h1>
+              <p className="text-sm text-[#60606C] mt-1 font-medium">
+                Manage and equip your acquired titles, avatar frames, and accessories.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 px-3.5 py-2 bg-white border border-[#E6E6E8] rounded-xl shadow-xs text-xs font-semibold text-[#070709]">
+              <Package className="w-4 h-4 text-[#60606C]" />
+              <span className="tabular-nums">{inventoryItems.length} Items Collected</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {inventoryItems.map((item) => (
               <div
                 key={item.id}
-                className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-2xl p-5 shadow-2xs flex flex-col justify-between space-y-4"
+                className="bg-white border border-[#E6E6E8] rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4"
               >
                 <div>
-                  <span className="text-[10px] font-extrabold tracking-wider text-[#70736B] uppercase">
+                  <span className="text-[10px] font-bold tracking-wider text-[#8B8B8B] uppercase">
                     {item.type}
                   </span>
-                  <h3 className="text-base font-extrabold text-[#20231F] mt-0.5">{item.name}</h3>
-                  <p className="text-xs text-[#70736B] mt-1">{item.description}</p>
+                  <h3 className="text-base font-bold text-[#070709] mt-1">{item.name}</h3>
+                  <p className="text-xs text-[#60606C] mt-1 leading-relaxed">{item.description}</p>
                 </div>
 
-                <div className="pt-3 border-t border-[#DFDDD2] flex justify-end">
+                <div className="pt-3 border-t border-[#E6E6E8] flex justify-end">
                   <button
                     onClick={() => handleToggleEquip(item.id)}
-                    className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
                       item.equipped
-                        ? 'bg-[#668F72] text-white shadow-xs'
-                        : 'bg-[#20231F] hover:bg-[#344653] text-white shadow-xs'
+                        ? 'bg-[#F2F7F4] text-[#668F72] border border-[#668F72]/30'
+                        : 'bg-[#070709] hover:bg-[#202025] text-white shadow-xs'
                     }`}
                   >
                     {item.equipped && <Check className="w-3.5 h-3.5" />}

@@ -23,6 +23,7 @@ export type AvatarFrameVariant =
 export interface AvatarProps {
   variant: AvatarVariant;
   size?: number;
+  system?: 'blob' | 'pixel';
   frame?: AvatarFrameVariant;
   showFrame?: boolean;
   className?: string;

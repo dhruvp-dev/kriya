@@ -36,7 +36,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F3F1E8] text-[#20231F] flex flex-col lg:flex-row font-sans">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#070709] flex flex-col lg:flex-row font-sans">
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -50,21 +50,21 @@ export default function SettingsPage() {
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
 
-        <div className="p-4 sm:p-6 lg:p-8 max-w-4xl w-full mx-auto space-y-8">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-4xl w-full mx-auto space-y-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#20231F] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#070709] tracking-tight">
               Settings
             </h1>
-            <p className="text-sm text-[#70736B] mt-1 font-medium">
-              Configure character identity avatar, audio preferences, and privacy settings.
+            <p className="text-sm text-[#60606C] mt-1 font-medium">
+              Configure character identity avatar, audio feedback, and privacy preferences.
             </p>
           </div>
 
           {/* Character Avatar Settings Section */}
-          <div className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-2xl p-6 shadow-2xs space-y-4">
-            <div className="flex items-center gap-2 pb-3 border-b border-[#DFDDD2]">
+          <div className="bg-white border border-[#E6E6E8] rounded-2xl p-6 shadow-xs space-y-4">
+            <div className="flex items-center gap-2 pb-3 border-b border-[#E6E6E8]">
               <User className="w-5 h-5 text-[#C85A3D]" />
-              <h2 className="text-base font-extrabold text-[#20231F]">
+              <h2 className="text-base font-bold text-[#070709]">
                 Character & Avatar Identity
               </h2>
             </div>
@@ -79,17 +79,17 @@ export default function SettingsPage() {
           </div>
 
           {/* App Preferences */}
-          <div className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-2xl shadow-2xs divide-y divide-[#DFDDD2]">
+          <div className="bg-white border border-[#E6E6E8] rounded-2xl shadow-xs divide-y divide-[#E6E6E8]">
             {/* Audio Toggle */}
             <div className="p-6 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#F3F1E8] border border-[#DFDDD2] flex items-center justify-center text-[#20231F]">
-                  {settings.soundEnabled ? <Volume2 className="w-5 h-5 text-[#C85A3D]" /> : <VolumeX className="w-5 h-5 text-[#70736B]" />}
+                <div className="w-10 h-10 rounded-xl bg-[#F7F7F8] border border-[#E6E6E8] flex items-center justify-center text-[#070709]">
+                  {settings.soundEnabled ? <Volume2 className="w-5 h-5 text-[#C85A3D]" /> : <VolumeX className="w-5 h-5 text-[#8B8B8B]" />}
                 </div>
                 <div>
-                  <h3 className="text-sm font-extrabold text-[#20231F]">Sound Effects</h3>
-                  <p className="text-xs text-[#70736B] mt-0.5">
-                    Play Web Audio synthesizer chimes on quest completion & gold spend.
+                  <h3 className="text-sm font-bold text-[#070709]">Sound Effects</h3>
+                  <p className="text-xs text-[#60606C] mt-0.5 leading-relaxed">
+                    Play synthesizer audio chimes on quest completion and reward unlocks.
                   </p>
                 </div>
               </div>
@@ -97,7 +97,7 @@ export default function SettingsPage() {
               <button
                 onClick={() => setSettings((s) => ({ ...s, soundEnabled: !s.soundEnabled }))}
                 className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  settings.soundEnabled ? 'bg-[#C85A3D]' : 'bg-[#DFDDD2]'
+                  settings.soundEnabled ? 'bg-[#070709]' : 'bg-[#E6E6E8]'
                 }`}
               >
                 <span
@@ -111,13 +111,13 @@ export default function SettingsPage() {
             {/* Leaderboard Opt-In Privacy Toggle */}
             <div className="p-6 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#F3F1E8] border border-[#DFDDD2] flex items-center justify-center text-[#20231F]">
-                  {settings.leaderboardVisible ? <Eye className="w-5 h-5 text-[#668F72]" /> : <EyeOff className="w-5 h-5 text-[#70736B]" />}
+                <div className="w-10 h-10 rounded-xl bg-[#F7F7F8] border border-[#E6E6E8] flex items-center justify-center text-[#070709]">
+                  {settings.leaderboardVisible ? <Eye className="w-5 h-5 text-[#668F72]" /> : <EyeOff className="w-5 h-5 text-[#8B8B8B]" />}
                 </div>
                 <div>
-                  <h3 className="text-sm font-extrabold text-[#20231F]">Leaderboard Visibility</h3>
-                  <p className="text-xs text-[#70736B] mt-0.5">
-                    Opt-in to display your Level and Total XP on public community rankings. (Defaults to OFF)
+                  <h3 className="text-sm font-bold text-[#070709]">Leaderboard Visibility</h3>
+                  <p className="text-xs text-[#60606C] mt-0.5 leading-relaxed">
+                    Opt in to display your Level and Total XP on public community rankings. (Defaults to private)
                   </p>
                 </div>
               </div>
@@ -125,7 +125,7 @@ export default function SettingsPage() {
               <button
                 onClick={() => setSettings((s) => ({ ...s, leaderboardVisible: !s.leaderboardVisible }))}
                 className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  settings.leaderboardVisible ? 'bg-[#668F72]' : 'bg-[#DFDDD2]'
+                  settings.leaderboardVisible ? 'bg-[#070709]' : 'bg-[#E6E6E8]'
                 }`}
               >
                 <span
@@ -139,13 +139,13 @@ export default function SettingsPage() {
             {/* Timezone Setting */}
             <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#F3F1E8] border border-[#DFDDD2] flex items-center justify-center text-[#20231F]">
-                  <Globe className="w-5 h-5 text-[#344653]" />
+                <div className="w-10 h-10 rounded-xl bg-[#F7F7F8] border border-[#E6E6E8] flex items-center justify-center text-[#070709]">
+                  <Globe className="w-5 h-5 text-[#60606C]" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-extrabold text-[#20231F]">Timezone</h3>
-                  <p className="text-xs text-[#70736B] mt-0.5">
-                    Used to calculate wall-clock calendar daily streak boundaries.
+                  <h3 className="text-sm font-bold text-[#070709]">Timezone</h3>
+                  <p className="text-xs text-[#60606C] mt-0.5 leading-relaxed">
+                    Used to calculate calendar daily streak boundaries.
                   </p>
                 </div>
               </div>
@@ -153,7 +153,7 @@ export default function SettingsPage() {
               <select
                 value={settings.timezone}
                 onChange={(e) => setSettings((s) => ({ ...s, timezone: e.target.value }))}
-                className="px-3 py-2 bg-[#F3F1E8] border border-[#DFDDD2] rounded-xl text-xs font-semibold text-[#20231F] focus:outline-none focus:border-[#C85A3D]"
+                className="px-3.5 py-2 bg-[#F7F7F8] border border-[#E6E6E8] rounded-xl text-xs font-semibold text-[#070709] focus:outline-none focus:border-[#070709]"
               >
                 <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
                 <option value="America/New_York">America/New_York (EST)</option>
@@ -166,7 +166,7 @@ export default function SettingsPage() {
           <div className="flex justify-end">
             <button
               onClick={handleSave}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#20231F] hover:bg-[#344653] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#070709] hover:bg-[#202025] text-white text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer"
             >
               <Save className="w-4 h-4" />
               <span>Save Settings</span>

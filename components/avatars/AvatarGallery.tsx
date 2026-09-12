@@ -7,8 +7,9 @@ import {
   AvatarFrameVariant,
   AvatarVariant,
 } from './avatarTypes';
+import { Sparkles, Layers } from 'lucide-react';
 
-const SIZES = [32, 48, 64, 96, 128, 256];
+const SIZES = [32, 48, 64, 96, 128];
 const FRAMES: { id: AvatarFrameVariant; label: string; price: string }[] = [
   { id: 'default', label: 'Default', price: 'Free' },
   { id: 'coral', label: 'Coral Notch', price: '150 Gold' },
@@ -21,32 +22,61 @@ const FRAMES: { id: AvatarFrameVariant; label: string; price: string }[] = [
 export function AvatarGallery() {
   const [selectedVariant, setSelectedVariant] = useState<AvatarVariant>('architect');
   const [selectedFrame, setSelectedFrame] = useState<AvatarFrameVariant>('gold');
-  const [previewSize, setPreviewSize] = useState<number>(128);
+  const [previewSize, setPreviewSize] = useState<number>(112);
+  const [avatarSystem, setAvatarSystem] = useState<'blob' | 'pixel'>('blob');
 
   const currentArchetype = AVATAR_ARCHETYPES[selectedVariant];
 
   return (
-    <div className="w-full space-y-8 bg-[#F3F1E8] p-6 sm:p-8 rounded-2xl border border-[#DFDDD2] text-[#20231F]">
+    <div className="w-full space-y-6 bg-white p-6 sm:p-8 rounded-2xl border border-[#E6E6E8] text-[#070709] shadow-sm">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#DFDDD2] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E6E6E8] pb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#20231F] text-white text-[10px] font-extrabold uppercase tracking-wider">
-              KRIYA AVATAR SYSTEM
+            <span className="px-2.5 py-0.5 rounded-full bg-[#070709] text-white text-[10px] font-bold uppercase tracking-wider">
+              Avatar System
             </span>
-            <span className="text-xs text-[#70736B] font-technical font-semibold">
-              64×64 INLINE SVG PIXEL ART
+            <span className="text-xs text-[#60606C] font-medium">
+              {avatarSystem === 'blob' ? 'Distinctive Vector Blob Avatars' : '64x64 Classic Inline Pixel Art'}
             </span>
           </div>
-          <h2 className="text-2xl font-extrabold tracking-tight mt-1 text-[#20231F]">
-            Character Archetype Gallery
+          <h2 className="text-xl font-bold tracking-tight mt-1.5 text-[#070709]">
+            Character Archetypes
           </h2>
+        </div>
+
+        {/* System Switcher (Blob / Pixel) */}
+        <div className="flex items-center p-1 bg-[#F7F7F8] border border-[#E6E6E8] rounded-xl self-start sm:self-auto">
+          <button
+            type="button"
+            onClick={() => setAvatarSystem('blob')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              avatarSystem === 'blob'
+                ? 'bg-white text-[#070709] shadow-xs border border-[#E6E6E8]'
+                : 'text-[#60606C] hover:text-[#070709]'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#C85A3D]" />
+            <span>Blob Avatars</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setAvatarSystem('pixel')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              avatarSystem === 'pixel'
+                ? 'bg-white text-[#070709] shadow-xs border border-[#E6E6E8]'
+                : 'text-[#60606C] hover:text-[#070709]'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5 text-[#60606C]" />
+            <span>Pixel (Classic)</span>
+          </button>
         </div>
       </div>
 
       {/* Grid of 8 Archetypes */}
       <div className="space-y-3">
-        <h3 className="text-xs font-extrabold text-[#70736B] uppercase tracking-wider">
+        <h3 className="text-xs font-bold text-[#60606C] uppercase tracking-wider">
           Select Personality Archetype (8 Original Characters)
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
@@ -57,17 +87,22 @@ export function AvatarGallery() {
               <button
                 key={variant}
                 onClick={() => setSelectedVariant(variant)}
-                className={`flex flex-col items-center p-3 rounded-xl border transition-all text-center ${
+                className={`flex flex-col items-center p-3 rounded-xl border transition-all text-center cursor-pointer ${
                   isSelected
-                    ? 'bg-[#FFFDF7] border-[#20231F] shadow-md scale-105 ring-2 ring-[#D9A441]/50'
-                    : 'bg-[#F3F1E8] border-[#DFDDD2] hover:bg-[#FFFDF7] hover:border-[#C5C3B8]'
+                    ? 'bg-[#F7F7F8] border-[#070709] shadow-xs ring-1 ring-[#070709]'
+                    : 'bg-white border-[#E6E6E8] hover:bg-[#F7F7F8] hover:border-[#D0D1D4]'
                 }`}
               >
-                <Avatar variant={variant} size={48} frame={selectedFrame} />
-                <span className="mt-2 text-xs font-extrabold text-[#20231F]">
+                <Avatar
+                  variant={variant}
+                  size={44}
+                  frame={selectedFrame}
+                  system={avatarSystem}
+                />
+                <span className="mt-2.5 text-xs font-bold text-[#070709]">
                   {meta.name.replace('The ', '')}
                 </span>
-                <span className="text-[10px] text-[#70736B] font-medium truncate w-full">
+                <span className="text-[10px] text-[#60606C] font-medium truncate w-full mt-0.5">
                   {meta.trait}
                 </span>
               </button>
@@ -77,25 +112,32 @@ export function AvatarGallery() {
       </div>
 
       {/* Main Focus Area: Large Preview & Details */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 bg-[#FFFDF7] p-6 rounded-2xl border border-[#DFDDD2] shadow-2xs">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 bg-[#F7F7F8] p-6 rounded-2xl border border-[#E6E6E8]">
         {/* Left Col: Hero Showcase */}
-        <div className="md:col-span-5 flex flex-col items-center justify-center p-6 bg-[#F3F1E8] rounded-xl border border-[#DFDDD2] space-y-4">
+        <div className="md:col-span-5 flex flex-col items-center justify-center p-6 bg-white rounded-xl border border-[#E6E6E8] space-y-4">
           <div className="relative">
-            <Avatar variant={selectedVariant} size={previewSize} frame={selectedFrame} />
+            <Avatar
+              variant={selectedVariant}
+              size={previewSize}
+              frame={selectedFrame}
+              system={avatarSystem}
+            />
           </div>
 
           <div className="text-center space-y-1">
-            <h4 className="text-xl font-extrabold text-[#20231F]">{currentArchetype.name}</h4>
+            <h4 className="text-lg font-bold text-[#070709]">{currentArchetype.name}</h4>
             <p className="text-xs font-semibold text-[#C85A3D]">{currentArchetype.subtitle}</p>
-            <p className="text-xs text-[#70736B] max-w-xs mt-2">{currentArchetype.description}</p>
+            <p className="text-xs text-[#60606C] max-w-xs mt-2 leading-relaxed">
+              {currentArchetype.description}
+            </p>
           </div>
         </div>
 
         {/* Right Col: Controls (Frame Selector & Size Scaler) */}
-        <div className="md:col-span-7 space-y-6 flex flex-col justify-center">
+        <div className="md:col-span-7 space-y-5 flex flex-col justify-center">
           {/* Frame Selector */}
           <div className="space-y-2">
-            <label className="text-xs font-extrabold text-[#70736B] uppercase tracking-wider block">
+            <label className="text-xs font-bold text-[#60606C] uppercase tracking-wider block">
               Cosmetic Frame Overlay
             </label>
             <div className="flex flex-wrap gap-2">
@@ -103,15 +145,15 @@ export function AvatarGallery() {
                 <button
                   key={f.id}
                   onClick={() => setSelectedFrame(f.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all border flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border flex items-center gap-1.5 cursor-pointer ${
                     selectedFrame === f.id
-                      ? 'bg-[#20231F] text-white border-[#20231F]'
-                      : 'bg-[#F3F1E8] text-[#20231F] border-[#DFDDD2] hover:bg-[#DFDDD2]'
+                      ? 'bg-[#070709] text-white border-[#070709]'
+                      : 'bg-white text-[#070709] border-[#E6E6E8] hover:bg-[#F3F4F5]'
                   }`}
                 >
                   <span>{f.label}</span>
-                  <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-technical font-bold ${
-                    selectedFrame === f.id ? 'bg-white/20 text-white' : 'bg-[#DFDDD2] text-[#70736B]'
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-md tabular-nums font-semibold ${
+                    selectedFrame === f.id ? 'bg-white/20 text-white' : 'bg-[#F7F7F8] text-[#60606C]'
                   }`}>
                     {f.price}
                   </span>
@@ -122,18 +164,18 @@ export function AvatarGallery() {
 
           {/* Size Scaler */}
           <div className="space-y-2">
-            <label className="text-xs font-extrabold text-[#70736B] uppercase tracking-wider block">
-              Crisp Scaling Test ({previewSize}px × {previewSize}px)
+            <label className="text-xs font-bold text-[#60606C] uppercase tracking-wider block">
+              Scale Preview ({previewSize}px)
             </label>
             <div className="flex flex-wrap gap-2">
               {SIZES.map((s) => (
                 <button
                   key={s}
                   onClick={() => setPreviewSize(s)}
-                  className={`px-3 py-1 text-xs font-technical font-extrabold rounded-lg border transition-all ${
+                  className={`px-3 py-1 text-xs tabular-nums font-semibold rounded-lg border transition-all cursor-pointer ${
                     previewSize === s
                       ? 'bg-[#C85A3D] text-white border-[#C85A3D]'
-                      : 'bg-[#F3F1E8] text-[#70736B] border-[#DFDDD2] hover:bg-[#DFDDD2]'
+                      : 'bg-white text-[#60606C] border-[#E6E6E8] hover:bg-[#F3F4F5]'
                   }`}
                 >
                   {s}px
@@ -143,15 +185,20 @@ export function AvatarGallery() {
           </div>
 
           {/* Multi-Size Render Strip */}
-          <div className="space-y-2 pt-2 border-t border-[#DFDDD2]">
-            <label className="text-xs font-extrabold text-[#70736B] uppercase tracking-wider block">
-              Fidelity Check Across Standard Sizes
+          <div className="space-y-2 pt-2 border-t border-[#E6E6E8]">
+            <label className="text-xs font-bold text-[#60606C] uppercase tracking-wider block">
+              Responsive Scale Test
             </label>
-            <div className="flex items-end gap-4 p-3 bg-[#F3F1E8] rounded-xl border border-[#DFDDD2] overflow-x-auto">
+            <div className="flex items-end gap-5 p-3.5 bg-white rounded-xl border border-[#E6E6E8] overflow-x-auto">
               {[32, 48, 64, 96].map((sz) => (
-                <div key={sz} className="flex flex-col items-center gap-1 shrink-0">
-                  <Avatar variant={selectedVariant} size={sz} frame={selectedFrame} />
-                  <span className="text-[10px] font-technical font-bold text-[#70736B]">
+                <div key={sz} className="flex flex-col items-center gap-1.5 shrink-0">
+                  <Avatar
+                    variant={selectedVariant}
+                    size={sz}
+                    frame={selectedFrame}
+                    system={avatarSystem}
+                  />
+                  <span className="text-[10px] tabular-nums font-semibold text-[#60606C]">
                     {sz}px
                   </span>
                 </div>

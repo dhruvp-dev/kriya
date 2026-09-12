@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Trophy, CheckCircle2, Lock, Zap, Check, TrendingUp } from 'lucide-react';
-import { Sword, Brain, ShieldCheck, Sparkle } from '@phosphor-icons/react';
+import { Trophy, CheckCircle2, Lock, ArrowUpRight, Clock } from 'lucide-react';
 import { cn } from '../../lib/utils/cn';
+import { Avatar } from '../avatars/Avatar';
 
 export interface AttributeData {
   strength: number;
@@ -36,8 +36,6 @@ export interface RightSidebarProps {
   activities?: ActivityItem[];
 }
 
-import { Avatar } from '../avatars';
-
 export function RightSidebar({
   level = 12,
   attributes = {
@@ -49,25 +47,25 @@ export function RightSidebar({
   achievements = [
     {
       id: '1',
-      title: 'FIRST STEP',
+      title: 'First Step',
       description: 'Complete 1 quest',
       unlocked: true,
     },
     {
       id: '2',
-      title: 'CONSISTENT',
+      title: 'Consistent',
       description: '7-day streak',
       unlocked: true,
     },
     {
       id: '3',
-      title: 'SCHOLAR',
+      title: 'Scholar',
       description: 'Reach Level 10',
       unlocked: true,
     },
     {
       id: '4',
-      title: 'DISCIPLINE MASTER',
+      title: 'Discipline Master',
       description: 'Complete 25 Discipline quests',
       unlocked: false,
     },
@@ -99,121 +97,76 @@ export function RightSidebar({
 }: RightSidebarProps) {
   const maxAttribute = 25;
 
-  const getActivityIcon = (type: 'quest' | 'level' | 'achievement') => {
-    switch (type) {
-      case 'quest':
-        return <CheckCircle2 className="w-3.5 h-3.5 text-[#668F72]" />;
-      case 'level':
-        return <TrendingUp className="w-3.5 h-3.5 text-[#C85A3D]" />;
-      case 'achievement':
-        return <Trophy className="w-3.5 h-3.5 text-[#D9A441]" />;
-    }
-  };
-
   return (
     <aside className="w-full xl:w-80 space-y-6 shrink-0 select-none font-sans">
-      {/* 1. CHARACTER PANEL */}
-      <div className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-2xl p-6 shadow-2xs space-y-5">
-        <div className="flex items-center justify-between pb-3 border-b border-[#DFDDD2]">
-          <h3 className="text-xs font-bold text-[#20231F] tracking-wider uppercase flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5 text-[#C85A3D]" />
-            CHARACTER
-          </h3>
-          <span className="text-xs font-bold text-[#20231F] font-technical">
-            LV. {level}
-          </span>
-        </div>
-
-        {/* Minimal Pixel Character Portrait */}
-        <div className="flex flex-col items-center justify-center p-4 bg-[#F3F1E8] border border-[#DFDDD2] rounded-xl text-center">
-          <Avatar
-            variant="architect"
-            size={80}
-            frame="gold"
-          />
-
-          <div className="mt-3">
-            <h4 className="text-base font-extrabold text-[#20231F] tracking-tight">DHRUV</h4>
-            <p className="text-[10px] font-bold text-[#70736B] uppercase tracking-wider mt-0.5">
-              ARCHITECT
-            </p>
+      
+      {/* 1. CHARACTER & ATTRIBUTES PANEL */}
+      <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl p-6 shadow-2xs space-y-5">
+        
+        {/* Blob Avatar & Name Header */}
+        <div className="flex items-center gap-4 pb-4 border-b border-[#E6E6E8]">
+          <Avatar variant="architect" size={54} />
+          <div className="min-w-0">
+            <h4 className="text-base font-bold text-[#151515] tracking-tight">Dhruv</h4>
+            <div className="flex items-center gap-1.5 text-xs text-[#60606C] mt-0.5">
+              <span className="font-semibold text-[#070709]">Architect</span>
+              <span>·</span>
+              <span className="tabular-nums font-medium text-[#8B8B8B]">Level {level}</span>
+            </div>
           </div>
         </div>
 
-        {/* 4 Core Attributes with Icons & Progress Bars */}
-        <div className="space-y-4 pt-1">
-          {/* STRENGTH */}
+        {/* 4 Core Attributes (Clean minimal bars) */}
+        <div className="space-y-3.5 pt-1">
+          {/* Strength */}
           <div className="space-y-1">
-            <div className="flex justify-between items-center text-xs font-semibold">
-              <span className="text-[#C85A3D] flex items-center gap-1.5">
-                <Sword weight="fill" className="w-3.5 h-3.5" />
-                STRENGTH
-              </span>
-              <span className="font-technical font-bold text-[#20231F]">
-                {String(attributes.strength).padStart(2, '0')}
-              </span>
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-semibold text-[#151515]">Strength</span>
+              <span className="font-semibold text-[#8B8B8B] tabular-nums">{attributes.strength}</span>
             </div>
-            <div className="h-1.5 w-full bg-[#F3F1E8] border border-[#DFDDD2] rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-[#F3F4F5] rounded-full overflow-hidden">
               <div
                 className="h-full bg-[#C85A3D] rounded-full transition-all duration-500"
                 style={{ width: `${Math.min(100, (attributes.strength / maxAttribute) * 100)}%` }}
               />
             </div>
-            <div className="border-b border-[#DFDDD2] pt-1" />
           </div>
 
-          {/* INTELLECT */}
+          {/* Intellect */}
           <div className="space-y-1">
-            <div className="flex justify-between items-center text-xs font-semibold">
-              <span className="text-[#344653] flex items-center gap-1.5">
-                <Brain weight="fill" className="w-3.5 h-3.5" />
-                INTELLECT
-              </span>
-              <span className="font-technical font-bold text-[#20231F]">
-                {String(attributes.intellect).padStart(2, '0')}
-              </span>
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-semibold text-[#151515]">Intellect</span>
+              <span className="font-semibold text-[#8B8B8B] tabular-nums">{attributes.intellect}</span>
             </div>
-            <div className="h-1.5 w-full bg-[#F3F1E8] border border-[#DFDDD2] rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-[#F3F4F5] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#344653] rounded-full transition-all duration-500"
+                className="h-full bg-[#070709] rounded-full transition-all duration-500"
                 style={{ width: `${Math.min(100, (attributes.intellect / maxAttribute) * 100)}%` }}
               />
             </div>
-            <div className="border-b border-[#DFDDD2] pt-1" />
           </div>
 
-          {/* DISCIPLINE */}
+          {/* Discipline */}
           <div className="space-y-1">
-            <div className="flex justify-between items-center text-xs font-semibold">
-              <span className="text-[#668F72] flex items-center gap-1.5">
-                <ShieldCheck weight="fill" className="w-3.5 h-3.5" />
-                DISCIPLINE
-              </span>
-              <span className="font-technical font-bold text-[#20231F]">
-                {String(attributes.discipline).padStart(2, '0')}
-              </span>
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-semibold text-[#151515]">Discipline</span>
+              <span className="font-semibold text-[#8B8B8B] tabular-nums">{attributes.discipline}</span>
             </div>
-            <div className="h-1.5 w-full bg-[#F3F1E8] border border-[#DFDDD2] rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-[#F3F4F5] rounded-full overflow-hidden">
               <div
                 className="h-full bg-[#668F72] rounded-full transition-all duration-500"
                 style={{ width: `${Math.min(100, (attributes.discipline / maxAttribute) * 100)}%` }}
               />
             </div>
-            <div className="border-b border-[#DFDDD2] pt-1" />
           </div>
 
-          {/* CREATIVITY */}
+          {/* Creativity */}
           <div className="space-y-1">
-            <div className="flex justify-between items-center text-xs font-semibold">
-              <span className="text-[#D9A441] flex items-center gap-1.5">
-                <Sparkle weight="fill" className="w-3.5 h-3.5" />
-                CREATIVITY
-              </span>
-              <span className="font-technical font-bold text-[#20231F]">
-                {String(attributes.creativity).padStart(2, '0')}
-              </span>
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-semibold text-[#151515]">Creativity</span>
+              <span className="font-semibold text-[#8B8B8B] tabular-nums">{attributes.creativity}</span>
             </div>
-            <div className="h-1.5 w-full bg-[#F3F1E8] border border-[#DFDDD2] rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-[#F3F4F5] rounded-full overflow-hidden">
               <div
                 className="h-full bg-[#D9A441] rounded-full transition-all duration-500"
                 style={{ width: `${Math.min(100, (attributes.creativity / maxAttribute) * 100)}%` }}
@@ -221,101 +174,77 @@ export function RightSidebar({
             </div>
           </div>
         </div>
+
       </div>
 
-      {/* 2. ACHIEVEMENTS SECTION */}
-      <div className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-xl p-5 shadow-2xs space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-[#DFDDD2]">
-          <h3 className="text-xs font-bold text-[#20231F] tracking-wider uppercase flex items-center gap-1.5">
-            <Trophy className="w-3.5 h-3.5 text-[#D9A441]" />
-            ACHIEVEMENTS
+      {/* 2. ACHIEVEMENTS PREVIEW */}
+      <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl p-5 shadow-2xs space-y-3.5">
+        <div className="flex items-center justify-between pb-2.5 border-b border-[#E6E6E8]">
+          <h3 className="text-xs font-semibold text-[#8B8B8B] tracking-wider uppercase">
+            Achievements
           </h3>
-          <Trophy className="w-4 h-4 text-[#D9A441]" />
+          <span className="text-xs font-semibold text-[#070709] tabular-nums">3/4</span>
         </div>
 
-        <div className="space-y-2.5">
+        <div className="space-y-2">
           {achievements.map((item) => (
             <div
               key={item.id}
               className={cn(
-                'flex items-center gap-3 p-2.5 rounded-lg border transition-colors',
+                'flex items-center justify-between p-2.5 rounded-xl border text-xs transition-colors',
                 item.unlocked
-                  ? 'bg-[#FFFDF7] border-[#DFDDD2]'
-                  : 'bg-[#F3F1E8] border-[#DFDDD2] opacity-50'
+                  ? 'bg-[#FFFFFF] border-[#E6E6E8]'
+                  : 'bg-[#F7F7F8] border-transparent opacity-60'
               )}
             >
-              {/* Clean Collectible Icon */}
-              <div
-                className={cn(
-                  'w-8 h-8 rounded-md flex items-center justify-center shrink-0 border text-xs font-bold',
-                  item.unlocked
-                    ? 'bg-[#FAF4E6] border-[#F2DEB6] text-[#D9A441]'
-                    : 'bg-[#F3F1E8] border-[#DFDDD2] text-[#A8A29E]'
-                )}
-              >
-                <Trophy className="w-4 h-4" />
-              </div>
-
-              <div className="flex flex-col min-w-0 flex-1">
-                <span
-                  className={cn(
-                    'text-xs font-bold truncate',
-                    item.unlocked ? 'text-[#20231F]' : 'text-[#70736B]'
-                  )}
-                >
-                  {item.title}
-                </span>
-                <span className="text-[11px] text-[#70736B] truncate">{item.description}</span>
+              <div className="min-w-0 pr-2">
+                <div className="font-semibold text-[#151515] truncate">{item.title}</div>
+                <div className="text-[11px] text-[#8B8B8B] truncate mt-0.5">{item.description}</div>
               </div>
 
               {item.unlocked ? (
                 <CheckCircle2 className="w-4 h-4 text-[#668F72] shrink-0" />
               ) : (
-                <Lock className="w-3.5 h-3.5 text-[#A8A29E] shrink-0" />
+                <Lock className="w-3.5 h-3.5 text-[#8B8B8B] shrink-0" />
               )}
             </div>
           ))}
         </div>
       </div>
 
-      {/* 3. RECENT ACTIVITY SECTION */}
-      <div className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-xl p-5 shadow-2xs space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-[#DFDDD2]">
-          <h3 className="text-xs font-bold text-[#20231F] tracking-wider uppercase">
-            RECENT ACTIVITY
+      {/* 3. RECENT ACTIVITY */}
+      <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl p-5 shadow-2xs space-y-3.5">
+        <div className="flex items-center justify-between pb-2.5 border-b border-[#E6E6E8]">
+          <h3 className="text-xs font-semibold text-[#8B8B8B] tracking-wider uppercase">
+            Recent Activity
           </h3>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 text-xs">
           {activities.map((act) => (
             <div
               key={act.id}
-              className="flex items-start gap-2.5 text-xs pb-2 border-b border-[#DFDDD2] last:border-0 last:pb-0"
+              className="flex items-start justify-between gap-2 pb-2.5 border-b border-[#E6E6E8] last:border-0 last:pb-0"
             >
-              <div className="p-1 rounded bg-[#F3F1E8] border border-[#DFDDD2] shrink-0 mt-0.5">
-                {getActivityIcon(act.type)}
-              </div>
-              <div className="flex flex-col flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-1">
-                  <span className="font-semibold text-[#20231F] truncate">{act.title}</span>
-                  <span className="font-technical text-[10px] text-[#A8A29E] shrink-0">
-                    {act.timeAgo}
-                  </span>
-                </div>
-                {act.subtext && <span className="text-[11px] text-[#70736B] truncate">{act.subtext}</span>}
+              <div className="min-w-0">
+                <div className="font-medium text-[#151515] truncate">{act.title}</div>
+                {act.subtext && (
+                  <div className="text-[11px] text-[#8B8B8B] truncate mt-0.5">{act.subtext}</div>
+                )}
                 {act.xp && act.gold && (
-                  <div className="flex items-center gap-2 mt-0.5 font-technical text-[10px] font-bold text-[#D9A441]">
+                  <div className="flex items-center gap-2 mt-1 text-[11px] font-semibold text-[#D9A441] tabular-nums">
                     <span>+{act.xp} XP</span>
-                    <span>•</span>
-                    <span>+{act.gold} GOLD</span>
+                    <span>·</span>
+                    <span>+{act.gold} Gold</span>
                   </div>
                 )}
               </div>
+              <span className="text-[10px] text-[#8B8B8B] shrink-0 tabular-nums">{act.timeAgo}</span>
             </div>
           ))}
         </div>
       </div>
+
     </aside>
   );
 }
-

@@ -6,8 +6,7 @@ import { Header } from '../../components/navigation/Header';
 import { QuestCard, QuestItem } from '../../components/rpg/QuestCard';
 import { CreateQuestModal } from '../../components/rpg/CreateQuestModal';
 import { useToast } from '../../components/ui/Toast';
-import { Plus, Search, CheckCircle2, Layers } from 'lucide-react';
-import { Sword, Brain, ShieldCheck, Sparkle } from '@phosphor-icons/react';
+import { Plus, Search, CheckCircle2, Layers, Shield, Brain, Zap, Palette } from 'lucide-react';
 import { getRewardForDifficulty, calculateLevel, getXpThreshold } from '../../lib/progression';
 
 export default function QuestsPage() {
@@ -60,7 +59,7 @@ export default function QuestsPage() {
     {
       id: 'q-4',
       title: 'Design retro typography tokens',
-      description: 'Refine micro-spacing and chamfered card details.',
+      description: 'Refine micro-spacing and subtle card details.',
       attribute: 'creativity',
       difficulty: 'HARD',
       xp: 100,
@@ -147,13 +146,13 @@ export default function QuestsPage() {
       case 'All':
         return <Layers className="w-3.5 h-3.5" />;
       case 'Strength':
-        return <Sword weight="fill" className="w-3.5 h-3.5 text-[#C85A3D]" />;
+        return <Shield className="w-3.5 h-3.5 text-[#C85A3D]" />;
       case 'Intellect':
-        return <Brain weight="fill" className="w-3.5 h-3.5 text-[#344653]" />;
+        return <Brain className="w-3.5 h-3.5 text-[#344653]" />;
       case 'Discipline':
-        return <ShieldCheck weight="fill" className="w-3.5 h-3.5 text-[#668F72]" />;
+        return <Zap className="w-3.5 h-3.5 text-[#668F72]" />;
       case 'Creativity':
-        return <Sparkle weight="fill" className="w-3.5 h-3.5 text-[#D9A441]" />;
+        return <Palette className="w-3.5 h-3.5 text-[#D9A441]" />;
       case 'Completed':
         return <CheckCircle2 className="w-3.5 h-3.5 text-[#668F72]" />;
       default:
@@ -162,7 +161,7 @@ export default function QuestsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F3F1E8] text-[#20231F] flex flex-col lg:flex-row font-sans">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#070709] flex flex-col lg:flex-row font-sans">
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -180,33 +179,33 @@ export default function QuestsPage() {
         <div className="p-4 sm:p-6 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#20231F] tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#070709] tracking-tight">
                 Quests
               </h1>
-              <p className="text-sm text-[#70736B] mt-1 font-medium">
+              <p className="text-sm text-[#60606C] mt-1 font-medium">
                 Small daily actions. Meaningful long-term progress.
               </p>
             </div>
 
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#C85A3D] hover:bg-[#A94730] text-white text-xs font-bold rounded-xl transition-all shadow-xs shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#070709] hover:bg-[#202025] text-white text-xs font-semibold rounded-xl transition-all shadow-xs shrink-0 cursor-pointer"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>New Quest</span>
             </button>
           </div>
 
-          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-[#FFFDF7] p-3 rounded-2xl border border-[#DFDDD2] shadow-2xs">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-[#F7F7F8] p-2.5 rounded-2xl border border-[#E6E6E8]">
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
               {(['All', 'Strength', 'Intellect', 'Discipline', 'Creativity', 'Completed'] as const).map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                     activeFilter === filter
-                      ? 'bg-[#20231F] text-white shadow-2xs'
-                      : 'text-[#70736B] hover:text-[#20231F] hover:bg-[#F3F1E8]'
+                      ? 'bg-white text-[#070709] shadow-xs border border-[#E6E6E8]'
+                      : 'text-[#60606C] hover:text-[#070709] hover:bg-white/60'
                   }`}
                 >
                   {getFilterIcon(filter)}
@@ -215,14 +214,14 @@ export default function QuestsPage() {
               ))}
             </div>
 
-            <div className="relative min-w-[200px]">
-              <Search className="w-4 h-4 text-[#70736B] absolute left-3 top-1/2 -translate-y-1/2" />
+            <div className="relative min-w-[220px]">
+              <Search className="w-4 h-4 text-[#8B8B8B] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search quests..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 bg-[#F3F1E8] border border-[#DFDDD2] rounded-xl text-xs text-[#20231F] placeholder-[#70736B] focus:outline-none focus:border-[#C85A3D]"
+                className="w-full pl-9 pr-3.5 py-1.5 bg-white border border-[#E6E6E8] rounded-xl text-xs text-[#070709] placeholder-[#8B8B8B] focus:outline-none focus:border-[#070709] transition-colors"
               />
             </div>
           </div>
@@ -238,19 +237,19 @@ export default function QuestsPage() {
               ))}
             </div>
           ) : (
-            <div className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-2xl p-12 text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-[#F3F1E8] flex items-center justify-center mx-auto text-[#70736B]">
+            <div className="bg-white border border-[#E6E6E8] rounded-2xl p-12 text-center space-y-3 shadow-xs">
+              <div className="w-12 h-12 rounded-full bg-[#F7F7F8] flex items-center justify-center mx-auto text-[#60606C]">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-[#20231F]">No quests found</h3>
-              <p className="text-xs text-[#70736B] max-w-sm mx-auto">
+              <h3 className="text-base font-bold text-[#070709]">No quests found</h3>
+              <p className="text-xs text-[#60606C] max-w-sm mx-auto leading-relaxed">
                 {activeFilter === 'Completed'
-                  ? 'No completed quests yet. Finish active quests to build history.'
+                  ? 'No completed quests yet. Complete active quests to populate your history.'
                   : 'Nothing planned for this filter yet. Create a new quest to start building momentum.'}
               </p>
               <button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#20231F] hover:bg-[#344653] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer mt-2"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#070709] hover:bg-[#202025] text-white text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer mt-2"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Create Quest</span>
@@ -268,4 +267,3 @@ export default function QuestsPage() {
     </div>
   );
 }
-
