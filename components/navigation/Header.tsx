@@ -6,7 +6,7 @@ import type { Character, Profile } from '../../types/database.types';
 import { LevelBadge } from '../rpg/LevelBadge';
 import { GoldDisplay } from '../rpg/GoldDisplay';
 import { StreakBadge } from '../rpg/StreakBadge';
-import { Avatar } from '../rpg/Avatar';
+import { Avatar } from '../rpg/avatar';
 import { getXpThreshold } from '../../lib/progression';
 import { ProgressBar } from '../ui/ProgressBar';
 

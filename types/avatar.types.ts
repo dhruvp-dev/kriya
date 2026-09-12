@@ -1,5 +1,5 @@
 /**
- * 3D Avatar System Type Definitions for Kriya
+ * Pixel Art Avatar System Type Definitions for Kriya
  */
 
 export type BaseModelId = 'warrior' | 'mage' | 'rogue' | 'cleric' | 'bard';

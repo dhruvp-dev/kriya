@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight, Lock, Mail, User } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
-import { AvatarCustomizer } from '../../components/rpg/avatar3d/AvatarCustomizer';
+import { AvatarCustomizer } from '../../components/rpg/avatar';
 import { DEFAULT_AVATAR_CONFIG, AvatarConfig } from '../../types/avatar.types';
 import { signUpAction } from '../../lib/actions/auth';
 import { useToast } from '../../components/ui/Toast';

@@ -61,3 +61,16 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #6B6255;
 }
+
+@keyframes pixel-bounce {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.animate-pixel-bounce {
+  animation: pixel-bounce 1.6s ease-in-out infinite;
+}

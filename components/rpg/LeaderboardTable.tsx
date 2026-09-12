@@ -3,7 +3,7 @@
 import React from 'react';
 import { Trophy, Medal } from '@phosphor-icons/react'; // Phosphor for game badges per rule!
 import type { LeaderboardEntry } from '../../types/database.types';
-import { AvatarChip } from './Avatar';
+import { Avatar } from './avatar';
 import { LevelBadge } from './LevelBadge';
 
 export interface LeaderboardTableProps {
@@ -55,7 +55,7 @@ export function LeaderboardTable({ entries, currentUserId }: LeaderboardTablePro
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <AvatarChip config={entry.avatar_config} displayName={entry.display_name} size="sm" />
+                      <Avatar config={entry.avatar_config} size="sm" />
                       <span
                         className={`font-semibold ${
                           isCurrentUser ? 'text-indigo-300 font-bold' : 'text-slate-200'

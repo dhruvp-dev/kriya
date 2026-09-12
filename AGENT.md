@@ -23,7 +23,7 @@ Core principle, repeated because it drives every architectural decision below:
 | Styling | Tailwind CSS |
 | Animation | Framer Motion |
 | Icons | Phosphor (domain/game icons) + Lucide (UI/utility icons) — never mix both for the same concept |
-| Avatars | 3D Preset-based Avatar System (react-three-fiber + Three.js, primitive GLTF models, lazy-loaded) |
+| Avatars | Pixel Art Preset-based Avatar System (2D programmatic canvas sprites, palette swaps & equipment overlays) |
 | Backend | Supabase (Auth, Postgres, RLS, RPC) |
 | Server orchestration | Next.js Server Actions / Route Handlers |
 | Authoritative RPG logic | PostgreSQL functions, called via RPC — never in application code |
@@ -110,7 +110,7 @@ Don't build out a large test suite beyond this scope — it's intentionally mini
 
 - Quest completion: optimistic UI (immediate visual "completing" state) + rollback with an error toast if the RPC fails.
 - Level-up / achievement-unlock celebration animations: only triggered from the RPC's returned payload, never predicted client-side.
-- Avatars: Preset-based 3D avatar (react-three-fiber), stored as `avatar_config` JSONB per profile. Rendered with 3D canvas in header/character/settings and lightweight 2D color chips on leaderboard rows.
+- Avatars: Preset-based Pixel Art avatar (2D HTML5 Canvas), stored as `avatar_config` JSONB per profile. Rendered as 2D pixel art canvas in header/character/settings/signup and directly in leaderboard rows.
 - Icon usage: Phosphor for game/domain concepts (streak flame, gold, quests, achievements, swords/shields), Lucide for interface chrome (nav, settings, form controls, close/edit/delete).
 
 ---

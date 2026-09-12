@@ -6,7 +6,7 @@ import type { DashboardData } from '../../types/database.types';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { Card } from '../../components/ui/Card';
-import { Avatar } from '../../components/rpg/Avatar';
+import { Avatar } from '../../components/rpg/avatar';
 import { LevelBadge } from '../../components/rpg/LevelBadge';
 import { StreakBadge } from '../../components/rpg/StreakBadge';
 import { AttributeCard } from '../../components/rpg/AttributeCard';

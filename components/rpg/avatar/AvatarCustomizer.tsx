@@ -1,17 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Lock, Palette, Shield, Sparkles, Sword } from 'lucide-react';
+import { Palette, Shield, Sparkles } from 'lucide-react';
 import {
   AvatarConfig,
   BASE_MODELS,
   ACCESSORY_OPTIONS,
   BaseModelId,
-  HatOption,
-  WeaponOption,
-  BackOption,
 } from '../../../types/avatar.types';
-import { Avatar3D } from './Avatar3D';
+import { Avatar } from './Avatar';
 
 export interface AvatarCustomizerProps {
   config: AvatarConfig;
@@ -42,7 +39,6 @@ export function AvatarCustomizer({
     onChange({
       ...config,
       baseModel: modelId,
-      // If user hasn't customized tint yet, use model's default tint
       tint: config.tint || selectedModel?.defaultTint || '#6366f1',
     });
   };
@@ -68,16 +64,16 @@ export function AvatarCustomizer({
       {/* Top Preview Section */}
       {showPreview && (
         <div className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-slate-950/80 rounded-3xl border border-slate-800">
-          <Avatar3D config={config} size="xl" className="border-2 border-indigo-500/40 shadow-2xl" />
+          <Avatar config={config} size="xl" className="border-2 border-indigo-500/40 shadow-2xl" />
           <div className="space-y-2 text-center sm:text-left flex-1">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-indigo-300 text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5" /> 3D Character Preview
+              <Sparkles className="w-3.5 h-3.5" /> Pixel Avatar Preview
             </div>
             <h3 className="text-lg font-black text-slate-100 capitalize">
               {config.baseModel} Character
             </h3>
             <p className="text-xs text-slate-400 max-w-sm">
-              Custom color tint & swappable gear slots. Drag on preview to rotate model in 3D space.
+              Retro 2D pixel art avatar with customizable color tint & swappable gear slots.
             </p>
           </div>
         </div>

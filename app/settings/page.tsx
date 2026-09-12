@@ -12,7 +12,7 @@ import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { AvatarCustomizer } from '../../components/rpg/avatar3d/AvatarCustomizer';
+import { AvatarCustomizer } from '../../components/rpg/avatar';
 import { useToast } from '../../components/ui/Toast';
 
 export default function SettingsPage() {
