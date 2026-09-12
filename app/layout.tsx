@@ -4,14 +4,25 @@ import './globals.css';
 import { ToastProvider } from '../components/ui/Toast';
 
 export const metadata: Metadata = {
-  title: 'KRIYA — Productivity RPG Dashboard',
-  description: 'Turn real-life tasks into quests, earn XP, level up attributes, and build habits in a retro-futuristic productivity interface.',
+  title: 'KRIYA — Daily Progress Engine',
+  description: 'Turn real-life goals into daily achievements with a warm cozy retro-digital productivity system.',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/brand/kriya-symbol.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.svg',
+    apple: '/brand/kriya-app-icon.svg',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/brand/kriya-app-icon.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

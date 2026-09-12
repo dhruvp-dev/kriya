@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KRIYA — UI Color Variation Test Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Theme 1: Warm Parchment (Default Palette) */
+      --bg-ivory: #F3F1E8;
+      --surface-white: #FFFDF7;
+      --text-primary: #20231F;
+      --text-secondary: #70736B;
+      --border-color: #DFDDD2;
+      --action-coral: #C85A3D;
+      --action-hover: #A94730;
+      --reward-gold: #D9A441;
+      --success-green: #668F72;
+      --navy-accent: #344653;
+      --nav-bg: #EBE8DD;
+      --card-shadow: 0 1px 3px rgba(32, 35, 31, 0.05);
+    }
+
+    /* Theme 2: Midnight Navy (Dark Mode) */
+    [data-theme="midnight"] {
+      --bg-ivory: #0B0F19;
+      --surface-white: #151D2A;
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --border-color: #232D3F;
+      --action-coral: #FF6B4A;
+      --action-hover: #E05335;
+      --reward-gold: #FBBF24;
+      --success-green: #10B981;
+      --navy-accent: #38BDF8;
+      --nav-bg: #0F172A;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Theme 3: Cold Chrome & Smoke (Apple/Tesla Luxury) */
+    [data-theme="chrome"] {
+      --bg-ivory: #ECEFF1;
+      --surface-white: #FFFFFF;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --border-color: #CFD8DC;
+      --action-coral: #E11D48;
+      --action-hover: #BE123C;
+      --reward-gold: #D97706;
+      --success-green: #059669;
+      --navy-accent: #1E293B;
+      --nav-bg: #E2E8F0;
+      --card-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    }
+
+    /* Theme 4: Forest & Amber (Botanical Craft) */
+    [data-theme="forest"] {
+      --bg-ivory: #F2F4F0;
+      --surface-white: #FFFFFF;
+      --text-primary: #1C241E;
+      --text-secondary: #526056;
+      --border-color: #D4D9D2;
+      --action-coral: #16A34A;
+      --action-hover: #15803D;
+      --reward-gold: #D97706;
+      --success-green: #16A34A;
+      --navy-accent: #2D3A30;
+      --nav-bg: #E4E8E1;
+      --card-shadow: 0 2px 6px rgba(28, 36, 30, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-ivory);
+      color: var(--text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+    }
+
+    .lab-controls {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(23, 26, 33, 0.95);
+      backdrop-filter: blur(8px);
+      color: #FFFFFF;
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .lab-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .lab-badge {
+      background: #F05A3C;
+      color: #FFFFFF;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .theme-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .theme-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .theme-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .theme-btn.active {
+      background: #F05A3C;
+      border-color: #F05A3C;
+      color: #FFFFFF;
+    }
+
+    .app-shell {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: calc(100vh - 65px);
+    }
+
+    .sidebar {
+      background: var(--nav-bg);
+      border-right: 1px solid var(--border-color);
+      padding: 1.25rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: background-color 0.3s ease;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--navy-accent);
+      color: #FFFFFF;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.9rem;
+      position: relative;
+    }
+
+    .brand-dot {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 8px;
+      height: 8px;
+      background: var(--action-coral);
+      border-radius: 50%;
+    }
+
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .nav-item.active {
+      background: var(--surface-white);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      bottom: 6px;
+      width: 4px;
+      background: var(--action-coral);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .main-view {
+      padding: 2rem;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .greeting-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .greeting-subtext {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+    }
+
+    .header-stats {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-primary);
+    }
+
+    .stat-gold {
+      color: var(--reward-gold);
+    }
+
+    .btn-create {
+      background: var(--action-coral);
+      color: #FFFFFF;
+      padding: 0.55rem 1.1rem;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-create:hover {
+      background: var(--action-hover);
+    }
+
+    .progression-card {
+      background: var(--surface-white);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .prog-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .level-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .level-val {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--text-primary);
+    }
+
+    .xp-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .xp-bar-container {
+      height: 18px;
+      background: var(--bg-ivory);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .xp-fill {
+      height: 100%;
+      background: var(--reward-gold);
+      border-radius: 5px;
+      width: 77.5%;
+      transition: width 0.5s ease;
+    }
+
+    .prog-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+    }
+
+    .quest-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .quest-card {
+      background: var(--surface-white);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.25rem;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .quest-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .quest-desc {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    .badge-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .badge-strength { background: rgba(229, 77, 66, 0.12); color: #E54D42; }
+    .badge-intellect { background: rgba(59, 130, 246, 0.12); color: #3B82F6; }
+
+    .rewards-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .rewards-vals {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn-complete {
+      background: var(--action-coral);
+      color: #FFFFFF;
+      border: none;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-complete:hover {
+      background: var(--action-hover);
+    }
+
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .swatch-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .swatch-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lab-controls">
+    <div class="lab-title">
+      <span class="lab-badge">Design Lab</span>
+      <strong style="font-size: 0.9rem;">KRIYA — Color Palette Tester</strong>
+    </div>
+
+    <div class="theme-buttons">
+      <button class="theme-btn active" onclick="setTheme('ivory', this)">1. Warm Ivory 1998</button>
+      <button class="theme-btn" onclick="setTheme('midnight', this)">2. Midnight Navy</button>
+      <button class="theme-btn" onclick="setTheme('chrome', this)">3. Cold Chrome</button>
+      <button class="theme-btn" onclick="setTheme('forest', this)">4. Muted Forest</button>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div>
+        <div class="brand-mark">
+          <div class="brand-icon">
+            K
+            <span class="brand-dot"></span>
+          </div>
+          <div>
+            <div style="font-weight: 800; font-size: 0.95rem; line-height: 1;">KRIYA</div>
+            <div style="font-size: 0.65rem; color: var(--text-secondary); font-weight: 700; margin-top: 2px;">LIFE RPG</div>
+          </div>
+        </div>
+
+        <div class="nav-list">
+          <div class="nav-item active">Home</div>
+          <div class="nav-item">Quests</div>
+          <div class="nav-item">Character</div>
+          <div class="nav-item">Achievements</div>
+          <div class="nav-item" style="margin-top: 0.5rem;">Shop</div>
+          <div class="nav-item">Inventory</div>
+          <div class="nav-item">Leaderboard</div>
+          <div class="nav-item">History</div>
+          <div class="nav-item" style="margin-top: 0.5rem;">Settings</div>
+        </div>
+      </div>
+
+      <div style="padding: 0.75rem; background: var(--surface-white); border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.75rem; font-weight: 700;">
+        Dhruv • Level 12
+      </div>
+    </aside>
+
+    <main class="main-view">
+      <header class="header-bar">
+        <div>
+          <h1 class="greeting-title">Good morning, Dhruv</h1>
+          <div class="greeting-subtext">Tuesday, September 15 • Small daily actions</div>
+        </div>
+
+        <div class="header-stats">
+          <div class="stat-pill stat-gold">680 Gold</div>
+          <div class="stat-pill">14 Day Streak</div>
+          <button class="btn-create">+ Create Quest</button>
+        </div>
+      </header>
+
+      <div class="progression-card">
+        <div class="prog-top">
+          <div>
+            <div class="level-label">Your Progress</div>
+            <div class="level-val">LEVEL 12</div>
+          </div>
+
+          <div class="xp-counter">
+            <span style="color: var(--reward-gold);">2,480</span> / 3,200 XP
+          </div>
+        </div>
+
+        <div class="xp-bar-container">
+          <div class="xp-fill"></div>
+        </div>
+
+        <div class="prog-meta">
+          <span>77% COMPLETE TO LEVEL 13</span>
+          <span>720 XP REMAINING</span>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.75rem;">Today's Quests</div>
+        
+        <div class="quest-grid">
+          <div class="quest-card">
+            <div>
+              <div class="quest-title">30 minute workout</div>
+              <div class="quest-desc">Build physical momentum through regular movement.</div>
+              <div class="badge-row" style="margin-top: 0.75rem;">
+                <span class="badge badge-strength">Strength</span>
+                <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-secondary);">MEDIUM</span>
+              </div>
+            </div>
+
+            <div class="rewards-row">
+              <div class="rewards-vals">
+                <span style="color: var(--text-primary);">+50 XP</span>
+                <span style="color: var(--reward-gold);">+15 Gold</span>
+              </div>
+              <button class="btn-complete">Complete</button>
+            </div>
+          </div>
+
+          <div class="quest-card">
+            <div>
+              <div class="quest-title">Study React API Architecture</div>
+              <div class="quest-desc">Review typed query handlers and state patterns.</div>
+              <div class="badge-row" style="margin-top: 0.75rem;">
+                <span class="badge badge-intellect">Intellect</span>
+                <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-secondary);">MEDIUM</span>
+              </div>
+            </div>
+
+            <div class="rewards-row">
+              <div class="rewards-vals">
+                <span style="color: var(--text-primary);">+50 XP</span>
+                <span style="color: var(--reward-gold);">+15 Gold</span>
+              </div>
+              <button class="btn-complete">Complete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="swatch-grid">
+        <div class="swatch-item">
+          <div class="swatch-color" style="background: var(--bg-ivory);"></div>
+          <span>Background</span>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-color" style="background: var(--surface-white);"></div>
+          <span>Surface</span>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-color" style="background: var(--action-coral);"></div>
+          <span>Action Coral</span>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-color" style="background: var(--reward-gold);"></div>
+          <span>Reward Gold</span>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-color" style="background: var(--navy-accent);"></div>
+          <span>Navy Accent</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function setTheme(themeName, btnElement) {
+      if (themeName === 'ivory') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', themeName);
+      }
+
+      document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+    }
+  </script>
+</body>
+</html>

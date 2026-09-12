@@ -25,17 +25,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-bold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#F7F5F0] disabled:opacity-50 disabled:cursor-not-allowed select-none font-sans';
+      'inline-flex items-center justify-center font-bold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#F3F1E8] disabled:opacity-50 disabled:cursor-not-allowed select-none font-sans';
 
     const variants = {
       primary:
-        'bg-[#F05A3C] hover:bg-[#D9482D] text-white shadow-2xs focus:ring-[#F05A3C]',
+        'bg-[#C85A3D] hover:bg-[#A94730] text-white shadow-2xs focus:ring-[#C85A3D]',
       secondary:
-        'bg-[#FFFFFF] hover:bg-[#F7F5F0] text-[#171A21] border border-[#E5E1D9] focus:ring-[#202B3C]',
-      ghost: 'bg-transparent hover:bg-[#EFECE6] text-[#686C73] hover:text-[#171A21] focus:ring-[#E5E1D9]',
+        'bg-[#FFFDF7] hover:bg-[#F3F1E8] text-[#20231F] border border-[#DFDDD2] focus:ring-[#344653]',
+      ghost: 'bg-transparent hover:bg-[#EBE8DD] text-[#70736B] hover:text-[#20231F] focus:ring-[#DFDDD2]',
       danger:
         'bg-[#DC2626] hover:bg-[#B91C1C] text-white shadow-2xs focus:ring-[#DC2626]',
-      gold: 'bg-[#FFB547] hover:bg-[#D97706] text-[#171A21] font-bold shadow-2xs focus:ring-[#FFB547]',
+      gold: 'bg-[#D9A441] hover:bg-[#C28F2F] text-[#20231F] font-bold shadow-2xs focus:ring-[#D9A441]',
     };
 
     const sizes = {

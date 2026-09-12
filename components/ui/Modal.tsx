@@ -37,7 +37,7 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#171A21]/30 backdrop-blur-xs"
+            className="fixed inset-0 bg-[#20231F]/30 backdrop-blur-xs"
           />
 
           <motion.div
@@ -46,19 +46,19 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
             exit={{ opacity: 0, scale: 0.96, y: 8 }}
             transition={{ type: 'spring', duration: 0.25 }}
             className={cn(
-              'relative z-10 w-full max-w-lg bg-[#FFFFFF] border border-[#E5E1D9] rounded-xl p-6 shadow-xl overflow-hidden',
+              'relative z-10 w-full max-w-lg bg-[#FFFDF7] border border-[#DFDDD2] rounded-xl p-6 shadow-xl overflow-hidden',
               className
             )}
           >
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#E5E1D9]">
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#DFDDD2]">
               {title && (
-                <h2 className="font-bold text-base text-[#171A21] tracking-tight">
+                <h2 className="font-bold text-base text-[#20231F] tracking-tight">
                   {title}
                 </h2>
               )}
               <button
                 onClick={onClose}
-                className="p-1 text-[#686C73] hover:text-[#171A21] hover:bg-[#F7F5F0] rounded-md transition-colors ml-auto border border-[#E5E1D9]"
+                className="p-1 text-[#70736B] hover:text-[#20231F] hover:bg-[#F3F1E8] rounded-md transition-colors ml-auto border border-[#DFDDD2]"
                 aria-label="Close modal"
               >
                 <X className="w-4 h-4" />

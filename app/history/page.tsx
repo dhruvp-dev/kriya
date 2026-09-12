@@ -59,7 +59,7 @@ export default function HistoryPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] text-[#171A21] flex flex-col lg:flex-row font-sans">
+    <div className="min-h-screen bg-[#F3F1E8] text-[#20231F] flex flex-col lg:flex-row font-sans">
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -76,46 +76,46 @@ export default function HistoryPage() {
         <div className="p-4 sm:p-6 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#171A21] tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#20231F] tracking-tight">
                 Completion History
               </h1>
-              <p className="text-sm text-[#686C73] mt-1 font-medium">
+              <p className="text-sm text-[#70736B] mt-1 font-medium">
                 Audit log of all completed quests and earned XP / Gold.
               </p>
             </div>
 
             <div className="relative min-w-[220px]">
-              <Search className="w-4 h-4 text-[#686C73] absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-[#70736B] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search audit log..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 bg-white border border-[#E5E1D9] rounded-xl text-xs text-[#171A21] placeholder-[#686C73] focus:outline-none focus:border-[#F05A3C] shadow-2xs"
+                className="w-full pl-9 pr-3 py-2 bg-[#FFFDF7] border border-[#DFDDD2] rounded-xl text-xs text-[#20231F] placeholder-[#70736B] focus:outline-none focus:border-[#C85A3D] shadow-2xs"
               />
             </div>
           </div>
 
-          <div className="bg-white border border-[#E5E1D9] rounded-2xl shadow-2xs overflow-hidden">
-            <div className="divide-y divide-[#E5E1D9]">
+          <div className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-2xl shadow-2xs overflow-hidden">
+            <div className="divide-y divide-[#DFDDD2]">
               {filteredEntries.map((entry) => (
                 <div
                   key={entry.id}
-                  className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#FAF9F6] transition-colors"
+                  className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#F3F1E8] transition-colors"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-8 h-8 rounded-full bg-[#F0FDF4] text-[#2E9B72] flex items-center justify-center shrink-0 border border-[#2E9B72]/20">
+                    <div className="w-8 h-8 rounded-full bg-[#F4F8F5] text-[#668F72] flex items-center justify-center shrink-0 border border-[#668F72]/20">
                       <CheckCircle2 className="w-4 h-4" />
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-extrabold text-[#171A21]">{entry.title}</h4>
+                      <h4 className="text-sm font-extrabold text-[#20231F]">{entry.title}</h4>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-xs font-semibold text-[#686C73]">
+                        <span className="text-xs font-semibold text-[#70736B]">
                           {entry.attribute}
                         </span>
-                        <span className="text-xs text-[#686C73]">•</span>
-                        <span className="text-xs text-[#686C73] flex items-center gap-1">
+                        <span className="text-xs text-[#70736B]">•</span>
+                        <span className="text-xs text-[#70736B] flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
                           {entry.completedAt}
                         </span>
@@ -124,10 +124,10 @@ export default function HistoryPage() {
                   </div>
 
                   <div className="flex items-center gap-3 font-technical text-xs font-bold text-right self-end sm:self-center">
-                    <span className="px-2.5 py-1 bg-[#F7F5F0] border border-[#E5E1D9] rounded-lg text-[#171A21]">
+                    <span className="px-2.5 py-1 bg-[#F3F1E8] border border-[#DFDDD2] rounded-lg text-[#20231F]">
                       +{entry.xp} XP
                     </span>
-                    <span className="px-2.5 py-1 bg-[#FFF8EC] border border-[#FFB547]/30 rounded-lg text-[#FFB547]">
+                    <span className="px-2.5 py-1 bg-[#FAF4E6] border border-[#D9A441]/30 rounded-lg text-[#D9A441]">
                       +{entry.gold} Gold
                     </span>
                   </div>

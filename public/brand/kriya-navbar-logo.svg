@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 36" width="160" height="36" fill="none">
+  <!-- KRIYA Compact Navbar Logo -->
+  <g id="kriya-navbar-logo">
+    <!-- 32x32 Standalone Mark -->
+    <g transform="translate(2, 2)">
+      <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D" />
+      <path d="M 9.5 4 L 11 4 L 11 28 L 9.5 28 Z" fill="#A94730" opacity="0.4" />
+      
+      <!-- Progress Steps -->
+      <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#C85A3D" />
+      <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#C85A3D" />
+      <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#D9A441" />
+      <rect x="26" y="2" width="2" height="2" fill="#668F72" />
+
+      <!-- Foundation Steps -->
+      <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#A94730" />
+      <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#A94730" />
+    </g>
+
+    <!-- Clean Bold Wordmark "KRIYA" -->
+    <text x="42" y="25" font-family="'Plus Jakarta Sans', 'Inter', system-ui, sans-serif" font-size="20" font-weight="800" letter-spacing="-0.5" fill="#20231F">KRIYA</text>
+  </g>
+</svg>

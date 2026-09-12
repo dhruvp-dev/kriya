@@ -36,7 +36,7 @@ export function CelebrationOverlay({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#8B5CF6', '#FFB547', '#2E9B72', '#F05A3C'],
+        colors: ['#344653', '#D9A441', '#668F72', '#C85A3D'],
       });
     } catch {
       // Fallback
@@ -56,7 +56,7 @@ export function CelebrationOverlay({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-[#171A21]/80 backdrop-blur-xs"
+          className="fixed inset-0 bg-[#20231F]/80 backdrop-blur-xs"
         />
 
         <motion.div
@@ -64,11 +64,11 @@ export function CelebrationOverlay({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: 20 }}
           transition={{ type: 'spring', bounce: 0.4 }}
-          className="relative z-10 w-full max-w-md bg-white border border-[#E5E1D9] rounded-3xl p-6 shadow-2xl text-center overflow-hidden"
+          className="relative z-10 w-full max-w-md bg-[#FFFDF7] border border-[#DFDDD2] rounded-3xl p-6 shadow-2xl text-center overflow-hidden"
         >
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-1.5 text-[#686C73] hover:text-[#171A21] hover:bg-[#F7F5F0] rounded-full transition-colors"
+            className="absolute top-4 right-4 p-1.5 text-[#70736B] hover:text-[#20231F] hover:bg-[#F3F1E8] rounded-full transition-colors"
           >
             <X size={20} />
           </button>
@@ -80,26 +80,26 @@ export function CelebrationOverlay({
                 initial={{ rotate: -180, scale: 0 }}
                 animate={{ rotate: 0, scale: 1 }}
                 transition={{ type: 'spring', stiffness: 200, delay: 0.1 }}
-                className="inline-flex p-4 rounded-3xl bg-[#FFF8EC] border border-[#FFB547]/30 text-[#FFB547]"
+                className="inline-flex p-4 rounded-3xl bg-[#FAF4E6] border border-[#D9A441]/30 text-[#D9A441]"
               >
                 <ShieldStar weight="fill" size={64} />
               </motion.div>
 
-              <h2 className="text-3xl font-extrabold text-[#171A21] uppercase tracking-wide">
+              <h2 className="text-3xl font-extrabold text-[#20231F] uppercase tracking-wide">
                 Level Up!
               </h2>
 
-              <p className="text-sm font-medium text-[#686C73]">
-                You progressed from Level <span className="font-bold text-[#171A21]">{oldLevel}</span> to{' '}
-                <span className="font-bold text-[#F05A3C] text-base">Level {displayLevel}</span>!
+              <p className="text-sm font-medium text-[#70736B]">
+                You progressed from Level <span className="font-bold text-[#20231F]">{oldLevel}</span> to{' '}
+                <span className="font-bold text-[#C85A3D] text-base">Level {displayLevel}</span>!
               </p>
             </div>
           )}
 
           {/* Unlocked Achievements Section */}
           {unlockedAch.length > 0 && (
-            <div className="py-3 space-y-3 border-t border-[#E5E1D9]">
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#202B3C]">
+            <div className="py-3 space-y-3 border-t border-[#DFDDD2]">
+              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#344653]">
                 <Trophy weight="fill" size={18} /> Achievement Unlocked!
               </div>
 
@@ -107,15 +107,15 @@ export function CelebrationOverlay({
                 {unlockedAch.map((ach) => (
                   <div
                     key={ach.id}
-                    className="p-3 bg-[#F7F5F0] border border-[#E5E1D9] rounded-2xl flex items-center justify-between text-left"
+                    className="p-3 bg-[#F3F1E8] border border-[#DFDDD2] rounded-2xl flex items-center justify-between text-left"
                   >
                     <div>
-                      <h4 className="text-sm font-bold text-[#171A21]">{ach.name}</h4>
-                      <p className="text-xs text-[#686C73] line-clamp-1">{ach.description}</p>
+                      <h4 className="text-sm font-bold text-[#20231F]">{ach.name}</h4>
+                      <p className="text-xs text-[#70736B] line-clamp-1">{ach.description}</p>
                     </div>
                     <div className="text-right text-xs font-semibold shrink-0 font-technical">
-                      {ach.reward_xp > 0 && <div className="text-[#3B82F6]">+{ach.reward_xp} XP</div>}
-                      {ach.reward_gold > 0 && <div className="text-[#FFB547]">+{ach.reward_gold} Gold</div>}
+                      {ach.reward_xp > 0 && <div className="text-[#344653]">+{ach.reward_xp} XP</div>}
+                      {ach.reward_gold > 0 && <div className="text-[#D9A441]">+{ach.reward_gold} Gold</div>}
                     </div>
                   </div>
                 ))}
@@ -124,17 +124,17 @@ export function CelebrationOverlay({
           )}
 
           {/* Reward Summary */}
-          <div className="mt-4 p-3 bg-[#F7F5F0] border border-[#E5E1D9] rounded-2xl flex items-center justify-around text-xs font-bold font-technical">
-            <span className="text-[#3B82F6] flex items-center gap-1">
+          <div className="mt-4 p-3 bg-[#F3F1E8] border border-[#DFDDD2] rounded-2xl flex items-center justify-around text-xs font-bold font-technical">
+            <span className="text-[#344653] flex items-center gap-1">
               <Sparkle weight="fill" size={14} /> +{displayXp} XP
             </span>
-            <span className="text-[#FFB547] flex items-center gap-1">
+            <span className="text-[#D9A441] flex items-center gap-1">
               +{displayGold} Gold
             </span>
           </div>
 
           <div className="mt-6">
-            <Button variant="primary" size="lg" className="w-full font-bold cursor-pointer text-white bg-[#F05A3C] hover:bg-[#D9482B]" onClick={onClose}>
+            <Button variant="primary" size="lg" className="w-full font-bold cursor-pointer text-white bg-[#C85A3D] hover:bg-[#A94730]" onClick={onClose}>
               Claim Rewards & Continue
             </Button>
           </div>

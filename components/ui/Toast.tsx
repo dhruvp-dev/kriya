@@ -58,21 +58,21 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
               className={`pointer-events-auto flex items-center justify-between gap-3 p-4 rounded-xl shadow-lg border ${
                 toast.type === 'success'
-                  ? 'bg-[#ECFDF5] border-[#A7F3D0] text-[#065F46]'
+                  ? 'bg-[#F4F8F5] border-[#C3D9C9] text-[#2C5237]'
                   : toast.type === 'error'
                   ? 'bg-[#FEF2F2] border-[#FCA5A5] text-[#991B1B]'
-                  : 'bg-[#FFFFFF] border-[#E5E1D9] text-[#171A21]'
+                  : 'bg-[#FFFDF7] border-[#DFDDD2] text-[#20231F]'
               }`}
             >
               <div className="flex items-center gap-2.5 text-xs font-semibold">
-                {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-[#2E9B72] shrink-0" />}
-                {toast.type === 'error' && <AlertCircle className="w-4 h-4 text-[#DC2626] shrink-0" />}
-                {toast.type === 'info' && <Info className="w-4 h-4 text-[#202B3C] shrink-0" />}
+                {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-[#668F72] shrink-0" />}
+                {toast.type === 'error' && <AlertCircle className="w-4 h-4 text-[#C85A3D] shrink-0" />}
+                {toast.type === 'info' && <Info className="w-4 h-4 text-[#344653] shrink-0" />}
                 <span>{toast.message}</span>
               </div>
               <button
                 onClick={() => removeToast(toast.id)}
-                className="text-[#686C73] hover:text-[#171A21] transition-colors p-1"
+                className="text-[#70736B] hover:text-[#20231F] transition-colors p-1"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

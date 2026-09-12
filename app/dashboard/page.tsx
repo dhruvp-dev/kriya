@@ -341,7 +341,7 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] text-[#171A21] flex flex-col lg:flex-row font-sans">
+    <div className="min-h-screen bg-[#F3F1E8] text-[#20231F] flex flex-col lg:flex-row font-sans">
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -366,10 +366,10 @@ export default function DashboardPage() {
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <h2 className="text-xl font-extrabold text-[#171A21] tracking-tight">
+                  <h2 className="text-xl font-extrabold text-[#20231F] tracking-tight">
                     Today’s quests
                   </h2>
-                  <p className="text-xs text-[#686C73] font-medium mt-0.5">
+                  <p className="text-xs text-[#70736B] font-medium mt-0.5">
                     Small actions. Real progress.
                   </p>
                 </div>
@@ -383,8 +383,8 @@ export default function DashboardPage() {
                         onClick={() => setActiveFilter(filter)}
                         className={`px-3 py-1 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                           activeFilter === filter
-                            ? 'bg-[#171A21] text-white shadow-2xs'
-                            : 'text-[#686C73] hover:text-[#171A21] hover:bg-[#EAE6DE]'
+                            ? 'bg-[#20231F] text-white shadow-2xs'
+                            : 'text-[#70736B] hover:text-[#20231F] hover:bg-[#EBE8DD]'
                         }`}
                       >
                         {filter}
@@ -406,14 +406,14 @@ export default function DashboardPage() {
                   ))}
                 </div>
               ) : (
-                <div className="bg-white border border-[#E5E1D9] rounded-2xl p-12 text-center space-y-3">
-                  <h3 className="text-base font-extrabold text-[#171A21]">No quests pending</h3>
-                  <p className="text-xs text-[#686C73] max-w-xs mx-auto font-medium leading-relaxed">
+                <div className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-2xl p-12 text-center space-y-3">
+                  <h3 className="text-base font-extrabold text-[#20231F]">No quests pending</h3>
+                  <p className="text-xs text-[#70736B] max-w-xs mx-auto font-medium leading-relaxed">
                     Nothing planned yet. Create your first quest and start building momentum.
                   </p>
                   <button
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#F05A3C] hover:bg-[#D9482B] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer mt-2"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#C85A3D] hover:bg-[#A94730] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer mt-2"
                   >
                     <Plus className="w-4 h-4 stroke-[2.5]" />
                     <span>+ Create Quest</span>

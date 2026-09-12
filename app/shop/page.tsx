@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
-import { ShoppingBag, Coins, Check, Sparkles } from 'lucide-react';
+import { Coins, Check, Sparkles, ShoppingBag } from 'lucide-react';
 import { useToast } from '../../components/ui/Toast';
+import { Avatar, AvatarFrameVariant } from '../../components/avatars';
 
 export default function ShopPage() {
   const { showToast } = useToast();
@@ -21,40 +22,61 @@ export default function ShopPage() {
 
   const [shopItems, setShopItems] = useState([
     {
-      id: 'shop-1',
-      name: 'Coral Glow Frame',
-      description: 'Warm coral accent border for your pixel avatar.',
-      price: 250,
+      id: 'shop-frame-coral',
+      name: 'Coral Notch Frame',
+      description: 'Energetic KRIYA coral corner notches cosmetic avatar frame.',
+      price: 150,
       type: 'Avatar Frame',
+      frameVariant: 'coral' as AvatarFrameVariant,
       owned: false,
     },
     {
-      id: 'shop-[#2]',
-      name: 'Architect of Habits',
-      description: 'Exclusive status title displayed on your profile.',
+      id: 'shop-frame-navy',
+      name: 'Navy Tech Frame',
+      description: 'Deep navy technical grid border cosmetic avatar frame.',
+      price: 200,
+      type: 'Avatar Frame',
+      frameVariant: 'navy' as AvatarFrameVariant,
+      owned: false,
+    },
+    {
+      id: 'shop-frame-seasonal',
+      name: 'Retro Seasonal Star Frame',
+      description: 'Cozy pixel stars corner cosmetic avatar frame.',
+      price: 250,
+      type: 'Avatar Frame',
+      frameVariant: 'seasonal' as AvatarFrameVariant,
+      owned: false,
+    },
+    {
+      id: 'shop-frame-gold',
+      name: 'Gold Tier Frame',
+      description: 'Shimmering metallic gold border with studs cosmetic avatar frame.',
+      price: 300,
+      type: 'Avatar Frame',
+      frameVariant: 'gold' as AvatarFrameVariant,
+      owned: true, // Example starting equipped/unlocked
+    },
+    {
+      id: 'shop-frame-achievement',
+      name: 'Legendary Achievement Frame',
+      description: 'Prestige emerald & gold achievement cosmetic avatar frame.',
       price: 400,
+      type: 'Avatar Frame',
+      frameVariant: 'achievement' as AvatarFrameVariant,
+      owned: false,
+    },
+    {
+      id: 'shop-title-architect',
+      name: 'Architect of Habits Title',
+      description: 'Exclusive status title displayed on your profile.',
+      price: 250,
       type: 'Title',
       owned: true,
     },
-    {
-      id: 'shop-3',
-      name: 'Cozy Desk Bonsai',
-      description: 'Quiet desk companion for your character overview.',
-      price: 300,
-      type: 'Desk Companion',
-      owned: false,
-    },
-    {
-      id: 'shop-4',
-      name: 'Gold Foil Border',
-      description: 'Shimmering metallic gold card accent border.',
-      price: 500,
-      type: 'Avatar Frame',
-      owned: false,
-    },
   ]);
 
-  const handlePurchase = (item: any) => {
+  const handlePurchase = (item: typeof shopItems[0]) => {
     if (userStats.gold < item.price) {
       showToast('error', 'Insufficient Gold', `You need ${item.price - userStats.gold} more Gold.`);
       return;
@@ -64,11 +86,11 @@ export default function ShopPage() {
     setShopItems((prev) =>
       prev.map((i) => (i.id === item.id ? { ...i, owned: true } : i))
     );
-    showToast('success', 'Item Purchased!', `You acquired "${item.name}".`);
+    showToast('success', 'Item Purchased!', `You acquired "${item.name}". It is now unlocked in your Avatar settings.`);
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] text-[#171A21] flex flex-col lg:flex-row font-sans">
+    <div className="min-h-screen bg-[#F3F1E8] text-[#20231F] flex flex-col lg:flex-row font-sans">
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -85,57 +107,67 @@ export default function ShopPage() {
         <div className="p-4 sm:p-6 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#171A21] tracking-tight">
-                Cosmetic Shop
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#20231F] tracking-tight">
+                Cosmetic Avatar Shop
               </h1>
-              <p className="text-sm text-[#686C73] mt-1 font-medium">
-                Spend earned Gold on avatar frames, status titles, and desk companions.
+              <p className="text-sm text-[#70736B] mt-1 font-medium">
+                Spend earned Gold on premium avatar frames and exclusive status titles.
               </p>
             </div>
 
-            <div className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E1D9] rounded-xl shadow-2xs text-xs font-bold text-[#171A21]">
-              <Coins className="w-4 h-4 text-[#FFB547]" />
+            <div className="flex items-center gap-2 px-4 py-2 bg-[#FFFDF7] border border-[#DFDDD2] rounded-xl shadow-2xs text-xs font-bold text-[#20231F]">
+              <Coins className="w-4 h-4 text-[#D9A441]" />
               <span className="font-technical font-extrabold">{userStats.gold} Gold</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {shopItems.map((item) => (
               <div
                 key={item.id}
-                className="bg-white border border-[#E5E1D9] rounded-2xl p-5 shadow-2xs flex flex-col justify-between space-y-4"
+                className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-2xl p-5 shadow-2xs flex flex-col justify-between space-y-4"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <span className="text-[10px] font-extrabold tracking-wider text-[#686C73] uppercase">
-                      {item.type}
-                    </span>
-                    <h3 className="text-base font-extrabold text-[#171A21] mt-0.5">{item.name}</h3>
-                    <p className="text-xs text-[#686C73] mt-1">{item.description}</p>
-                  </div>
-
-                  <div className="px-3 py-1.5 bg-[#FFF8EC] border border-[#FFB547]/30 rounded-xl flex items-center gap-1.5 text-xs font-bold text-[#FFB547] font-technical shrink-0">
-                    <Coins className="w-3.5 h-3.5" />
-                    <span>{item.price}</span>
-                  </div>
+                {/* Item Preview */}
+                <div className="flex flex-col items-center justify-center p-4 bg-[#F3F1E8] rounded-xl border border-[#DFDDD2] relative">
+                  {item.frameVariant ? (
+                    <Avatar variant="architect" size={80} frame={item.frameVariant} />
+                  ) : (
+                    <div className="w-20 h-20 rounded-2xl bg-[#20231F] flex items-center justify-center text-white font-extrabold text-xs">
+                      TITLE
+                    </div>
+                  )}
+                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-[#20231F] text-white text-[9px] font-extrabold uppercase">
+                    {item.type}
+                  </span>
                 </div>
 
-                <div className="pt-3 border-t border-[#E5E1D9] flex justify-end">
+                <div className="space-y-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-sm font-extrabold text-[#20231F]">{item.name}</h3>
+                    <div className="px-2.5 py-1 bg-[#FAF4E6] border border-[#D9A441]/30 rounded-lg flex items-center gap-1 text-xs font-bold text-[#D9A441] font-technical shrink-0">
+                      <Coins className="w-3 h-3" />
+                      <span>{item.price}</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-[#70736B]">{item.description}</p>
+                </div>
+
+                <div className="pt-3 border-t border-[#DFDDD2] flex justify-end">
                   {item.owned ? (
                     <button
                       disabled
-                      className="px-4 py-2 bg-[#F7F5F0] text-[#686C73] text-xs font-bold rounded-xl border border-[#E5E1D9] flex items-center gap-1.5 cursor-not-allowed"
+                      className="w-full py-2 bg-[#F3F1E8] text-[#70736B] text-xs font-bold rounded-xl border border-[#DFDDD2] flex items-center justify-center gap-1.5 cursor-not-allowed"
                     >
-                      <Check className="w-3.5 h-3.5 text-[#2E9B72]" />
-                      <span>Owned</span>
+                      <Check className="w-3.5 h-3.5 text-[#668F72]" />
+                      <span>Unlocked / Owned</span>
                     </button>
                   ) : (
                     <button
                       onClick={() => handlePurchase(item)}
-                      className="px-4 py-2 bg-[#F05A3C] hover:bg-[#D9482B] text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                      className="w-full py-2 bg-[#C85A3D] hover:bg-[#A94730] text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>Purchase</span>
+                      <span>Purchase for {item.price} Gold</span>
                     </button>
                   )}
                 </div>

@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { Modal } from '../ui/Modal';
-import { Coins, Sparkles, X } from 'lucide-react';
+import { Coins, Sparkles, X, Gauge } from 'lucide-react';
+import { Sword, Brain, ShieldCheck, Sparkle } from '@phosphor-icons/react';
 import { useToast } from '../ui/Toast';
 
 export interface CreateQuestModalProps {
@@ -18,6 +19,44 @@ const REWARD_MAP = {
   HARD: { xp: 100, gold: 30 },
   EPIC: { xp: 200, gold: 60 },
 };
+
+const ATTRIBUTES_OPTIONS = [
+  {
+    id: 'strength',
+    label: 'Strength',
+    icon: Sword,
+    color: 'text-[#C85A3D]',
+    activeBg: 'bg-[#C85A3D]/10 border-[#C85A3D]',
+  },
+  {
+    id: 'intellect',
+    label: 'Intellect',
+    icon: Brain,
+    color: 'text-[#344653]',
+    activeBg: 'bg-[#344653]/10 border-[#344653]',
+  },
+  {
+    id: 'discipline',
+    label: 'Discipline',
+    icon: ShieldCheck,
+    color: 'text-[#668F72]',
+    activeBg: 'bg-[#668F72]/10 border-[#668F72]',
+  },
+  {
+    id: 'creativity',
+    label: 'Creativity',
+    icon: Sparkle,
+    color: 'text-[#D9A441]',
+    activeBg: 'bg-[#D9A441]/10 border-[#D9A441]',
+  },
+] as const;
+
+const DIFFICULTY_OPTIONS = [
+  { id: 'EASY', label: 'Easy', color: 'text-[#668F72]' },
+  { id: 'MEDIUM', label: 'Medium', color: 'text-[#D9A441]' },
+  { id: 'HARD', label: 'Hard', color: 'text-[#C85A3D]' },
+  { id: 'EPIC', label: 'Epic', color: 'text-[#344653]' },
+] as const;
 
 export function CreateQuestModal({ isOpen, onClose, onCreated, onCreateQuest }: CreateQuestModalProps) {
   const handleQuestCreated = onCreated || onCreateQuest;
@@ -74,34 +113,34 @@ export function CreateQuestModal({ isOpen, onClose, onCreated, onCreateQuest }: 
       <form onSubmit={handleSubmit} className="space-y-4 font-sans">
         {/* Title */}
         <div>
-          <label className="text-xs font-semibold text-[#171A21] block mb-1">
-            Quest Title <span className="text-[#F05A3C]">*</span>
+          <label className="text-xs font-semibold text-[#20231F] block mb-1">
+            Quest Title <span className="text-[#C85A3D]">*</span>
           </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Build API integration module"
-            className="w-full px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg text-sm text-[#171A21] placeholder-[#A8A29E] focus:outline-none focus:border-[#F05A3C] focus:ring-1 focus:ring-[#F05A3C]"
+            className="w-full px-3.5 py-2.5 bg-[#FFFDF7] border border-[#DFDDD2] rounded-lg text-sm text-[#20231F] placeholder-[#A8A29E] focus:outline-none focus:border-[#C85A3D] focus:ring-1 focus:ring-[#C85A3D]"
             required
           />
         </div>
 
         {/* Description */}
         <div>
-          <label className="text-xs font-semibold text-[#171A21] block mb-1">Description (Optional)</label>
+          <label className="text-xs font-semibold text-[#20231F] block mb-1">Description (Optional)</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Define objectives and notes..."
             rows={2}
-            className="w-full px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg text-sm text-[#171A21] placeholder-[#A8A29E] focus:outline-none focus:border-[#F05A3C] focus:ring-1 focus:ring-[#F05A3C]"
+            className="w-full px-3.5 py-2.5 bg-[#FFFDF7] border border-[#DFDDD2] rounded-lg text-sm text-[#20231F] placeholder-[#A8A29E] focus:outline-none focus:border-[#C85A3D] focus:ring-1 focus:ring-[#C85A3D]"
           />
         </div>
 
         {/* Subtasks */}
         <div>
-          <label className="text-xs font-semibold text-[#171A21] block mb-1">Subtasks / Checklist</label>
+          <label className="text-xs font-semibold text-[#20231F] block mb-1">Subtasks / Checklist</label>
           <div className="flex items-center gap-2 mb-2">
             <input
               type="text"
@@ -114,12 +153,12 @@ export function CreateQuestModal({ isOpen, onClose, onCreated, onCreateQuest }: 
                 }
               }}
               placeholder="e.g. Setup authentication endpoints"
-              className="flex-1 px-3 py-1.5 bg-[#FFFFFF] border border-[#E5E1D9] rounded-md text-xs text-[#171A21] placeholder-[#A8A29E] focus:outline-none focus:border-[#F05A3C]"
+              className="flex-1 px-3 py-1.5 bg-[#FFFDF7] border border-[#DFDDD2] rounded-md text-xs text-[#20231F] placeholder-[#A8A29E] focus:outline-none focus:border-[#C85A3D]"
             />
             <button
               type="button"
               onClick={handleAddSubtask}
-              className="px-3 py-1.5 bg-[#F7F5F0] border border-[#E5E1D9] hover:bg-[#EFECE6] text-xs font-bold text-[#171A21] rounded-md transition-colors"
+              className="px-3 py-1.5 bg-[#F3F1E8] border border-[#DFDDD2] hover:bg-[#EBE8DD] text-xs font-bold text-[#20231F] rounded-md transition-colors"
             >
               Add
             </button>
@@ -130,13 +169,13 @@ export function CreateQuestModal({ isOpen, onClose, onCreated, onCreateQuest }: 
               {subtasks.map((st, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between text-xs text-[#686C73] bg-[#F7F5F0] px-2.5 py-1 rounded border border-[#E5E1D9]"
+                  className="flex items-center justify-between text-xs text-[#70736B] bg-[#F3F1E8] px-2.5 py-1 rounded border border-[#DFDDD2]"
                 >
                   <span>• {st}</span>
                   <button
                     type="button"
                     onClick={() => handleRemoveSubtask(idx)}
-                    className="text-[#686C73] hover:text-[#DC2626]"
+                    className="text-[#70736B] hover:text-[#C85A3D]"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -146,64 +185,86 @@ export function CreateQuestModal({ isOpen, onClose, onCreated, onCreateQuest }: 
           )}
         </div>
 
-        {/* Attribute & Difficulty Grid */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-xs font-semibold text-[#171A21] block mb-1">Target Attribute</label>
-            <select
-              value={attribute}
-              onChange={(e) => setAttribute(e.target.value as any)}
-              className="w-full px-3 py-2 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg text-xs font-semibold text-[#171A21] focus:outline-none focus:border-[#F05A3C]"
-            >
-              <option value="strength">Strength (Red)</option>
-              <option value="intellect">Intellect (Blue)</option>
-              <option value="discipline">Discipline (Green)</option>
-              <option value="creativity">Creativity (Purple)</option>
-            </select>
+        {/* Iconic Target Attribute Selector */}
+        <div>
+          <label className="text-xs font-semibold text-[#20231F] block mb-1.5">Target Attribute</label>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {ATTRIBUTES_OPTIONS.map((attr) => {
+              const IconComp = attr.icon;
+              const isSelected = attribute === attr.id;
+              return (
+                <button
+                  key={attr.id}
+                  type="button"
+                  onClick={() => setAttribute(attr.id as any)}
+                  className={`flex items-center justify-center gap-2 p-2.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                    isSelected
+                      ? attr.activeBg
+                      : 'bg-[#FFFDF7] border-[#DFDDD2] text-[#70736B] hover:border-[#C5C3B8]'
+                  }`}
+                >
+                  <IconComp weight="fill" className={`w-4 h-4 ${attr.color}`} />
+                  <span className={isSelected ? 'text-[#20231F]' : 'text-[#70736B]'}>
+                    {attr.label}
+                  </span>
+                </button>
+              );
+            })}
           </div>
+        </div>
 
-          <div>
-            <label className="text-xs font-semibold text-[#171A21] block mb-1">Difficulty</label>
-            <select
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value as any)}
-              className="w-full px-3 py-2 bg-[#FFFFFF] border border-[#E5E1D9] rounded-lg text-xs font-semibold text-[#171A21] focus:outline-none focus:border-[#F05A3C]"
-            >
-              <option value="EASY">Easy (+20 XP)</option>
-              <option value="MEDIUM">Medium (+50 XP)</option>
-              <option value="HARD">Hard (+100 XP)</option>
-              <option value="EPIC">Epic (+200 XP)</option>
-            </select>
+        {/* Iconic Difficulty Selector */}
+        <div>
+          <label className="text-xs font-semibold text-[#20231F] block mb-1.5">Difficulty</label>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {DIFFICULTY_OPTIONS.map((diff) => {
+              const isSelected = difficulty === diff.id;
+              return (
+                <button
+                  key={diff.id}
+                  type="button"
+                  onClick={() => setDifficulty(diff.id as any)}
+                  className={`flex items-center justify-center gap-1.5 p-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#C85A3D]/10 border-[#C85A3D] text-[#20231F]'
+                      : 'bg-[#FFFDF7] border-[#DFDDD2] text-[#70736B] hover:border-[#C5C3B8]'
+                  }`}
+                >
+                  <Gauge className={`w-3.5 h-3.5 ${diff.color}`} />
+                  <span>{diff.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* Reward Output Preview */}
-        <div className="p-3 bg-[#F7F5F0] border border-[#E5E1D9] rounded-lg flex items-center justify-between text-xs font-medium">
-          <span className="text-[#686C73]">Reward preview:</span>
-          <div className="flex items-center gap-3 font-technical font-bold text-[#D97706]">
+        <div className="p-3 bg-[#F3F1E8] border border-[#DFDDD2] rounded-lg flex items-center justify-between text-xs font-medium">
+          <span className="text-[#70736B]">Reward preview:</span>
+          <div className="flex items-center gap-3 font-technical font-bold text-[#D9A441]">
             <span className="flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#FFB547]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
               +{currentRewards.xp} XP
             </span>
             <span className="flex items-center gap-1">
-              <Coins className="w-3.5 h-3.5 text-[#FFB547]" />
+              <Coins className="w-3.5 h-3.5 text-[#D9A441]" />
               +{currentRewards.gold} Gold
             </span>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#E5E1D9]">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#DFDDD2]">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-xs font-bold text-[#686C73] hover:text-[#171A21] transition-colors"
+            className="px-4 py-2 text-xs font-bold text-[#70736B] hover:text-[#20231F] transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-5 py-2 bg-[#F05A3C] hover:bg-[#D9482D] text-white text-xs font-bold rounded-lg transition-colors shadow-2xs"
+            className="px-5 py-2 bg-[#C85A3D] hover:bg-[#A94730] text-white text-xs font-bold rounded-lg transition-colors shadow-2xs"
           >
             Create Quest
           </button>
@@ -212,3 +273,4 @@ export function CreateQuestModal({ isOpen, onClose, onCreated, onCreateQuest }: 
     </Modal>
   );
 }
+

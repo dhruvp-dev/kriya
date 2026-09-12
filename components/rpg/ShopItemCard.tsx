@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ShoppingBag, Check } from 'lucide-react'; // Lucide for UI chrome per rule!
+import { ShoppingBag, Check, Shield, Award, Zap } from 'lucide-react'; // Lucide for UI chrome per rule!
 import { Coins, Sparkle } from '@phosphor-icons/react'; // Phosphor for game items per rule!
 import type { ShopItem } from '../../types/database.types';
 import { Card } from '../ui/Card';
@@ -28,6 +28,19 @@ export function ShopItemCard({
   const { showToast } = useToast();
 
   const canAfford = userGold >= item.price;
+
+  const getItemTypeIcon = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'gear':
+      case 'armor':
+      case 'weapon':
+        return <Shield className="w-3 h-3 text-indigo-400" />;
+      case 'title':
+        return <Award className="w-3 h-3 text-amber-400" />;
+      default:
+        return <Zap className="w-3 h-3 text-emerald-400" />;
+    }
+  };
 
   const handleBuy = async () => {
     if (isPurchasing || (item.is_unique && ownedState)) return;
@@ -58,8 +71,9 @@ export function ShopItemCard({
     <Card hoverEffect className="flex flex-col justify-between h-full p-5 border-slate-800">
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <Badge variant="default" className="uppercase tracking-wider text-[10px]">
-            {item.type.replace('_', ' ')}
+          <Badge variant="default" className="uppercase tracking-wider text-[10px] inline-flex items-center gap-1.5">
+            {getItemTypeIcon(item.type)}
+            <span>{item.type.replace('_', ' ')}</span>
           </Badge>
 
           {item.is_unique && ownedState && (
@@ -100,3 +114,4 @@ export function ShopItemCard({
     </Card>
   );
 }
+

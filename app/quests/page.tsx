@@ -6,7 +6,8 @@ import { Header } from '../../components/navigation/Header';
 import { QuestCard, QuestItem } from '../../components/rpg/QuestCard';
 import { CreateQuestModal } from '../../components/rpg/CreateQuestModal';
 import { useToast } from '../../components/ui/Toast';
-import { Plus, Search, CheckCircle2 } from 'lucide-react';
+import { Plus, Search, CheckCircle2, Layers } from 'lucide-react';
+import { Sword, Brain, ShieldCheck, Sparkle } from '@phosphor-icons/react';
 import { getRewardForDifficulty, calculateLevel, getXpThreshold } from '../../lib/progression';
 
 export default function QuestsPage() {
@@ -141,8 +142,27 @@ export default function QuestsPage() {
     return !quest.completed;
   });
 
+  const getFilterIcon = (filter: string) => {
+    switch (filter) {
+      case 'All':
+        return <Layers className="w-3.5 h-3.5" />;
+      case 'Strength':
+        return <Sword weight="fill" className="w-3.5 h-3.5 text-[#C85A3D]" />;
+      case 'Intellect':
+        return <Brain weight="fill" className="w-3.5 h-3.5 text-[#344653]" />;
+      case 'Discipline':
+        return <ShieldCheck weight="fill" className="w-3.5 h-3.5 text-[#668F72]" />;
+      case 'Creativity':
+        return <Sparkle weight="fill" className="w-3.5 h-3.5 text-[#D9A441]" />;
+      case 'Completed':
+        return <CheckCircle2 className="w-3.5 h-3.5 text-[#668F72]" />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#F7F5F0] text-[#171A21] flex flex-col lg:flex-row font-sans">
+    <div className="min-h-screen bg-[#F3F1E8] text-[#20231F] flex flex-col lg:flex-row font-sans">
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -160,48 +180,49 @@ export default function QuestsPage() {
         <div className="p-4 sm:p-6 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#171A21] tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#20231F] tracking-tight">
                 Quests
               </h1>
-              <p className="text-sm text-[#686C73] mt-1 font-medium">
+              <p className="text-sm text-[#70736B] mt-1 font-medium">
                 Small daily actions. Meaningful long-term progress.
               </p>
             </div>
 
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#F05A3C] hover:bg-[#D9482B] text-white text-xs font-bold rounded-xl transition-all shadow-xs shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#C85A3D] hover:bg-[#A94730] text-white text-xs font-bold rounded-xl transition-all shadow-xs shrink-0 cursor-pointer"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>New Quest</span>
             </button>
           </div>
 
-          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3 rounded-2xl border border-[#E5E1D9] shadow-2xs">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-[#FFFDF7] p-3 rounded-2xl border border-[#DFDDD2] shadow-2xs">
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
               {(['All', 'Strength', 'Intellect', 'Discipline', 'Creativity', 'Completed'] as const).map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                     activeFilter === filter
-                      ? 'bg-[#171A21] text-white shadow-2xs'
-                      : 'text-[#686C73] hover:text-[#171A21] hover:bg-[#F7F5F0]'
+                      ? 'bg-[#20231F] text-white shadow-2xs'
+                      : 'text-[#70736B] hover:text-[#20231F] hover:bg-[#F3F1E8]'
                   }`}
                 >
-                  {filter}
+                  {getFilterIcon(filter)}
+                  <span>{filter}</span>
                 </button>
               ))}
             </div>
 
             <div className="relative min-w-[200px]">
-              <Search className="w-4 h-4 text-[#686C73] absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-[#70736B] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search quests..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 bg-[#F7F5F0] border border-[#E5E1D9] rounded-xl text-xs text-[#171A21] placeholder-[#686C73] focus:outline-none focus:border-[#F05A3C]"
+                className="w-full pl-9 pr-3 py-1.5 bg-[#F3F1E8] border border-[#DFDDD2] rounded-xl text-xs text-[#20231F] placeholder-[#70736B] focus:outline-none focus:border-[#C85A3D]"
               />
             </div>
           </div>
@@ -217,19 +238,19 @@ export default function QuestsPage() {
               ))}
             </div>
           ) : (
-            <div className="bg-white border border-[#E5E1D9] rounded-2xl p-12 text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-[#F7F5F0] flex items-center justify-center mx-auto text-[#686C73]">
+            <div className="bg-[#FFFDF7] border border-[#DFDDD2] rounded-2xl p-12 text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-[#F3F1E8] flex items-center justify-center mx-auto text-[#70736B]">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-[#171A21]">No quests found</h3>
-              <p className="text-xs text-[#686C73] max-w-sm mx-auto">
+              <h3 className="text-base font-bold text-[#20231F]">No quests found</h3>
+              <p className="text-xs text-[#70736B] max-w-sm mx-auto">
                 {activeFilter === 'Completed'
                   ? 'No completed quests yet. Finish active quests to build history.'
                   : 'Nothing planned for this filter yet. Create a new quest to start building momentum.'}
               </p>
               <button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#171A21] hover:bg-[#202B3C] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer mt-2"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#20231F] hover:bg-[#344653] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer mt-2"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Create Quest</span>
@@ -247,3 +268,4 @@ export default function QuestsPage() {
     </div>
   );
 }
+

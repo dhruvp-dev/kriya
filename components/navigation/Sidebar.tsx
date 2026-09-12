@@ -16,6 +16,7 @@ import {
   X,
 } from 'lucide-react';
 import { cn } from '../../lib/utils/cn';
+import { KriyaLogo } from '../ui/KriyaLogo';
 
 export interface SidebarProps {
   isOpen?: boolean;
@@ -86,19 +87,19 @@ export function Sidebar({
         className={cn(
           'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-all relative text-left',
           isCurrent
-            ? 'bg-[#FFFFFF] text-[#171A21] border border-[#E5E1D9] shadow-2xs font-bold'
-            : 'text-[#686C73] hover:text-[#171A21] hover:bg-[#EAE6DE]'
+            ? 'bg-[#FFFDF7] text-[#20231F] border border-[#DFDDD2] shadow-2xs font-bold'
+            : 'text-[#70736B] hover:text-[#20231F] hover:bg-[#EBE8DD]'
         )}
       >
-        {/* Thin Electric Coral Rail */}
+        {/* Thin Terracotta Rail */}
         {isCurrent && (
-          <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#F05A3C] rounded-r-full" />
+          <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#C85A3D] rounded-r-full" />
         )}
 
         <Icon
           className={cn(
             'w-4 h-4 stroke-[1.8]',
-            isCurrent ? 'text-[#F05A3C]' : 'text-[#686C73]'
+            isCurrent ? 'text-[#C85A3D]' : 'text-[#70736B]'
           )}
         />
         <span>{item.label}</span>
@@ -112,66 +113,54 @@ export function Sidebar({
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-0 z-40 bg-[#171A21]/20 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-[#20231F]/20 backdrop-blur-xs lg:hidden"
         />
       )}
 
       {/* Retro-Product Navigation Rail */}
       <aside
         className={cn(
-          'fixed top-0 left-0 z-40 h-screen w-60 bg-[#F0ECE4] border-r border-[#E5E1D9] flex flex-col justify-between transition-transform duration-200 lg:translate-x-0 select-none font-sans',
+          'fixed top-0 left-0 z-40 h-screen w-60 bg-[#EBE8DD] border-r border-[#DFDDD2] flex flex-col justify-between transition-transform duration-200 lg:translate-x-0 select-none font-sans',
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
         {/* Top Header & Brand */}
         <div className="p-4 flex flex-col h-full overflow-y-auto">
-          {/* KRIYA Mark */}
+          {/* KRIYA Navbar Brand Mark */}
           <div className="flex items-center justify-between px-2 py-2 mb-3">
             <Link
               href="/dashboard"
-              className="flex items-center gap-3 group"
               onClick={() => onSelectTab && onSelectTab('home')}
+              className="group"
             >
-              {/* Deep Navy Geometric Mark with Coral Dot */}
-              <div className="w-8 h-8 bg-[#202B3C] rounded-lg flex items-center justify-center text-white font-black text-sm tracking-wider group-hover:bg-[#F05A3C] transition-colors shadow-2xs relative">
-                <span>K</span>
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#F05A3C] rounded-full border border-[#F0ECE4] group-hover:bg-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-base font-extrabold tracking-tight text-[#171A21] leading-none">
-                  KRIYA
-                </span>
-                <span className="text-[10px] font-bold text-[#686C73] tracking-wider uppercase mt-1">
-                  LIFE RPG
-                </span>
-              </div>
+              <KriyaLogo variant="navbar" size={28} />
             </Link>
 
             {onClose && (
               <button
                 onClick={onClose}
-                className="lg:hidden p-1 text-[#686C73] hover:text-[#171A21] rounded-md"
+                className="lg:hidden p-1 text-[#70736B] hover:text-[#20231F] rounded-md"
               >
                 <X className="w-4 h-4" />
               </button>
             )}
           </div>
 
-          <div className="border-t border-[#E5E1D9] my-2" />
+          <div className="border-t border-[#DFDDD2] my-2" />
 
           {/* Group 1: Primary Consumer Navigation */}
           <nav className="space-y-0.5">
             {PRIMARY_NAV.map(renderNavItem)}
           </nav>
 
-          <div className="border-t border-[#E5E1D9] my-2.5" />
+          <div className="border-t border-[#DFDDD2] my-2.5" />
 
           {/* Group 2: Secondary Features */}
           <nav className="space-y-0.5">
             {SECONDARY_NAV.map(renderNavItem)}
           </nav>
 
-          <div className="border-t border-[#E5E1D9] my-2.5" />
+          <div className="border-t border-[#DFDDD2] my-2.5" />
 
           {/* Group 3: System Settings */}
           <nav className="space-y-0.5 flex-1">
@@ -179,31 +168,31 @@ export function Sidebar({
           </nav>
 
           {/* Bottom Identity Block */}
-          <div className="pt-3 border-t border-[#E5E1D9] mt-auto">
-            <div className="p-3 rounded-xl bg-[#FFFFFF] border border-[#E5E1D9] shadow-2xs space-y-2">
+          <div className="pt-3 border-t border-[#DFDDD2] mt-auto">
+            <div className="p-3 rounded-xl bg-[#FFFDF7] border border-[#DFDDD2] shadow-2xs space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 min-w-0">
                   {/* Status dot */}
-                  <span className="w-2 h-2 rounded-full bg-[#2E9B72] shrink-0" />
-                  <span className="text-xs font-bold text-[#171A21] truncate">
+                  <span className="w-2 h-2 rounded-full bg-[#668F72] shrink-0" />
+                  <span className="text-xs font-bold text-[#20231F] truncate">
                     {userStats.displayName}
                   </span>
                 </div>
 
-                <span className="text-xs font-semibold text-[#686C73]">
+                <span className="text-xs font-semibold text-[#70736B]">
                   Level {userStats.level}
                 </span>
               </div>
 
-              {/* Progress Bar (Warm Amber #FFB547) */}
+              {/* Progress Bar (Muted Ochre #D9A441) */}
               <div className="space-y-1">
-                <div className="h-1.5 w-full bg-[#F7F5F0] border border-[#E5E1D9] rounded-full overflow-hidden p-0.5">
+                <div className="h-1.5 w-full bg-[#F3F1E8] border border-[#DFDDD2] rounded-full overflow-hidden p-0.5">
                   <div
-                    className="h-full bg-[#FFB547] rounded-full transition-all duration-500"
+                    className="h-full bg-[#D9A441] rounded-full transition-all duration-500"
                     style={{ width: `${xpPercent}%` }}
                   />
                 </div>
-                <div className="flex justify-between text-[9px] text-[#686C73] font-technical font-medium">
+                <div className="flex justify-between text-[9px] text-[#70736B] font-technical font-medium">
                   <span>{userStats.currentXp.toLocaleString()} XP</span>
                   <span>{xpPercent}%</span>
                 </div>

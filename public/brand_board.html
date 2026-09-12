@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KRIYA Brand Logo System Specification Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F3F1E8;
+      --surface: #FFFDF7;
+      --text: #20231F;
+      --terracotta: #C85A3D;
+      --terracotta-dark: #A94730;
+      --ochre: #D9A441;
+      --sage: #668F72;
+      --navy: #344653;
+      --border: #DFDDD2;
+      --secondary: #70736B;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding: 2.5rem 1.5rem;
+      line-height: 1.5;
+      background-image: 
+        linear-gradient(to right, rgba(52, 70, 83, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(52, 70, 83, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--terracotta);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--secondary);
+      margin-top: 0.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+      position: relative;
+    }
+
+    .card-num {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--secondary);
+      letter-spacing: 0.1em;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .canvas-box {
+      background: rgba(243, 241, 232, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 3rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .grid-12 {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: 2rem;
+    }
+
+    .rail-preview {
+      background: #EBE8DD;
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    .icon-tiles {
+      display: flex;
+      justify-content: space-around;
+      background: rgba(243, 241, 232, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .tile-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--secondary);
+      font-weight: 700;
+    }
+
+    .dark-card {
+      background: #20231F;
+      color: #FFFDF7;
+      border-color: #344653;
+    }
+
+    .dark-box {
+      background: #181A17;
+      border: 1px solid #344653;
+      border-radius: 1rem;
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 140px;
+    }
+
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .swatch {
+      background: rgba(243, 241, 232, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .color-pill {
+      height: 60px;
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 0.5rem;
+    }
+
+    .hex-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: rgba(0,0,0,0.15);
+      color: #fff;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+    }
+
+    .scale-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      background: rgba(243, 241, 232, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .scale-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--secondary);
+      font-weight: 700;
+    }
+
+    .mono-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+      margin-top: 1rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    p.desc {
+      font-size: 0.825rem;
+      color: var(--secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        KRIYA BRAND IDENTITY SYSTEM • OFFICIAL LOGO SPECIFICATION
+      </div>
+      <h1>KRIYA Logo System</h1>
+      <p class="subtitle">Warm cozy retro-digital productivity visual identity. Action → Progress → Growth.</p>
+    </header>
+
+    <!-- SECTION 1: PRIMARY BRAND LOGO -->
+    <section class="card">
+      <span class="card-num">01 • PRIMARY BRAND LOGO</span>
+      <div class="hero-grid">
+        <div class="canvas-box">
+          <!-- Primary SVG Embed -->
+          <svg viewBox="0 0 460 120" width="380" height="99" fill="none">
+            <g transform="translate(16, 15) scale(2.8)">
+              <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D" />
+              <path d="M 9.5 4 L 11 4 L 11 28 L 9.5 28 Z" fill="#A94730" opacity="0.4" />
+              <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#C85A3D" />
+              <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#C85A3D" />
+              <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#D9A441" />
+              <rect x="26" y="2" width="2" height="2" fill="#668F72" />
+              <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#A94730" />
+              <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#A94730" />
+            </g>
+            <g transform="translate(116, 0)">
+              <text x="0" y="66" font-family="'Plus Jakarta Sans', sans-serif" font-size="46" font-weight="800" letter-spacing="-1.5" fill="#20231F">KRIYA</text>
+              <rect x="154" y="28" width="6" height="6" fill="#C85A3D" rx="1" />
+              <text x="2" y="90" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" letter-spacing="3.5" fill="#70736B">DAILY PROGRESS ENGINE</text>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h3>Primary Brand Logo</h3>
+          <p class="desc">Engineered for main marketing, landing page headers, and official branding collateral. Combines the stepped growth mark with humanist geometric typography.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2 & 3: NAVBAR & APP ICON -->
+    <div class="grid-2">
+      <!-- SECTION 2: COMPACT NAVBAR LOGO -->
+      <section class="card">
+        <span class="card-num">02 • APPLICATION NAVBAR</span>
+        <h3>Compact Navbar Logo</h3>
+        <p class="desc">32px icon mark + wordmark. Designed for sidebar navigation rails and compact headers.</p>
+        <div class="rail-preview">
+          <svg viewBox="0 0 160 36" width="160" height="36" fill="none">
+            <g transform="translate(2, 2)">
+              <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D" />
+              <path d="M 9.5 4 L 11 4 L 11 28 L 9.5 28 Z" fill="#A94730" opacity="0.4" />
+              <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#C85A3D" />
+              <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#C85A3D" />
+              <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#D9A441" />
+              <rect x="26" y="2" width="2" height="2" fill="#668F72" />
+              <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#A94730" />
+              <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#A94730" />
+            </g>
+            <text x="42" y="25" font-family="'Plus Jakarta Sans', sans-serif" font-size="20" font-weight="800" fill="#20231F">KRIYA</text>
+          </svg>
+          <span style="font-family: 'JetBrains Mono'; font-size: 0.7rem; font-weight: 700; color: #70736B;">LV.12</span>
+        </div>
+      </section>
+
+      <!-- SECTION 3: STANDALONE ICON -->
+      <section class="card">
+        <span class="card-num">03 • STANDALONE APP ICON</span>
+        <h3>Standalone App Icon</h3>
+        <p class="desc">Strong silhouette recognition across squircle tiles, dark mode, and brand backgrounds.</p>
+        <div class="icon-tiles">
+          <div class="tile-wrap">
+            <div style="width: 56px; height: 56px; background: #FFFDF7; border: 1px solid #DFDDD2; border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+              <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+                <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D" />
+                <path d="M 9.5 4 L 11 4 L 11 28 L 9.5 28 Z" fill="#A94730" opacity="0.4" />
+                <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#C85A3D" />
+                <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#C85A3D" />
+                <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#D9A441" />
+                <rect x="26" y="2" width="2" height="2" fill="#668F72" />
+                <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#A94730" />
+                <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#A94730" />
+              </svg>
+            </div>
+            <span>App Tile</span>
+          </div>
+
+          <div class="tile-wrap">
+            <div style="width: 56px; height: 56px; background: #20231F; border: 1px solid #344653; border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+              <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+                <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#E26A4B" />
+                <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#E26A4B" />
+                <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#E26A4B" />
+                <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#F5B731" />
+                <rect x="26" y="2" width="2" height="2" fill="#85B592" />
+                <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#C85A3D" />
+                <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#C85A3D" />
+              </svg>
+            </div>
+            <span>Dark Mode</span>
+          </div>
+
+          <div class="tile-wrap">
+            <div style="width: 56px; height: 56px; background: #C85A3D; border: 1px solid #A94730; border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+              <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+                <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#FFFDF7" />
+                <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#FFFDF7" />
+                <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#FFFDF7" />
+                <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#F5B731" />
+                <rect x="26" y="2" width="2" height="2" fill="#FFFDF7" />
+                <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#EBE8DD" />
+                <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#EBE8DD" />
+              </svg>
+            </div>
+            <span>Brand Tile</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- SECTION 4 & 5: DARK AND LIGHT BACKGROUND -->
+    <div class="grid-2">
+      <!-- SECTION 4: DARK BACKGROUND -->
+      <section class="card dark-card">
+        <span class="card-num" style="color: #DFDDD2;">04 • DARK BACKGROUND</span>
+        <h3>Dark Background Version</h3>
+        <p class="desc" style="color: #DFDDD2;">Optimized for dark mode interfaces and dark promotional headers.</p>
+        <div class="dark-box" style="margin-top: 1rem;">
+          <svg viewBox="0 0 460 120" width="340" height="88" fill="none">
+            <g transform="translate(16, 15) scale(2.8)">
+              <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#E26A4B" />
+              <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#E26A4B" />
+              <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#E26A4B" />
+              <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#F5B731" />
+              <rect x="26" y="2" width="2" height="2" fill="#85B592" />
+              <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#C85A3D" />
+              <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#C85A3D" />
+            </g>
+            <g transform="translate(116, 0)">
+              <text x="0" y="66" font-family="'Plus Jakarta Sans', sans-serif" font-size="46" font-weight="800" letter-spacing="-1.5" fill="#FFFDF7">KRIYA</text>
+              <rect x="154" y="28" width="6" height="6" fill="#E26A4B" rx="1" />
+              <text x="2" y="90" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" letter-spacing="3.5" fill="#DFDDD2">DAILY PROGRESS ENGINE</text>
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      <!-- SECTION 5: LIGHT BACKGROUND -->
+      <section class="card">
+        <span class="card-num">05 • LIGHT BACKGROUND</span>
+        <h3>Light Background Version</h3>
+        <p class="desc">Optimized for warm parchment light surfaces and clean editorial backgrounds.</p>
+        <div class="canvas-box" style="min-height: 140px; margin-top: 1rem;">
+          <svg viewBox="0 0 460 120" width="340" height="88" fill="none">
+            <g transform="translate(16, 15) scale(2.8)">
+              <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D" />
+              <rect x="12" y="15" width="5" height="4" rx="0.5" fill="#C85A3D" />
+              <rect x="17" y="10" width="5" height="5" rx="0.5" fill="#C85A3D" />
+              <rect x="22" y="4" width="6" height="6" rx="0.5" fill="#D9A441" />
+              <rect x="26" y="2" width="2" height="2" fill="#668F72" />
+              <rect x="12" y="19" width="6" height="4" rx="0.5" fill="#A94730" />
+              <rect x="18" y="23" width="7" height="5" rx="0.5" fill="#A94730" />
+            </g>
+            <g transform="translate(116, 0)">
+              <text x="0" y="66" font-family="'Plus Jakarta Sans', sans-serif" font-size="46" font-weight="800" letter-spacing="-1.5" fill="#20231F">KRIYA</text>
+              <rect x="154" y="28" width="6" height="6" fill="#C85A3D" rx="1" />
+              <text x="2" y="90" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" letter-spacing="3.5" fill="#70736B">DAILY PROGRESS ENGINE</text>
+            </g>
+          </svg>
+        </div>
+      </section>
+    </div>
+
+    <!-- SECTION 6 & 7: SCALE GRID & MONOCHROME -->
+    <div class="grid-12">
+      <!-- SECTION 6: SCALE GRID -->
+      <section class="card">
+        <span class="card-num">06 • SCALE GRID</span>
+        <h3>Small-size Favicon / Scale Grid</h3>
+        <p class="desc">Pixel-perfect rendering test from 16px to 64px grid sizes.</p>
+        <div class="scale-row">
+          <div class="scale-item">
+            <svg viewBox="0 0 32 32" width="16" height="16" fill="none"><path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D"/><rect x="12" y="15" width="5" height="4" fill="#C85A3D"/><rect x="17" y="10" width="5" height="5" fill="#C85A3D"/><rect x="22" y="4" width="6" height="6" fill="#D9A441"/><rect x="12" y="19" width="6" height="4" fill="#A94730"/><rect x="18" y="23" width="7" height="5" fill="#A94730"/></svg>
+            <span>16px</span>
+          </div>
+          <div class="scale-item">
+            <svg viewBox="0 0 32 32" width="24" height="24" fill="none"><path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D"/><rect x="12" y="15" width="5" height="4" fill="#C85A3D"/><rect x="17" y="10" width="5" height="5" fill="#C85A3D"/><rect x="22" y="4" width="6" height="6" fill="#D9A441"/><rect x="12" y="19" width="6" height="4" fill="#A94730"/><rect x="18" y="23" width="7" height="5" fill="#A94730"/></svg>
+            <span>24px</span>
+          </div>
+          <div class="scale-item">
+            <svg viewBox="0 0 32 32" width="32" height="32" fill="none"><path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D"/><rect x="12" y="15" width="5" height="4" fill="#C85A3D"/><rect x="17" y="10" width="5" height="5" fill="#C85A3D"/><rect x="22" y="4" width="6" height="6" fill="#D9A441"/><rect x="12" y="19" width="6" height="4" fill="#A94730"/><rect x="18" y="23" width="7" height="5" fill="#A94730"/></svg>
+            <span>32px</span>
+          </div>
+          <div class="scale-item">
+            <svg viewBox="0 0 32 32" width="48" height="48" fill="none"><path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D"/><rect x="12" y="15" width="5" height="4" fill="#C85A3D"/><rect x="17" y="10" width="5" height="5" fill="#C85A3D"/><rect x="22" y="4" width="6" height="6" fill="#D9A441"/><rect x="12" y="19" width="6" height="4" fill="#A94730"/><rect x="18" y="23" width="7" height="5" fill="#A94730"/></svg>
+            <span>48px</span>
+          </div>
+          <div class="scale-item">
+            <svg viewBox="0 0 32 32" width="64" height="64" fill="none"><path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#C85A3D"/><rect x="12" y="15" width="5" height="4" fill="#C85A3D"/><rect x="17" y="10" width="5" height="5" fill="#C85A3D"/><rect x="22" y="4" width="6" height="6" fill="#D9A441"/><rect x="12" y="19" width="6" height="4" fill="#A94730"/><rect x="18" y="23" width="7" height="5" fill="#A94730"/></svg>
+            <span>64px</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 7: MONOCHROME -->
+      <section class="card">
+        <span class="card-num">07 • MONOCHROME</span>
+        <h3>Monochrome Version</h3>
+        <p class="desc">Single-color stamp / engraving path.</p>
+        <div class="mono-box">
+          <svg viewBox="0 0 460 120" width="300" height="78" fill="none">
+            <g transform="translate(16, 15) scale(2.8)">
+              <path d="M 4 6 L 6 4 L 11 4 L 11 28 L 4 28 Z" fill="#20231F" />
+              <rect x="12" y="15" width="4.5" height="3.5" rx="0.3" fill="#20231F" />
+              <rect x="17" y="10" width="4.5" height="4.5" rx="0.3" fill="#20231F" />
+              <rect x="22" y="4" width="5.5" height="5.5" rx="0.3" fill="#20231F" />
+              <rect x="12" y="19.5" width="5.5" height="3.5" rx="0.3" fill="#20231F" />
+              <rect x="18" y="23.5" width="6.5" height="4.5" rx="0.3" fill="#20231F" />
+            </g>
+            <g transform="translate(116, 0)">
+              <text x="0" y="66" font-family="'Plus Jakarta Sans', sans-serif" font-size="46" font-weight="800" letter-spacing="-1.5" fill="#20231F">KRIYA</text>
+              <rect x="154" y="28" width="6" height="6" fill="#20231F" rx="1" />
+              <text x="2" y="90" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" letter-spacing="3.5" fill="#20231F">DAILY PROGRESS ENGINE</text>
+            </g>
+          </svg>
+        </div>
+      </section>
+    </div>
+
+    <!-- COLOR SWATCH SYSTEM -->
+    <section class="card">
+      <h3>KRIYA Color Palette System</h3>
+      <p class="desc">Warm cozy retro-digital palette tokens.</p>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="color-pill" style="background:#C85A3D;"><span class="hex-tag">#C85A3D</span></div><div style="font-size:0.8rem; font-weight:700;">Terracotta</div></div>
+        <div class="swatch"><div class="color-pill" style="background:#A94730;"><span class="hex-tag">#A94730</span></div><div style="font-size:0.8rem; font-weight:700;">Terracotta Dark</div></div>
+        <div class="swatch"><div class="color-pill" style="background:#D9A441;"><span class="hex-tag" style="background:rgba(0,0,0,0.25); color:#fff;">#D9A441</span></div><div style="font-size:0.8rem; font-weight:700;">Ochre (Spark)</div></div>
+        <div class="swatch"><div class="color-pill" style="background:#668F72;"><span class="hex-tag">#668F72</span></div><div style="font-size:0.8rem; font-weight:700;">Sage (Growth)</div></div>
+        <div class="swatch"><div class="color-pill" style="background:#344653;"><span class="hex-tag">#344653</span></div><div style="font-size:0.8rem; font-weight:700;">Dusty Navy</div></div>
+        <div class="swatch"><div class="color-pill" style="background:#F3F1E8; border: 1px solid #DFDDD2;"><span class="hex-tag" style="background:rgba(0,0,0,0.1); color:#000;">#F3F1E8</span></div><div style="font-size:0.8rem; font-weight:700;">Background</div></div>
+        <div class="swatch"><div class="color-pill" style="background:#FFFDF7; border: 1px solid #DFDDD2;"><span class="hex-tag" style="background:rgba(0,0,0,0.1); color:#000;">#FFFDF7</span></div><div style="font-size:0.8rem; font-weight:700;">Surface</div></div>
+        <div class="swatch"><div class="color-pill" style="background:#20231F;"><span class="hex-tag">#20231F</span></div><div style="font-size:0.8rem; font-weight:700;">Charcoal Text</div></div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
