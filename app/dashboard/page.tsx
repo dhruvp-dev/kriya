@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import confetti from 'canvas-confetti';
-import { Plus, Trophy, Sparkles } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { CharacterProgressionCard } from '../../components/rpg/CharacterProgressionCard';
@@ -35,21 +35,22 @@ export default function DashboardPage() {
     rewardGold: 100,
   });
 
-  // Hackathon Submission Celebration state
-  const [isSubmissionCelebrationOpen, setIsSubmissionCelebrationOpen] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const isParam = params.get('celebrate') === 'true' || params.get('submitted') === 'true';
-      const hasCelebrated = localStorage.getItem('kriya_submission_celebrated');
-
-      if (isParam || !hasCelebrated) {
-        setIsSubmissionCelebrationOpen(true);
-        localStorage.setItem('kriya_submission_celebrated', 'true');
-      }
-    }
-  }, []);
+  // Completion Celebration state
+  const [celebrationData, setCelebrationData] = useState<{
+    isOpen: boolean;
+    title: string;
+    subtitle: string;
+    xpGained: number;
+    goldGained: number;
+    attributeGained?: string;
+  }>({
+    isOpen: false,
+    title: 'Congrats on completing your submission!',
+    subtitle: 'Your quest submission has been recorded and your attributes have compounded.',
+    xpGained: 50,
+    goldGained: 20,
+    attributeGained: 'discipline',
+  });
 
   // Database / Local Character State
   const [userStats, setUserStats] = useState<{
@@ -245,8 +246,17 @@ export default function DashboardPage() {
           ...prev,
         ]);
 
+        // Automatically trigger graffiti confetti celebration on complete!
+        setCelebrationData({
+          isOpen: true,
+          title: 'Congrats on completing your submission!',
+          subtitle: `You completed "${targetQuest.title}" and compounded your RPG progression.`,
+          xpGained: res.xp_gained,
+          goldGained: res.gold_gained,
+          attributeGained: res.attribute_increased,
+        });
+
         if (res.leveled_up) {
-          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
           setCelebrationState({
             isOpen: true,
             newLevel: res.new_level,
@@ -299,8 +309,17 @@ export default function DashboardPage() {
           ...prev,
         ]);
 
+        // Automatically trigger graffiti confetti celebration on complete!
+        setCelebrationData({
+          isOpen: true,
+          title: 'Congrats on completing your submission!',
+          subtitle: `You completed "${targetQuest.title}" and compounded your RPG progression.`,
+          xpGained: reward.xp,
+          goldGained: reward.gold,
+          attributeGained: targetQuest.attribute,
+        });
+
         if (leveledUp) {
-          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
           setCelebrationState({
             isOpen: true,
             newLevel,
@@ -389,27 +408,6 @@ export default function DashboardPage() {
         <div className="p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Main Content Column */}
           <div className="lg:col-span-8 space-y-6">
-            {/* Hackathon Submission Celebration Banner */}
-            <div className="flex items-center justify-between p-3.5 sm:p-4 bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-[#EFF6FF] border border-[#DBEAFE] text-[#1D64EC] flex items-center justify-center shrink-0">
-                  <Trophy className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-xs font-bold text-[#070709]">Submission Complete</h3>
-                  <p className="text-[11px] text-[#60606C]">Your hackathon build is live. Claim your submission celebration rewards.</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsSubmissionCelebrationOpen(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#070709] hover:bg-[#1E1E24] text-white text-xs font-medium rounded-xl transition-all shadow-xs shrink-0 cursor-pointer"
-              >
-                <span>Celebrate</span>
-                <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
-              </button>
-            </div>
-
             {/* Progression Component */}
             <CharacterProgressionCard
               isLoading={isLoading}
@@ -530,9 +528,14 @@ export default function DashboardPage() {
       />
 
       <SubmissionCelebrationModal
-        isOpen={isSubmissionCelebrationOpen}
-        onClose={() => setIsSubmissionCelebrationOpen(false)}
-        delayMs={800}
+        isOpen={celebrationData.isOpen}
+        onClose={() => setCelebrationData((prev) => ({ ...prev, isOpen: false }))}
+        title={celebrationData.title}
+        subtitle={celebrationData.subtitle}
+        xpGained={celebrationData.xpGained}
+        goldGained={celebrationData.goldGained}
+        attributeGained={celebrationData.attributeGained}
+        delayMs={300}
       />
     </div>
   );

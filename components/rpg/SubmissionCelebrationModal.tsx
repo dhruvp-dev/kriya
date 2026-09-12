@@ -10,6 +10,9 @@ export interface SubmissionCelebrationModalProps {
   onClose: () => void;
   title?: string;
   subtitle?: string;
+  xpGained?: number;
+  goldGained?: number;
+  attributeGained?: string;
   delayMs?: number;
 }
 
@@ -17,8 +20,11 @@ export function SubmissionCelebrationModal({
   isOpen,
   onClose,
   title = 'Congrats on completing your submission!',
-  subtitle = "Your project is committed, live, and ready for review. You've officially launched your journey with Kriya.",
-  delayMs = 800,
+  subtitle = "Your quest submission has been recorded and your attributes have compounded.",
+  xpGained = 50,
+  goldGained = 20,
+  attributeGained,
+  delayMs = 400,
 }: SubmissionCelebrationModalProps) {
   const [isDelayedVisible, setIsDelayedVisible] = useState(false);
 
@@ -161,17 +167,17 @@ export function SubmissionCelebrationModal({
             <div className="mt-6 p-4 bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl grid grid-cols-3 gap-3 text-center">
               <div className="space-y-0.5">
                 <div className="text-xs font-medium text-[#60606C]">XP Earned</div>
-                <div className="text-base font-bold text-[#070709]">+500 XP</div>
+                <div className="text-base font-bold text-[#070709]">+{xpGained} XP</div>
               </div>
               <div className="space-y-0.5 border-x border-[#E5E7EB]">
                 <div className="text-xs font-medium text-[#60606C]">Gold Bounty</div>
-                <div className="text-base font-bold text-[#D97706]">+250 Gold</div>
+                <div className="text-base font-bold text-[#D97706]">+{goldGained} Gold</div>
               </div>
               <div className="space-y-0.5">
-                <div className="text-xs font-medium text-[#60606C]">Milestone</div>
-                <div className="text-xs font-bold text-[#1D64EC] flex items-center justify-center gap-1 mt-1">
+                <div className="text-xs font-medium text-[#60606C]">Attribute</div>
+                <div className="text-xs font-bold text-[#1D64EC] flex items-center justify-center gap-1 mt-1 capitalize">
                   <Award className="w-3.5 h-3.5" />
-                  <span>Genesis</span>
+                  <span>{attributeGained || 'Discipline'}</span>
                 </div>
               </div>
             </div>
@@ -183,7 +189,7 @@ export function SubmissionCelebrationModal({
                 onClick={onClose}
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#070709] hover:bg-[#1E1E24] text-white font-medium text-sm rounded-xl transition-all shadow-xs active:scale-[0.98] cursor-pointer"
               >
-                <span>Continue to Dashboard</span>
+                <span>Continue Progress</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 

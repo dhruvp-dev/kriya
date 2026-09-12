@@ -47,14 +47,6 @@ export function LandingNavbar() {
         {/* Right: Desktop Actions */}
         <div className="hidden md:flex items-center gap-4">
           <Link
-            href="/dashboard?celebrate=true"
-            className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#ECFDF5] hover:bg-[#D1FAE5] border border-[#A7F3D0] text-[#059669] text-xs font-semibold transition-all shadow-2xs tracking-normal"
-          >
-            <Sparkle weight="fill" className="w-3.5 h-3.5 text-[#059669]" />
-            <span>Submission Demo</span>
-          </Link>
-
-          <Link
             href="/login"
             className="text-sm font-medium text-[#60606C] hover:text-[#070709] transition-colors px-2 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D64EC] rounded-md tracking-normal"
           >

@@ -5,6 +5,7 @@ import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { QuestCard, QuestItem } from '../../components/rpg/QuestCard';
 import { CreateQuestModal } from '../../components/rpg/CreateQuestModal';
+import { SubmissionCelebrationModal } from '../../components/rpg/SubmissionCelebrationModal';
 import { useToast } from '../../components/ui/Toast';
 import { Plus, Search, CheckCircle2, Layers, Shield, Brain, Zap, Palette } from 'lucide-react';
 import { getRewardForDifficulty, calculateLevel, getXpThreshold } from '../../lib/progression';
@@ -31,6 +32,23 @@ export default function QuestsPage() {
   } | null>(null);
 
   const [quests, setQuests] = useState<QuestItem[]>([]);
+
+  // Completion Celebration state
+  const [celebrationData, setCelebrationData] = useState<{
+    isOpen: boolean;
+    title: string;
+    subtitle: string;
+    xpGained: number;
+    goldGained: number;
+    attributeGained?: string;
+  }>({
+    isOpen: false,
+    title: 'Congrats on completing your submission!',
+    subtitle: 'Your quest submission has been recorded and your attributes have compounded.',
+    xpGained: 50,
+    goldGained: 20,
+    attributeGained: 'discipline',
+  });
 
   const loadData = useCallback(async () => {
     try {
@@ -133,6 +151,16 @@ export default function QuestsPage() {
           streak: res.current_streak,
         }) : null);
 
+        // Automatically trigger graffiti confetti celebration on complete!
+        setCelebrationData({
+          isOpen: true,
+          title: 'Congrats on completing your submission!',
+          subtitle: `You completed "${quest.title}" and compounded your RPG progression.`,
+          xpGained: res.xp_gained,
+          goldGained: res.gold_gained,
+          attributeGained: res.attribute_increased,
+        });
+
         showToast(
           'success',
           'Quest Completed!',
@@ -157,6 +185,16 @@ export default function QuestsPage() {
           displayName: prev?.displayName || 'Hero',
           avatarVariant: prev?.avatarVariant || 'architect',
         }));
+
+        // Automatically trigger graffiti confetti celebration on complete!
+        setCelebrationData({
+          isOpen: true,
+          title: 'Congrats on completing your submission!',
+          subtitle: `You completed "${quest.title}" and compounded your RPG progression.`,
+          xpGained: reward.xp,
+          goldGained: reward.gold,
+          attributeGained: quest.attribute,
+        });
 
         showToast(
           'success',
@@ -367,6 +405,17 @@ export default function QuestsPage() {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         onCreateQuest={handleCreateQuest}
+      />
+
+      <SubmissionCelebrationModal
+        isOpen={celebrationData.isOpen}
+        onClose={() => setCelebrationData((prev) => ({ ...prev, isOpen: false }))}
+        title={celebrationData.title}
+        subtitle={celebrationData.subtitle}
+        xpGained={celebrationData.xpGained}
+        goldGained={celebrationData.goldGained}
+        attributeGained={celebrationData.attributeGained}
+        delayMs={300}
       />
     </div>
   );
