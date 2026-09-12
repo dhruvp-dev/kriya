@@ -57,7 +57,7 @@ export default function SignupPage() {
     }
 
     showToast('Account created! Initializing character...', 'success');
-    router.push('/dashboard');
+    router.push('/dashboard?celebrate=true');
   };
 
   return (

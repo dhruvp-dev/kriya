@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import confetti from 'canvas-confetti';
-import { Plus } from 'lucide-react';
+import { Plus, Trophy, Sparkles } from 'lucide-react';
 import { Sidebar } from '../../components/navigation/Sidebar';
 import { Header } from '../../components/navigation/Header';
 import { CharacterProgressionCard } from '../../components/rpg/CharacterProgressionCard';
@@ -10,6 +10,7 @@ import { QuestCard, QuestItem } from '../../components/rpg/QuestCard';
 import { RightSidebar, AttributeData, AchievementItem, ActivityItem } from '../../components/rpg/RightSidebar';
 import { CreateQuestModal } from '../../components/rpg/CreateQuestModal';
 import { CelebrationOverlay } from '../../components/rpg/CelebrationOverlay';
+import { SubmissionCelebrationModal } from '../../components/rpg/SubmissionCelebrationModal';
 import { useToast } from '../../components/ui/Toast';
 import { getDashboardData } from '../../lib/queries/dashboard';
 import { getQuestsData } from '../../lib/queries/quests';
@@ -33,6 +34,22 @@ export default function DashboardPage() {
     newLevel: 13,
     rewardGold: 100,
   });
+
+  // Hackathon Submission Celebration state
+  const [isSubmissionCelebrationOpen, setIsSubmissionCelebrationOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const isParam = params.get('celebrate') === 'true' || params.get('submitted') === 'true';
+      const hasCelebrated = localStorage.getItem('kriya_submission_celebrated');
+
+      if (isParam || !hasCelebrated) {
+        setIsSubmissionCelebrationOpen(true);
+        localStorage.setItem('kriya_submission_celebrated', 'true');
+      }
+    }
+  }, []);
 
   // Database / Local Character State
   const [userStats, setUserStats] = useState<{
@@ -372,6 +389,27 @@ export default function DashboardPage() {
         <div className="p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Main Content Column */}
           <div className="lg:col-span-8 space-y-6">
+            {/* Hackathon Submission Celebration Banner */}
+            <div className="flex items-center justify-between p-3.5 sm:p-4 bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-[#EFF6FF] border border-[#DBEAFE] text-[#1D64EC] flex items-center justify-center shrink-0">
+                  <Trophy className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-bold text-[#070709]">Submission Complete</h3>
+                  <p className="text-[11px] text-[#60606C]">Your hackathon build is live. Claim your submission celebration rewards.</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsSubmissionCelebrationOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#070709] hover:bg-[#1E1E24] text-white text-xs font-medium rounded-xl transition-all shadow-xs shrink-0 cursor-pointer"
+              >
+                <span>Celebrate</span>
+                <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
+              </button>
+            </div>
+
             {/* Progression Component */}
             <CharacterProgressionCard
               isLoading={isLoading}
@@ -489,6 +527,12 @@ export default function DashboardPage() {
         onClose={() => setCelebrationState((prev) => ({ ...prev, isOpen: false }))}
         newLevel={celebrationState.newLevel}
         rewardGold={celebrationState.rewardGold}
+      />
+
+      <SubmissionCelebrationModal
+        isOpen={isSubmissionCelebrationOpen}
+        onClose={() => setIsSubmissionCelebrationOpen(false)}
+        delayMs={800}
       />
     </div>
   );
