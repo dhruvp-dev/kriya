@@ -1,140 +1,117 @@
-'use client';
-
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { ArrowRight, CheckCircle2, Sparkles, TrendingUp, Compass } from 'lucide-react';
-
-interface LoopStage {
-  id: string;
-  stage: string;
-  title: string;
-  image: string;
-  alt: string;
-  desc: string;
-  rewardText: string;
-  icon: any;
-}
-
-const LOOP_STAGES: LoopStage[] = [
-  {
-    id: 'do',
-    stage: 'DO',
-    title: 'Real Action',
-    image: '/illustrations/loop_do.jpg',
-    alt: 'Pixel art hands tying blue running sneakers',
-    desc: 'Execute your real-world tasks, focus sessions, and exercise routines.',
-    rewardText: 'Daily action executed',
-    icon: Compass,
-  },
-  {
-    id: 'complete',
-    stage: 'COMPLETE',
-    title: 'Instant Confirmation',
-    image: '/illustrations/loop_complete.jpg',
-    alt: 'Pixel art quest card with checkmark',
-    desc: 'Mark the task finished with a single satisfying checkmark.',
-    rewardText: 'Action validated',
-    icon: CheckCircle2,
-  },
-  {
-    id: 'earn',
-    stage: 'EARN',
-    title: 'XP & Gold Yield',
-    image: '/illustrations/loop_earn.jpg',
-    alt: 'Pixel art gold coins with XP crystal',
-    desc: 'Receive calibrated progression rewards mapped directly to effort.',
-    rewardText: '+50 XP, +15 Gold',
-    icon: Sparkles,
-  },
-  {
-    id: 'grow',
-    stage: 'GROW',
-    title: 'Level & Evolution',
-    image: '/illustrations/loop_grow.jpg',
-    alt: 'Pixel art plant with golden level star',
-    desc: 'Watch your stats climb and your archetype profile level up visibly.',
-    rewardText: 'Visible momentum',
-    icon: TrendingUp,
-  },
-];
+import React from 'react';
+import { ArrowRight, CheckCircle, Lightning, TrendUp, Compass } from '@phosphor-icons/react/dist/ssr';
 
 export function CoreLoopSection() {
-  const [activeStage, setActiveStage] = useState<number>(0);
+  const loopSteps = [
+    {
+      num: '01',
+      verb: 'DO',
+      subtitle: 'Take a real action.',
+      body: 'Read 20 pages, go for a 5km run, ship a pull request, or reset your workspace. Real-world effort is the single input.',
+      accent: 'text-[#070709]',
+      dotBg: 'bg-[#070709]',
+      icon: Compass,
+    },
+    {
+      num: '02',
+      verb: 'COMPLETE',
+      subtitle: 'Mark your quest done.',
+      body: 'A single crisp confirmation converts finished effort into a validated milestone with zero roleplay overhead.',
+      accent: 'text-[#668F72]',
+      dotBg: 'bg-[#668F72]',
+      icon: CheckCircle,
+    },
+    {
+      num: '03',
+      verb: 'EARN',
+      subtitle: 'Get XP and Gold.',
+      body: 'Receive calibrated experience points mapped directly to difficulty, alongside Gold to collect character keepsakes.',
+      accent: 'text-[#D9A441]',
+      dotBg: 'bg-[#D9A441]',
+      icon: Lightning,
+    },
+    {
+      num: '04',
+      verb: 'GROW',
+      subtitle: 'Level up your character.',
+      body: 'Watch your stats climb and your streak build. Your personal avatar evolves alongside your authentic daily habits.',
+      accent: 'text-[#C85A3D]',
+      dotBg: 'bg-[#C85A3D]',
+      icon: TrendUp,
+    },
+  ];
 
   return (
-    <section id="loop" className="py-20 bg-white border-t border-[#E6E6E8]">
+    <section className="py-24 md:py-32 bg-[#FFFFFF] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-2xl mb-12 space-y-3">
-          <div className="text-xs font-bold uppercase tracking-wider text-[#C85A3D]">
-            Progression Engine
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#070709] tracking-tight">
-            The KRIYA Progression Loop
+        <div className="max-w-3xl mb-16 sm:mb-20 space-y-4">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#070709] tracking-[-0.03em] leading-tight">
+            TURN ACTION <br />
+            INTO PROGRESS.
           </h2>
-          <p className="text-base text-[#60606C]">
-            Four connected stages that transform daily habits into lasting momentum.
+          <p className="text-base sm:text-lg text-[#60606C] leading-relaxed max-w-xl font-normal">
+            A quiet, continuous four-step cycle that transforms daily consistency into tangible character momentum.
           </p>
         </div>
 
-        {/* Flow Track */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 relative">
-          {LOOP_STAGES.map((stage, idx) => {
-            const isActive = activeStage === idx;
-            const IconComp = stage.icon;
-            return (
-              <div
-                key={stage.id}
-                onClick={() => setActiveStage(idx)}
-                className={`cursor-pointer rounded-2xl border p-5 transition-all flex flex-col justify-between ${
-                  isActive
-                    ? 'bg-white border-[#070709] shadow-md ring-1 ring-[#070709]'
-                    : 'bg-[#F7F7F8] hover:bg-white border-[#E6E6E8] hover:border-[#D0D1D4]'
-                }`}
-              >
-                <div>
-                  {/* Stage Label */}
-                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E6E6E8]">
-                    <span className="tabular-nums font-bold text-xs tracking-wider text-[#070709] flex items-center gap-1.5">
-                      <IconComp className="w-3.5 h-3.5 text-[#C85A3D]" />
-                      STAGE 0{idx + 1}
-                    </span>
-                    <span className="font-bold text-[10px] px-2 py-0.5 rounded-full bg-white border border-[#E6E6E8] text-[#60606C]">
-                      {stage.stage}
-                    </span>
+        {/* Oversized Connected Progression Sequence */}
+        <div className="relative">
+          {/* Subtle Horizontal Progression Track on Desktop */}
+          <div className="hidden lg:block absolute top-[4.5rem] left-0 right-0 h-[2px] bg-[#E6E6E8] z-0">
+            <div className="h-full w-full bg-gradient-to-r from-[#070709] via-[#668F72] via-[#D9A441] to-[#C85A3D] opacity-40" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8 relative z-10">
+            {loopSteps.map((step, idx) => {
+              const IconComponent = step.icon;
+              return (
+                <div
+                  key={step.verb}
+                  className="flex flex-col justify-between space-y-6 pt-4 group"
+                >
+                  {/* Top Node & Number */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      {/* Node on Progression Line */}
+                      <div className="w-10 h-10 rounded-2xl bg-[#FFFFFF] border-2 border-[#E6E6E8] group-hover:border-[#070709] flex items-center justify-center shadow-xs transition-colors">
+                        <span className={`w-3 h-3 rounded-full ${step.dotBg}`} />
+                      </div>
+
+                      <span className="text-sm font-extrabold text-[#8B8B8B] tabular-nums tracking-wider">
+                        {step.num}
+                      </span>
+                    </div>
+
+                    {/* Oversized Verb */}
+                    <div className="space-y-1">
+                      <div className={`text-4xl sm:text-5xl font-black tracking-[-0.03em] ${step.accent}`}>
+                        {step.verb}
+                      </div>
+                      <div className="text-base font-bold text-[#070709]">
+                        {step.subtitle}
+                      </div>
+                    </div>
+
+                    {/* Body Detail */}
+                    <p className="text-xs sm:text-sm text-[#60606C] leading-relaxed">
+                      {step.body}
+                    </p>
                   </div>
 
-                  {/* Artwork Vignette */}
-                  <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-[#E6E6E8] mb-4 bg-white">
-                    <Image
-                      src={stage.image}
-                      alt={stage.alt}
-                      fill
-                      className="object-cover"
-                    />
+                  {/* Flow Arrow (Mobile/Tablet Indicator) */}
+                  <div className="pt-4 border-t border-[#E6E6E8] flex items-center justify-between text-xs text-[#8B8B8B]">
+                    <span className="font-semibold">Step {step.num}</span>
+                    {idx < 3 ? (
+                      <span className="text-[#8B8B8B] lg:hidden">&darr;</span>
+                    ) : (
+                      <span className="text-[#C85A3D] font-bold">Compounding</span>
+                    )}
                   </div>
-
-                  {/* Text Details */}
-                  <h3 className="text-base font-bold text-[#070709] mb-1">
-                    {stage.title}
-                  </h3>
-                  <p className="text-xs text-[#60606C] leading-relaxed">
-                    {stage.desc}
-                  </p>
                 </div>
-
-                {/* Bottom Reward Pill */}
-                <div className="mt-4 pt-3 border-t border-[#E6E6E8] flex items-center justify-between">
-                  <span className="text-xs font-semibold text-[#070709] tabular-nums">
-                    {stage.rewardText}
-                  </span>
-                  {idx < LOOP_STAGES.length - 1 && (
-                    <ArrowRight className="w-4 h-4 text-[#8B8B8B] hidden lg:block" />
-                  )}
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

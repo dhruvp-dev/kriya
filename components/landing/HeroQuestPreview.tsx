@@ -1,168 +1,243 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Check, Flame, Sparkles, RefreshCw, Zap } from 'lucide-react';
+import { Check, Flame, Sparkle, ArrowClockwise, Coins, Lightning, Trophy } from '@phosphor-icons/react';
 import { Avatar } from '../avatars';
 
 export function HeroQuestPreview() {
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [showRewardAnimation, setShowRewardAnimation] = useState(false);
+  const [completed, setCompleted] = useState(false);
+  const [showRewardNotification, setShowRewardNotification] = useState(false);
+
+  const baseXP = 2430;
+  const rewardXP = 50;
+  const currentXP = completed ? baseXP + rewardXP : baseXP;
+  const nextLevelXP = 3162;
+  const progressPercent = Math.min(100, Math.round((currentXP / nextLevelXP) * 100));
+
+  const baseGold = 680;
+  const rewardGold = 15;
+  const currentGold = completed ? baseGold + rewardGold : baseGold;
 
   const handleComplete = () => {
-    if (isCompleted) return;
-    setIsCompleted(true);
-    setShowRewardAnimation(true);
-
+    if (completed) return;
+    setCompleted(true);
+    setShowRewardNotification(true);
     setTimeout(() => {
-      setShowRewardAnimation(false);
-    }, 2400);
+      setShowRewardNotification(false);
+    }, 2800);
   };
 
   const handleReset = () => {
-    setIsCompleted(false);
-    setShowRewardAnimation(false);
+    setCompleted(false);
+    setShowRewardNotification(false);
   };
 
-  // Progression math simulation
-  const startXp = 1200;
-  const xpReward = 50;
-  const currentXp = isCompleted ? startXp + xpReward : startXp;
-  const targetXp = 1500;
-  const xpPercent = Math.min(100, Math.round((currentXp / targetXp) * 100));
-
-  const startStreak = 1;
-  const currentStreak = isCompleted ? startStreak + 1 : startStreak;
-
   return (
-    <div className="relative w-full max-w-lg mx-auto">
-      {/* Pixel Art Accent Corner Sparkle Badges */}
-      <div className="absolute -top-2 -left-2 z-10 w-4 h-4 bg-[#34D399] rounded-2xs flex items-center justify-center text-[#051F20] font-technical text-[9px] font-bold shadow-sm">
-        +
-      </div>
-      <div className="absolute -bottom-2 -right-2 z-10 w-4 h-4 bg-[#F59E0B] rounded-2xs flex items-center justify-center text-[#051F20] font-technical text-[9px] font-bold shadow-sm">
-        ★
+    <div className="relative w-full max-w-[560px] mx-auto select-none">
+      {/* Background Decorative Layer (Creates subtle layered depth) */}
+      <div className="absolute inset-0 bg-[#F3F4F5] rounded-3xl -rotate-1.5 translate-y-2.5 scale-[0.98] border border-[#E6E6E8] pointer-events-none" />
+
+      {/* Floating Accent Badge Top-Right (Foreground Layer) */}
+      <div className="absolute -top-3.5 -right-2 sm:-right-4 z-30 flex items-center gap-1.5 px-3.5 py-1.5 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full shadow-md text-xs font-bold text-[#070709] rotate-2">
+        <Trophy weight="fill" className="w-3.5 h-3.5 text-[#D9A441]" />
+        <span>Level 12 Architect</span>
       </div>
 
-      {/* Outer Editorial Container with Subtle 8px Chamfer */}
-      <div className="relative bg-[#0F3132] border-2 border-[#1D5254] p-6 shadow-xl chamfer-panel transition-all">
-        {/* Top Instrumentation Bar */}
-        <div className="flex items-center justify-between pb-4 mb-5 border-b border-[#1D5254]">
-          <div className="flex items-center gap-3">
-            <Avatar variant="architect" size={40} showFrame={true} frame="gold" />
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-[#E2F1ED] text-sm">DHRUV</span>
-                <span className="font-technical text-[11px] font-semibold px-2 py-0.5 bg-[#2D2714] text-[#F59E0B] border border-[#F59E0B]/30 rounded-2xs">
-                  LV. 12
-                </span>
-              </div>
-              <span className="text-xs text-[#80A79D]">Architect Archetype</span>
-            </div>
+      {/* Floating Streak Pill Bottom-Left (Foreground Layer) */}
+      <div className="absolute -bottom-3 -left-2 sm:-left-4 z-30 flex items-center gap-1.5 px-3.5 py-1.5 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full shadow-md text-xs font-semibold text-[#070709] -rotate-2">
+        <Flame weight="fill" className={`w-3.5 h-3.5 ${completed ? 'text-[#668F72]' : 'text-[#C85A3D]'}`} />
+        <span className="tabular-nums">{completed ? '15 Day Streak' : '14 Day Streak'}</span>
+        {completed && <span className="text-[10px] text-[#668F72] font-bold">✓ TODAY</span>}
+      </div>
+
+      {/* Main Elevated Product Surface (Middle Layer) */}
+      <div className="relative z-10 bg-[#FFFFFF] border border-[#E6E6E8] rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-xl">
+        {/* Subtle Browser / App Header */}
+        <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#E6E6E8]">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#E6E6E8]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#E6E6E8]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#E6E6E8]" />
+            <span className="ml-2 text-[11px] font-medium text-[#8B8B8B]">kriya.app/today</span>
           </div>
-
-          {/* Streak Badge */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#083B37] text-[#34D399] border border-[#34D399]/20 rounded-2xs transition-transform duration-300">
-            <Flame className="w-4 h-4 fill-[#34D399] animate-bounce" />
-            <span className="font-technical font-bold text-xs">{currentStreak} STREAK</span>
+          <div className="flex items-center gap-1.5 text-xs text-[#668F72] font-semibold">
+            <span className="w-2 h-2 rounded-full bg-[#668F72] animate-pulse" />
+            <span>Synced</span>
           </div>
         </div>
 
-        {/* Level XP Progress Bar */}
-        <div className="mb-6 space-y-1.5">
-          <div className="flex justify-between text-xs font-technical">
-            <span className="text-[#80A79D] uppercase tracking-wider font-medium">LEVEL PROGRESS</span>
-            <span className="font-bold text-[#E2F1ED]">
-              {currentXp} / {targetXp} XP ({xpPercent}%)
-            </span>
-          </div>
-          <div className="h-3.5 w-full bg-[#051F20] border border-[#1D5254] rounded-2xs overflow-hidden relative">
+        {/* User Identity & Live XP Bar */}
+        <div className="flex items-center justify-between gap-4 pb-5 border-b border-[#E6E6E8]">
+          <div className="flex items-center gap-3.5">
+            {/* Blob Avatar with interactive reaction */}
             <div
-              className="h-full bg-gradient-to-r from-[#34D399] to-[#F59E0B] transition-all duration-700 ease-out segmented-ticks"
-              style={{ width: `${xpPercent}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Interactive Quest Card */}
-        <div className="relative bg-[#051F20] border border-[#1D5254] p-4 chamfer-panel mb-4 transition-all">
-          {/* Floating Reward Toast Overlay */}
-          {showRewardAnimation && (
-            <div className="absolute -top-4 right-4 z-30 animate-bounce flex items-center gap-2 bg-[#0F3132] border-2 border-[#F59E0B] text-[#E2F1ED] px-3.5 py-1.5 text-xs font-bold font-technical shadow-xl rounded-2xs transition-all">
-              <Sparkles className="w-4 h-4 text-[#F59E0B]" />
-              <span className="text-[#34D399]">+50 XP</span>
-              <span className="text-[#F59E0B]">+15 GOLD</span>
-            </div>
-          )}
-
-          <div className="flex items-start justify-between gap-4">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-technical uppercase font-bold tracking-widest px-2 py-0.5 bg-[#083B37] text-[#34D399] border border-[#34D399]/30 rounded-2xs">
-                  STRENGTH
-                </span>
-                <span className="text-[10px] font-technical uppercase text-[#80A79D]">
-                  MEDIUM DIFFICULTY
-                </span>
-              </div>
-              <h3 className="font-bold text-[#E2F1ED] text-base leading-snug">
-                Finish today&apos;s workout session
-              </h3>
-              <p className="text-xs text-[#80A79D]">
-                Physical vitality & momentum builder
-              </p>
-            </div>
-
-            {/* Fixed Reward Indicator */}
-            <div className="flex flex-col items-end text-xs font-technical shrink-0">
-              <span className="font-bold text-[#34D399]">+50 XP</span>
-              <span className="font-semibold text-[#F59E0B]">+15 GOLD</span>
-            </div>
-          </div>
-
-          {/* Interactive Complete CTA Button */}
-          <div className="mt-4 pt-3 border-t border-[#1D5254] flex items-center justify-between">
-            <span className="text-xs text-[#80A79D]">
-              {isCompleted ? 'Quest validated & completed' : 'Click to complete quest'}
-            </span>
-
-            <button
-              type="button"
-              onClick={handleComplete}
-              disabled={isCompleted}
-              className={`inline-flex items-center gap-2 px-4 py-2 font-semibold text-xs transition-all chamfer-button ${
-                isCompleted
-                  ? 'bg-[#34D399] text-[#051F20] cursor-default'
-                  : 'bg-[#34D399] hover:bg-[#059669] text-[#051F20] shadow-sm active:scale-[0.98]'
+              className={`relative transition-all duration-500 shrink-0 ${
+                completed ? 'scale-110 -rotate-2' : ''
               }`}
             >
-              {isCompleted ? (
-                <>
-                  <Check className="w-4 h-4" />
-                  <span>COMPLETED</span>
-                </>
-              ) : (
-                <>
-                  <Zap className="w-4 h-4 fill-current" />
-                  <span>COMPLETE QUEST</span>
-                </>
-              )}
-            </button>
+              <Avatar
+                variant="architect"
+                size={54}
+                system="blob"
+                frame="gold"
+                showFrame={true}
+              />
+              <span className="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded bg-[#070709] text-white text-[9px] font-extrabold tabular-nums shadow-xs">
+                LV.12
+              </span>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-base text-[#070709]">The Architect</span>
+                <span className="text-[10px] font-bold text-[#C85A3D] px-2 py-0.5 rounded bg-[#FDF4F2] border border-[#C85A3D]/20">
+                  Intellect Core
+                </span>
+              </div>
+              <p className="text-xs text-[#60606C] mt-0.5">Focus, structure & deep craft</p>
+            </div>
+          </div>
+
+          {/* Gold & Streak Counter */}
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#FBF5EA] border border-[#D9A441]/30 text-xs font-bold text-[#070709] tabular-nums">
+              <Coins weight="fill" className="w-3.5 h-3.5 text-[#D9A441]" />
+              <span>{currentGold}</span>
+            </div>
           </div>
         </div>
 
-        {/* Reset Preview Link */}
-        {isCompleted && (
-          <div className="flex justify-end pt-1">
-            <button
-              type="button"
-              onClick={handleReset}
-              className="inline-flex items-center gap-1.5 text-xs text-[#80A79D] hover:text-[#34D399] transition-colors"
-            >
-              <RefreshCw className="w-3 h-3" />
-              <span>Reset interactive demo</span>
-            </button>
+        {/* Level Progression Bar */}
+        <div className="py-4 space-y-2 border-b border-[#E6E6E8]">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-extrabold text-[#070709] tracking-tight">
+              LEVEL 12
+            </span>
+            <div className="text-right text-xs">
+              <span className="font-bold text-[#070709] tabular-nums">
+                {currentXP.toLocaleString()} XP
+              </span>
+              <span className="text-[#8B8B8B] font-medium ml-1.5 tabular-nums">
+                / {nextLevelXP.toLocaleString()} XP NEXT LEVEL
+              </span>
+            </div>
           </div>
-        )}
+
+          {/* Segmented Track */}
+          <div className="h-2.5 w-full bg-[#F3F4F5] rounded-full overflow-hidden relative">
+            <div
+              className="h-full bg-[#070709] rounded-full transition-all duration-700 ease-out"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+
+          <div className="flex justify-between items-center text-[11px] text-[#8B8B8B] pt-0.5">
+            <span className="tabular-nums">{progressPercent}% to Level 13</span>
+            <span className="tabular-nums">{nextLevelXP - currentXP} XP remaining</span>
+          </div>
+        </div>
+
+        {/* TODAY'S QUEST (Primary Interactive Moment) */}
+        <div className="pt-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-extrabold text-[#8B8B8B] uppercase tracking-[0.14em]">
+              TODAY'S QUEST
+            </span>
+            <span className="text-[11px] text-[#C85A3D] font-semibold">
+              {completed ? '✓ Action logged' : 'Click complete to test'}
+            </span>
+          </div>
+
+          {/* Interactive Quest Box */}
+          <div
+            className={`relative rounded-2xl border p-4 sm:p-5 transition-all duration-300 ${
+              completed
+                ? 'bg-[#F1F6F3] border-[#668F72]/40 shadow-xs'
+                : 'bg-[#F7F7F8] hover:bg-white border-[#E6E6E8] hover:border-[#D0D1D4] shadow-xs'
+            }`}
+          >
+            {/* Floating Reward Toast */}
+            {showRewardNotification && (
+              <div className="absolute -top-4 right-4 z-40 flex items-center gap-2 px-3.5 py-1.5 bg-[#070709] text-white text-xs font-bold rounded-full shadow-xl transition-all animate-bounce">
+                <Sparkle weight="fill" className="w-3.5 h-3.5 text-[#D9A441]" />
+                <span className="text-[#668F72] tabular-nums">+{rewardXP} XP</span>
+                <span className="text-[#D9A441] tabular-nums">+{rewardGold} Gold</span>
+              </div>
+            )}
+
+            <div className="flex items-start justify-between gap-3.5">
+              {/* Checkbox */}
+              <button
+                type="button"
+                onClick={handleComplete}
+                disabled={completed}
+                className={`w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#070709] ${
+                  completed
+                    ? 'bg-[#668F72] border-[#668F72] text-white cursor-default scale-105'
+                    : 'bg-white border-[#D0D1D4] hover:border-[#070709] cursor-pointer hover:scale-105'
+                }`}
+                aria-label={completed ? 'Quest completed' : 'Complete quest: Read 20 pages'}
+              >
+                {completed && <Check weight="bold" className="w-4 h-4" />}
+              </button>
+
+              {/* Title & Metadata */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3
+                    className={`text-base font-bold transition-colors ${
+                      completed ? 'line-through text-[#8B8B8B]' : 'text-[#070709]'
+                    }`}
+                  >
+                    Read 20 pages
+                  </h3>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-white border border-[#E6E6E8] text-[#070709]">
+                    Intellect
+                  </span>
+                  <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold text-[#8B8B8B]">
+                    Medium
+                  </span>
+                </div>
+                <p className="text-xs text-[#60606C] mt-1 leading-relaxed">
+                  Morning intentional study block and core idea reflection.
+                </p>
+              </div>
+
+              {/* Reward Pills */}
+              <div className="text-right shrink-0 text-xs font-extrabold tabular-nums space-y-0.5">
+                <div className="text-[#C85A3D]">+{rewardXP} XP</div>
+                <div className="text-[#D9A441]">+{rewardGold} Gold</div>
+              </div>
+            </div>
+
+            {/* Bottom Action Strip */}
+            <div className="mt-4 pt-3 border-t border-[#E6E6E8]/70 flex items-center justify-between text-xs">
+              <span className="text-[#8B8B8B] text-[11px]">
+                {completed ? 'Progress recorded in character stats' : 'One click validates completion'}
+              </span>
+
+              {completed ? (
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#60606C] hover:text-[#070709] transition-colors cursor-pointer py-1 px-2 rounded-lg hover:bg-white"
+                >
+                  <ArrowClockwise weight="bold" className="w-3.5 h-3.5" />
+                  <span>Reset demo</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleComplete}
+                  className="inline-flex items-center gap-1.5 bg-[#070709] hover:bg-[#202025] text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all shadow-xs active:scale-[0.98] cursor-pointer"
+                >
+                  <Lightning weight="fill" className="w-3.5 h-3.5 text-[#D9A441]" />
+                  <span>Complete</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
