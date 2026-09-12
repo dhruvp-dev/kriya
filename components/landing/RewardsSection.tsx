@@ -1,115 +1,214 @@
-import React from 'react';
-import { Crown, Feather, Compass, HourglassHigh, Shield, Sparkle } from '@phosphor-icons/react/dist/ssr';
+'use client';
+
+import React, { useState } from 'react';
+import { Crown, Feather, Compass, Shield, Sparkle, Check } from '@phosphor-icons/react';
+import { Avatar } from '../avatars';
+import { AvatarFrameVariant } from '../avatars/avatarTypes';
+
+interface RewardItem {
+  id: string;
+  type: 'frame' | 'title' | 'keepsake';
+  name: string;
+  cost: string;
+  desc: string;
+  frameValue?: AvatarFrameVariant;
+  titleValue?: string;
+  icon: any;
+  accent: string;
+}
+
+const REWARDS: RewardItem[] = [
+  {
+    id: 'frame-gold',
+    type: 'frame',
+    name: 'Polished Gold Frame',
+    cost: '500 Gold (Level 10)',
+    desc: 'Lustrous warm metallic border celebrating double-digit mastery.',
+    frameValue: 'gold',
+    icon: Crown,
+    accent: 'text-[#D9A441]',
+  },
+  {
+    id: 'frame-coral',
+    type: 'frame',
+    name: 'Terracotta Sigil Frame',
+    cost: '350 Gold (Streak 14)',
+    desc: 'Deep warm clay trim honoring uninterrupted momentum.',
+    frameValue: 'coral',
+    icon: Shield,
+    accent: 'text-[#C85A3D]',
+  },
+  {
+    id: 'title-architect',
+    type: 'title',
+    name: '"The Architect" Moniker',
+    cost: '300 Gold (50 Quests)',
+    desc: 'Awarded to users who dedicate deep focus to system design and reading.',
+    titleValue: 'The Architect',
+    icon: Feather,
+    accent: 'text-[#070709]',
+  },
+  {
+    id: 'title-deepwork',
+    type: 'title',
+    name: '"Deep Worker" Moniker',
+    cost: '400 Gold (100 Deep Hours)',
+    desc: 'Recognizes sustained uninterrupted flow state sprints.',
+    titleValue: 'Deep Worker',
+    icon: Feather,
+    accent: 'text-[#668F72]',
+  },
+  {
+    id: 'keepsake-compass',
+    type: 'keepsake',
+    name: 'Brass Compass Artifact',
+    cost: '250 Gold (4 Domains)',
+    desc: 'Tactile desktop relic acknowledging curiosity across all 4 attributes.',
+    icon: Compass,
+    accent: 'text-[#D9A441]',
+  },
+];
 
 export function RewardsSection() {
+  const [equippedFrame, setEquippedFrame] = useState<AvatarFrameVariant>('gold');
+  const [equippedTitle, setEquippedTitle] = useState<string>('The Architect');
+  const [activeItem, setActiveItem] = useState<string>('frame-gold');
+
+  const handleEquip = (item: RewardItem) => {
+    setActiveItem(item.id);
+    if (item.type === 'frame' && item.frameValue) {
+      setEquippedFrame(item.frameValue);
+    } else if (item.type === 'title' && item.titleValue) {
+      setEquippedTitle(item.titleValue);
+    }
+  };
+
   return (
     <section id="rewards" className="py-24 md:py-36 bg-[#F7F7F8] border-t border-[#E6E6E8]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Section Header */}
-        <div className="max-w-3xl mb-16 space-y-4">
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-[#070709] tracking-[-0.03em] leading-tight">
-            EARN THINGS <br />
-            THAT FEEL LIKE YOURS.
-          </h2>
-          <p className="text-base sm:text-lg text-[#60606C] leading-relaxed max-w-xl">
-            A personal collection earned through discipline, not an ecommerce storefront. Collect frames, titles, and keepsakes with in-game Gold.
-          </p>
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+          <div className="max-w-2xl space-y-4">
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-[#D9A441]">
+              <Sparkle weight="fill" className="w-3.5 h-3.5 text-[#D9A441]" />
+              <span>COLLECTIBLE REWARDS</span>
+            </div>
+
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#070709] tracking-[-0.03em] leading-tight">
+              EARN THINGS <br />
+              THAT FEEL LIKE YOURS.
+            </h2>
+
+            <p className="text-base sm:text-lg text-[#60606C] leading-relaxed">
+              Click any cosmetic below to preview it live on your avatar. A personal inventory earned with in-game Gold—zero microtransactions.
+            </p>
+          </div>
+
+          <div className="text-xs text-[#8B8B8B] font-semibold self-start lg:self-auto">
+            Click any item to test live equip preview
+          </div>
         </div>
 
-        {/* Curated Collection Showcase (Varied Visual Objects) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Object 1: Avatar Frame Showcase */}
-          <div className="bg-white border border-[#E6E6E8] rounded-3xl p-8 flex flex-col justify-between space-y-8 shadow-sm">
-            <div className="space-y-4">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md bg-[#FBF5EA] text-[#D9A441] border border-[#D9A441]/30">
-                Avatar Frame
+        {/* Live Fitting Stage + Curated Shelf Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* LEFT: Live Avatar Fitting Room (Equip Preview Stage) */}
+          <div className="lg:col-span-5 bg-white border border-[#E6E6E8] rounded-3xl p-8 sm:p-10 flex flex-col items-center justify-between text-center space-y-8 shadow-md">
+            <div className="space-y-1">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#8B8B8B]">
+                Live Preview Stage
               </span>
+              <h3 className="text-xl font-black text-[#070709]">
+                Character Customization
+              </h3>
+            </div>
 
-              {/* Physical Frame Visual Object */}
-              <div className="w-full aspect-[4/3] rounded-2xl bg-[#F7F7F8] border border-[#E6E6E8] flex items-center justify-center relative overflow-hidden">
-                <div className="w-24 h-24 rounded-full border-4 border-[#D9A441] flex items-center justify-center bg-white shadow-md">
-                  <Crown weight="fill" className="w-8 h-8 text-[#D9A441]" />
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-extrabold text-[#070709]">
-                  Polished Gold Frame
-                </h3>
-                <p className="text-xs text-[#60606C] mt-1 leading-relaxed">
-                  Unlocked upon reaching Level 10. Highlights your avatar across leaderboards and profile cards.
-                </p>
+            {/* Dynamic Avatar with Currently Equipped Frame */}
+            <div className="relative p-6">
+              <div className="w-[180px] h-[180px] sm:w-[200px] sm:h-[200px] flex items-center justify-center transition-all duration-300">
+                <Avatar
+                  variant="architect"
+                  size={190}
+                  system="blob"
+                  frame={equippedFrame}
+                  showFrame={true}
+                  className="w-full h-full"
+                />
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#E6E6E8] flex items-center justify-between text-xs font-bold">
-              <span className="text-[#8B8B8B]">Cosmetic Perk</span>
-              <span className="text-[#D9A441] tabular-nums">Earned with 500 Gold</span>
+            {/* Equipped Title & Perks Card */}
+            <div className="w-full bg-[#F7F7F8] border border-[#E6E6E8] rounded-2xl p-4 space-y-1.5">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-[#8B8B8B]">
+                Equipped Moniker
+              </div>
+              <div className="text-base font-black text-[#070709]">
+                &ldquo;{equippedTitle}&rdquo;
+              </div>
+              <div className="text-xs text-[#668F72] font-semibold">
+                Active cosmetic loadout synced
+              </div>
             </div>
           </div>
 
-          {/* Object 2: Title Typography Plaque */}
-          <div className="bg-[#070709] text-white border border-[#070709] rounded-3xl p-8 flex flex-col justify-between space-y-8 shadow-xl">
-            <div className="space-y-4">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md bg-white/10 text-white border border-white/20">
-                Earned Title
-              </span>
+          {/* RIGHT: Curated Rewards Shelf (Interactive List) */}
+          <div className="lg:col-span-7 space-y-3.5">
+            {REWARDS.map((item) => {
+              const ItemIcon = item.icon;
+              const isEquipped =
+                activeItem === item.id ||
+                (item.type === 'frame' && equippedFrame === item.frameValue) ||
+                (item.type === 'title' && equippedTitle === item.titleValue);
 
-              {/* Physical Plaque Object */}
-              <div className="w-full aspect-[4/3] rounded-2xl bg-[#15171C] border border-white/10 flex flex-col items-center justify-center p-6 text-center space-y-2">
-                <Feather weight="bold" className="w-6 h-6 text-[#D9A441]" />
-                <div className="text-2xl font-black tracking-tight text-white">
-                  &ldquo;The Architect&rdquo;
-                </div>
-                <div className="text-[10px] uppercase font-bold tracking-widest text-[#8B8B8B]">
-                  Deep Focus & Habits
-                </div>
-              </div>
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => handleEquip(item)}
+                  className={`w-full text-left rounded-2xl border p-5 transition-all flex items-center justify-between gap-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#070709] ${
+                    isEquipped
+                      ? 'bg-white border-[#070709] shadow-md ring-1 ring-[#070709] scale-[1.01]'
+                      : 'bg-white/80 hover:bg-white border-[#E6E6E8] hover:border-[#D0D1D4]'
+                  }`}
+                  aria-pressed={isEquipped}
+                >
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className={`w-12 h-12 rounded-xl bg-[#F7F7F8] border border-[#E6E6E8] flex items-center justify-center shrink-0 ${item.accent}`}>
+                      <ItemIcon weight="bold" className="w-6 h-6" />
+                    </div>
 
-              <div>
-                <h3 className="text-lg font-extrabold text-white">
-                  Archetype Moniker
-                </h3>
-                <p className="text-xs text-[#8B8B8B] mt-1 leading-relaxed">
-                  Earned by logging 50 consecutive intellect and craft quests without breaking rhythm.
-                </p>
-              </div>
-            </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h4 className="text-base font-extrabold text-[#070709] truncate">
+                          {item.name}
+                        </h4>
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#F7F7F8] border border-[#E6E6E8] text-[#60606C]">
+                          {item.type}
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#60606C] mt-0.5 truncate">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
 
-            <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold">
-              <span className="text-white/50">Profile Title</span>
-              <span className="text-[#668F72] tabular-nums">Streak Milestone</span>
-            </div>
-          </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="text-xs font-bold text-[#D9A441] tabular-nums hidden sm:inline">
+                      {item.cost}
+                    </span>
 
-          {/* Object 3: Tactile Keepsake Artifact */}
-          <div className="bg-white border border-[#E6E6E8] rounded-3xl p-8 flex flex-col justify-between space-y-8 shadow-sm">
-            <div className="space-y-4">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md bg-[#FDF4F2] text-[#C85A3D] border border-[#C85A3D]/30">
-                Desktop Keepsake
-              </span>
-
-              {/* Physical Keepsake Artifact Object */}
-              <div className="w-full aspect-[4/3] rounded-2xl bg-[#F7F7F8] border border-[#E6E6E8] flex items-center justify-center relative overflow-hidden">
-                <div className="w-20 h-20 rounded-2xl bg-white border border-[#E6E6E8] flex items-center justify-center shadow-md text-[#C85A3D]">
-                  <Compass weight="fill" className="w-10 h-10" />
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-extrabold text-[#070709]">
-                  Brass Compass Relic
-                </h3>
-                <p className="text-xs text-[#60606C] mt-1 leading-relaxed">
-                  Awarded for branching into 4 diverse attribute categories. A tactile token of balanced curiosity.
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-[#E6E6E8] flex items-center justify-between text-xs font-bold">
-              <span className="text-[#8B8B8B]">Artifact</span>
-              <span className="text-[#070709] tabular-nums">In-game Gold Only</span>
-            </div>
+                    <span
+                      className={`text-xs font-bold px-3 py-1.5 rounded-xl border transition-all ${
+                        isEquipped
+                          ? 'bg-[#070709] text-white border-[#070709]'
+                          : 'bg-white text-[#070709] border-[#E6E6E8] hover:border-[#070709]'
+                      }`}
+                    >
+                      {isEquipped ? 'Equipped ✓' : 'Equip'}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
