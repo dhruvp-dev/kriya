@@ -6,11 +6,13 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight, Lock, Mail } from 'lucide-react';
 import { signInAction } from '../../lib/actions/auth';
 import { useToast } from '../../components/ui/Toast';
+import { FullScreenLoginLoading } from '../../components/ui/FullScreenLoginLoading';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const router = useRouter();
   const { showToast } = useToast();
 
@@ -27,21 +29,27 @@ export default function LoginPage() {
     formData.append('password', password);
 
     const res = await signInAction(formData);
-    setIsSubmitting(false);
 
     if (!res.success) {
+      setIsSubmitting(false);
       showToast(res.error || 'Invalid credentials.', 'error');
       return;
     }
 
-    showToast('Welcome back!', 'success');
-    router.push('/dashboard');
+    // Instead of just giving a toast, activate the full-screen logging in screen
+    setIsLoggingIn(true);
+    router.prefetch('/dashboard');
+    setTimeout(() => {
+      router.push('/dashboard');
+    }, 850);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 py-12 bg-[#F9FAFB] text-[#070709] font-sans selection:bg-[#070709] selection:text-white">
-      {/* Background Soft Glow */}
-      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent -z-10" />
+    <>
+      {isLoggingIn && <FullScreenLoginLoading email={email} />}
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 py-12 bg-[#F9FAFB] text-[#070709] font-sans selection:bg-[#070709] selection:text-white">
+        {/* Background Soft Glow */}
+        <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent -z-10" />
 
       <div className="w-full max-w-md space-y-8">
         {/* Brand Header */}
@@ -103,10 +111,10 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isLoggingIn}
               className="w-full mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#070709] hover:bg-[#1E1E24] text-white font-medium text-sm rounded-xl transition-all shadow-xs active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
-              {isSubmitting ? (
+              {isSubmitting || isLoggingIn ? (
                 <>
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-1" />
                   <span>Logging in...</span>
@@ -130,5 +138,6 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+    </>
   );
 }

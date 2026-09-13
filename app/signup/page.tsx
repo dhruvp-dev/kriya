@@ -8,6 +8,7 @@ import { AvatarCustomizer } from '../../components/rpg/avatar';
 import { DEFAULT_AVATAR_CONFIG, AvatarConfig } from '../../types/avatar.types';
 import { signUpAction } from '../../lib/actions/auth';
 import { useToast } from '../../components/ui/Toast';
+import { FullScreenLoginLoading } from '../../components/ui/FullScreenLoginLoading';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
@@ -19,6 +20,7 @@ export default function SignupPage() {
   });
   const [timezone, setTimezone] = useState('UTC');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
   const router = useRouter();
   const { showToast } = useToast();
 
@@ -49,19 +51,38 @@ export default function SignupPage() {
     formData.append('timezone', timezone);
 
     const res = await signUpAction(formData);
-    setIsSubmitting(false);
 
     if (!res.success) {
+      setIsSubmitting(false);
       showToast(res.error || 'Failed to create account.', 'error');
       return;
     }
 
-    showToast('Account created! Initializing character...', 'success');
-    router.push('/dashboard');
+    // Activate full screen transition
+    setIsRegistering(true);
+    router.prefetch('/dashboard');
+    setTimeout(() => {
+      router.push('/dashboard');
+    }, 850);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 py-12 bg-[#F9FAFB] text-[#070709] font-sans selection:bg-[#070709] selection:text-white">
+    <>
+      {isRegistering && (
+        <FullScreenLoginLoading
+          displayName={displayName.trim() || undefined}
+          email={email}
+          title="Setting Up Your Character..."
+          subtitle="Initializing your persona, quest log, and attribute baselines..."
+          steps={[
+            'Creating user account...',
+            'Configuring persona archetype...',
+            'Generating daily quests...',
+            'Entering KRIYA...',
+          ]}
+        />
+      )}
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 py-12 bg-[#F9FAFB] text-[#070709] font-sans selection:bg-[#070709] selection:text-white">
       {/* Background Soft Glow */}
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent -z-10" />
 
@@ -179,10 +200,10 @@ export default function SignupPage() {
             {/* Submit CTA */}
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isRegistering}
               className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#070709] hover:bg-[#1E1E24] text-white font-medium text-sm rounded-xl transition-all shadow-xs active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
-              {isSubmitting ? (
+              {isSubmitting || isRegistering ? (
                 <>
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-1" />
                   <span>Creating Account...</span>
@@ -206,5 +227,6 @@ export default function SignupPage() {
         </p>
       </div>
     </div>
+    </>
   );
 }
