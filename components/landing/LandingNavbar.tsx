@@ -55,7 +55,7 @@ export function LandingNavbar() {
 
           <Link
             href="/signup"
-            className="inline-flex items-center gap-1.5 bg-[#1D64EC] hover:bg-[#1554C8] text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-all shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D64EC] focus-visible:ring-offset-2 tracking-normal"
+            className="inline-flex items-center gap-1.5 bg-[#070709] hover:bg-[#1E1E24] text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-all shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#070709] focus-visible:ring-offset-2 tracking-normal"
           >
             <span>Start your journey</span>
             <ArrowRight weight="bold" className="w-4 h-4" />
@@ -66,7 +66,7 @@ export function LandingNavbar() {
         <div className="flex md:hidden items-center gap-2">
           <Link
             href="/signup"
-            className="bg-[#1D64EC] text-white text-xs font-medium px-3.5 py-1.5 rounded-lg"
+            className="bg-[#070709] hover:bg-[#1E1E24] text-white text-xs font-medium px-3.5 py-1.5 rounded-lg transition-colors"
           >
             Start
           </Link>
@@ -114,7 +114,7 @@ export function LandingNavbar() {
             <Link
               href="/signup"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center gap-2 bg-[#1D64EC] text-white font-medium text-sm py-2.5 rounded-xl shadow-sm"
+              className="w-full flex items-center justify-center gap-2 bg-[#070709] hover:bg-[#1E1E24] text-white font-medium text-sm py-2.5 rounded-xl shadow-sm transition-colors"
             >
               <span>Start your journey</span>
               <ArrowRight weight="bold" className="w-4 h-4" />
