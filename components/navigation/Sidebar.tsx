@@ -14,10 +14,12 @@ import {
   Award,
   Settings,
   X,
+  LogOut,
 } from 'lucide-react';
 import { cn } from '../../lib/utils/cn';
 import { KriyaLogo } from '../ui/KriyaLogo';
 import { Avatar } from '../avatars/Avatar';
+import { LogoutConfirmModal } from '../ui/LogoutConfirmModal';
 
 export interface SidebarProps {
   isOpen?: boolean;
@@ -78,6 +80,8 @@ export function Sidebar({
   };
 
   const xpPercent = Math.min(100, Math.round((stats.currentXp / (stats.nextLevelXp || 1)) * 100));
+
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = React.useState(false);
 
   const renderNavItem = (item: { id: string; label: string; href: string; icon: any }) => {
     const Icon = item.icon;
@@ -168,9 +172,18 @@ export function Sidebar({
 
           <div className="border-t border-[#E6E6E8] my-2.5" />
 
-          {/* Group 3: Settings */}
+          {/* Group 3: Settings & Session */}
           <nav className="space-y-0.5 flex-1">
             {TERTIARY_NAV.map(renderNavItem)}
+            <button
+              type="button"
+              onClick={() => setIsLogoutModalOpen(true)}
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs transition-colors relative text-left font-medium text-[#60606C] hover:text-[#C85A3D] hover:bg-[#FDF4F2] cursor-pointer group"
+              aria-label="Log out"
+            >
+              <LogOut className="w-4 h-4 stroke-[1.75] shrink-0 text-[#8B8B8B] group-hover:text-[#C85A3D] transition-colors" />
+              <span>Log out</span>
+            </button>
           </nav>
 
           {/* Bottom Account / Character Summary */}
@@ -217,6 +230,11 @@ export function Sidebar({
           </div>
         </div>
       </aside>
+
+      <LogoutConfirmModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+      />
     </>
   );
 }

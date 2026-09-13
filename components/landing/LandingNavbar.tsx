@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, List, X, Sparkle } from '@phosphor-icons/react';
+import { ArrowRight, List, X } from '@phosphor-icons/react';
 
 export function LandingNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
