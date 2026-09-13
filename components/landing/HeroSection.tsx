@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Sparkle } from '@phosphor-icons/react';
-import { HeroQuestPreview } from './HeroQuestPreview';
+import { HeroProgressionVisual } from './HeroProgressionVisual';
 
 export function HeroSection() {
   return (
@@ -33,8 +33,8 @@ export function HeroSection() {
               <span>Turn Action Into Progress</span>
             </div>
 
-            {/* Bold Headline with reduced weight and normal tracking */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] xl:text-[3.5rem] font-bold text-[#070709] tracking-normal leading-[1.14]">
+            {/* Refined Headline with lighter font weight */}
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] xl:text-[3.5rem] font-medium text-[#070709] tracking-normal leading-[1.14]">
               Handle personal progression without the habit app chaos.
             </h1>
 
@@ -53,47 +53,11 @@ export function HeroSection() {
                 <ArrowRight weight="bold" className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
-
-            {/* Trusted by brands / builders row */}
-            <div className="pt-8 border-t border-[#F0F1F3] space-y-3">
-              <p className="text-xs font-medium text-[#8B8B8B] tracking-normal">
-                Trusted by mindful builders at
-              </p>
-              <div className="flex items-center gap-6 sm:gap-8 text-[#9CA3AF] opacity-80 flex-wrap">
-                <span className="font-semibold tracking-normal text-sm text-[#4B5563]">
-                  ARCHETYPE
-                </span>
-                <span className="font-semibold tracking-normal text-sm text-[#4B5563]">
-                  CHRONOS
-                </span>
-                <span className="font-semibold tracking-normal text-sm text-[#4B5563]">
-                  STUDIO
-                </span>
-                <span className="font-semibold tracking-normal text-sm text-[#4B5563]">
-                  SYNAPSE
-                </span>
-              </div>
-            </div>
           </div>
 
-          {/* RIGHT: Real Kriya Hero Quest Preview with Clouds Framing (Approx 7 cols) */}
+          {/* RIGHT: Interactive KRIYA Progression Visual (Approx 7 cols) */}
           <div className="lg:col-span-7 w-full relative">
-            {/* Dedicated Sky Clouds Card behind Product Window */}
-            <div className="absolute -top-6 -right-6 sm:-right-8 w-72 sm:w-96 h-72 sm:h-96 rounded-3xl overflow-hidden shadow-md pointer-events-none z-0">
-              <Image
-                src="/sky_clouds_bg.webp"
-                alt="Blue Sky Clouds"
-                fill
-                sizes="(max-width: 768px) 100vw, 400px"
-                className="object-cover opacity-90"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent" />
-            </div>
-
-            <div className="relative z-10">
-              <HeroQuestPreview />
-            </div>
+            <HeroProgressionVisual />
           </div>
         </div>
       </div>

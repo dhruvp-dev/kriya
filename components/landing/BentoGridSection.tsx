@@ -18,7 +18,7 @@ export function BentoGridSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Centered Heading */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-bold text-[#070709] tracking-normal leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-[#070709] tracking-normal leading-tight">
             How Kriya turns daily actions into lifelong momentum
           </h2>
           <p className="text-base sm:text-lg text-[#60606C] leading-relaxed font-normal tracking-normal">
@@ -34,11 +34,11 @@ export function BentoGridSection() {
             <div className="h-44 flex items-center justify-center">
               <div className="w-full max-w-[260px] bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-sm space-y-2.5 transform group-hover:scale-105 transition-transform">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-full bg-[#1D64EC] text-white flex items-center justify-center text-xs font-bold">
+                  <div className="w-7 h-7 rounded-full bg-[#1D64EC] text-white flex items-center justify-center text-xs font-medium">
                     DM
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-[#070709]">Daniel Michel</div>
+                    <div className="text-xs font-medium text-[#070709]">Daniel Michel</div>
                     <div className="text-[10px] text-[#8B8B8B]">2 days ago • Deep Work</div>
                   </div>
                 </div>
@@ -55,7 +55,7 @@ export function BentoGridSection() {
 
             {/* Bottom Copy */}
             <div className="pt-4 border-t border-[#EEF0F2] space-y-1.5">
-              <h3 className="text-base font-semibold text-[#070709] tracking-normal">
+              <h3 className="text-base font-medium text-[#070709] tracking-normal">
                 Reflective Habit Logs
               </h3>
               <p className="text-xs text-[#60606C] leading-relaxed">
@@ -70,7 +70,7 @@ export function BentoGridSection() {
             <div className="h-44 relative flex items-center justify-center">
               <div className="w-full h-full pt-4">
                 {/* Floating Tooltip Pill */}
-                <div className="absolute top-2 right-6 bg-white border border-[#E5E7EB] rounded-full px-3 py-1 shadow-sm flex items-center gap-1 text-[11px] font-bold text-[#070709] tabular-nums animate-pulse">
+                <div className="absolute top-2 right-6 bg-white border border-[#E5E7EB] rounded-full px-3 py-1 shadow-sm flex items-center gap-1 text-[11px] font-medium text-[#070709] tabular-nums animate-pulse">
                   <TrendUp weight="bold" className="w-3.5 h-3.5 text-[#1D64EC]" />
                   <span>Growth: 16,000 XP</span>
                 </div>
@@ -100,7 +100,7 @@ export function BentoGridSection() {
 
             {/* Bottom Copy */}
             <div className="pt-4 border-t border-[#EEF0F2] space-y-1.5">
-              <h3 className="text-base font-semibold text-[#070709] tracking-normal">
+              <h3 className="text-base font-medium text-[#070709] tracking-normal">
                 Visible Compounding Growth
               </h3>
               <p className="text-xs text-[#60606C] leading-relaxed">
@@ -114,17 +114,17 @@ export function BentoGridSection() {
             {/* Top Visual: Verification Pill & Code Input */}
             <div className="h-44 flex items-center justify-center">
               <div className="w-full max-w-[240px] bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-sm space-y-3 transform group-hover:scale-105 transition-transform">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[#059669] text-xs font-bold">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[#059669] text-xs font-medium">
                   <CheckCircle weight="fill" className="w-4 h-4" />
                   <span>Quest Verified</span>
                 </div>
                 <div>
-                  <div className="text-[11px] font-bold text-[#070709]">Confirmation Code</div>
+                  <div className="text-[11px] font-medium text-[#070709]">Confirmation Code</div>
                   <div className="flex items-center gap-1.5 mt-1.5">
                     {['5', '0', 'X', 'P'].map((char, i) => (
                       <div
                         key={i}
-                        className="w-8 h-9 rounded-lg bg-[#F3F4F6] border border-[#E5E7EB] flex items-center justify-center text-xs font-extrabold text-[#070709]"
+                        className="w-8 h-9 rounded-lg bg-[#F3F4F6] border border-[#E5E7EB] flex items-center justify-center text-xs font-semibold text-[#070709]"
                       >
                         {char}
                       </div>
@@ -136,7 +136,7 @@ export function BentoGridSection() {
 
             {/* Bottom Copy */}
             <div className="pt-4 border-t border-[#EEF0F2] space-y-1.5">
-              <h3 className="text-base font-semibold text-[#070709] tracking-normal">
+              <h3 className="text-base font-medium text-[#070709] tracking-normal">
                 Tamper-Proof Streak Engine
               </h3>
               <p className="text-xs text-[#60606C] leading-relaxed">
@@ -151,21 +151,21 @@ export function BentoGridSection() {
             <div className="h-44 flex items-center justify-center relative">
               <div className="relative w-36 h-36 flex items-center justify-center">
                 {/* Center Hero Avatar */}
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#1D64EC] to-[#60A5FA] flex items-center justify-center text-white font-extrabold text-base shadow-lg z-10">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#1D64EC] to-[#60A5FA] flex items-center justify-center text-white font-semibold text-base shadow-lg z-10">
                   <Sparkle weight="fill" className="w-7 h-7" />
                 </div>
 
                 {/* Orbiting Satellites */}
-                <div className="absolute top-1 left-2 w-7 h-7 rounded-full bg-white border border-[#E5E7EB] shadow-xs flex items-center justify-center text-[10px] font-bold text-[#D9A441]">
+                <div className="absolute top-1 left-2 w-7 h-7 rounded-full bg-white border border-[#E5E7EB] shadow-xs flex items-center justify-center text-[10px] font-medium text-[#D9A441]">
                   ✦
                 </div>
-                <div className="absolute top-1 right-2 w-7 h-7 rounded-full bg-white border border-[#E5E7EB] shadow-xs flex items-center justify-center text-[10px] font-bold text-[#10B981]">
+                <div className="absolute top-1 right-2 w-7 h-7 rounded-full bg-white border border-[#E5E7EB] shadow-xs flex items-center justify-center text-[10px] font-medium text-[#10B981]">
                   ⚡
                 </div>
-                <div className="absolute bottom-1 left-3 w-7 h-7 rounded-full bg-white border border-[#E5E7EB] shadow-xs flex items-center justify-center text-[10px] font-bold text-[#8B5CF6]">
+                <div className="absolute bottom-1 left-3 w-7 h-7 rounded-full bg-white border border-[#E5E7EB] shadow-xs flex items-center justify-center text-[10px] font-medium text-[#8B5CF6]">
                   🛡
                 </div>
-                <div className="absolute bottom-1 right-3 w-7 h-7 rounded-full bg-white border border-[#E5E7EB] shadow-xs flex items-center justify-center text-[10px] font-bold text-[#1D64EC]">
+                <div className="absolute bottom-1 right-3 w-7 h-7 rounded-full bg-white border border-[#E5E7EB] shadow-xs flex items-center justify-center text-[10px] font-medium text-[#1D64EC]">
                   ⚔
                 </div>
               </div>
@@ -173,7 +173,7 @@ export function BentoGridSection() {
 
             {/* Bottom Copy */}
             <div className="pt-4 border-t border-[#EEF0F2] space-y-1.5">
-              <h3 className="text-base font-semibold text-[#070709] tracking-normal">
+              <h3 className="text-base font-medium text-[#070709] tracking-normal">
                 Adaptive Archetype Shifts
               </h3>
               <p className="text-xs text-[#60606C] leading-relaxed">
@@ -189,21 +189,21 @@ export function BentoGridSection() {
               <div className="w-full max-w-[240px] space-y-2">
                 <div className="bg-white rounded-xl p-2.5 border border-[#E5E7EB] shadow-xs flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-[#EFF6FF] text-[#1D64EC] flex items-center justify-center text-[10px] font-bold">
+                    <div className="w-5 h-5 rounded-full bg-[#EFF6FF] text-[#1D64EC] flex items-center justify-center text-[10px] font-medium">
                       F
                     </div>
-                    <span className="text-xs font-bold text-[#070709]">Deep Work (Lvl 8)</span>
+                    <span className="text-xs font-medium text-[#070709]">Deep Work (Lvl 8)</span>
                   </div>
-                  <span className="text-[10px] font-extrabold text-[#059669]">+40 XP</span>
+                  <span className="text-[10px] font-medium text-[#059669]">+40 XP</span>
                 </div>
 
                 <div className="pl-6 border-l-2 border-[#E5E7EB] ml-4 space-y-2">
                   <div className="bg-white rounded-xl p-2 border border-[#E5E7EB] shadow-xs flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-[#4B5563]">Reading (Lvl 5)</span>
+                    <span className="text-[11px] font-medium text-[#4B5563]">Reading (Lvl 5)</span>
                     <span className="text-[10px] text-[#8B8B8B]">Active</span>
                   </div>
                   <div className="bg-white rounded-xl p-2 border border-[#E5E7EB] shadow-xs flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-[#4B5563]">Meditation (Lvl 4)</span>
+                    <span className="text-[11px] font-medium text-[#4B5563]">Meditation (Lvl 4)</span>
                     <span className="text-[10px] text-[#8B8B8B]">Active</span>
                   </div>
                 </div>
@@ -212,7 +212,7 @@ export function BentoGridSection() {
 
             {/* Bottom Copy */}
             <div className="pt-4 border-t border-[#EEF0F2] space-y-1.5">
-              <h3 className="text-base font-semibold text-[#070709] tracking-normal">
+              <h3 className="text-base font-medium text-[#070709] tracking-normal">
                 Multi-Disciplinary Skill Trees
               </h3>
               <p className="text-xs text-[#60606C] leading-relaxed">
@@ -227,8 +227,8 @@ export function BentoGridSection() {
             <div className="h-44 flex items-center justify-center">
               <div className="w-full max-w-[240px] bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-sm space-y-3 transform group-hover:scale-105 transition-transform">
                 <div className="flex items-center justify-between pb-2 border-b border-[#F0F1F3]">
-                  <span className="text-xs font-bold text-[#070709]">Keepsake Vault</span>
-                  <div className="flex items-center gap-1 text-xs font-bold text-[#D9A441] tabular-nums">
+                  <span className="text-xs font-medium text-[#070709]">Keepsake Vault</span>
+                  <div className="flex items-center gap-1 text-xs font-medium text-[#D9A441] tabular-nums">
                     <Coins weight="fill" className="w-3.5 h-3.5" />
                     <span>1,420</span>
                   </div>
@@ -236,12 +236,12 @@ export function BentoGridSection() {
 
                 <div className="space-y-1.5 text-[11px]">
                   <div className="flex items-center justify-between p-1.5 rounded-lg bg-[#F9FAFB]">
-                    <span className="font-semibold text-[#070709]">Amulet of Focus</span>
-                    <span className="text-[9px] font-extrabold text-[#D9A441] uppercase">Legendary</span>
+                    <span className="font-medium text-[#070709]">Amulet of Focus</span>
+                    <span className="text-[9px] font-semibold text-[#D9A441] uppercase">Legendary</span>
                   </div>
                   <div className="flex items-center justify-between p-1.5 rounded-lg bg-[#F9FAFB]">
-                    <span className="font-semibold text-[#070709]">Chronos Hourglass</span>
-                    <span className="text-[9px] font-extrabold text-[#8B5CF6] uppercase">Epic</span>
+                    <span className="font-medium text-[#070709]">Chronos Hourglass</span>
+                    <span className="text-[9px] font-semibold text-[#8B5CF6] uppercase">Epic</span>
                   </div>
                 </div>
               </div>
@@ -249,7 +249,7 @@ export function BentoGridSection() {
 
             {/* Bottom Copy */}
             <div className="pt-4 border-t border-[#EEF0F2] space-y-1.5">
-              <h3 className="text-base font-semibold text-[#070709] tracking-normal">
+              <h3 className="text-base font-medium text-[#070709] tracking-normal">
                 Earned Milestone Relics
               </h3>
               <p className="text-xs text-[#60606C] leading-relaxed">

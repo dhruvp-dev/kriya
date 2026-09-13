@@ -2,9 +2,13 @@ import React from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
 import { ToastProvider } from '../components/ui/Toast';
+import { DynamicTitle } from '../components/navigation/DynamicTitle';
 
 export const metadata: Metadata = {
-  title: 'KRIYA: Premium Productivity & Progression',
+  title: {
+    default: 'Dashboard | Kriya',
+    template: '%s | Kriya',
+  },
   description: 'Turn everyday actions into visible progress. Modern productivity software with character.',
   icons: {
     icon: [
@@ -35,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-[#FFFFFF] text-[#070709] min-h-screen antialiased font-sans selection:bg-[#070709] selection:text-[#FFFFFF]">
+        <DynamicTitle />
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>

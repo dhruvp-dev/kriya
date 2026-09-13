@@ -66,7 +66,7 @@ export function TabbedFeatureSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Centered Heading Block */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
-          <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-bold text-[#070709] tracking-normal leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-[#070709] tracking-normal leading-tight">
             Eliminate manual tracking.
           </h2>
           <p className="text-base sm:text-lg text-[#60606C] leading-relaxed font-normal tracking-normal">
@@ -84,7 +84,7 @@ export function TabbedFeatureSection() {
                 key={idx}
                 type="button"
                 onClick={() => setActiveTab(idx)}
-                className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-semibold transition-all shadow-xs cursor-pointer ${
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-medium transition-all shadow-xs cursor-pointer ${
                   isActive
                     ? 'bg-[#1D64EC] text-white shadow-md shadow-[#1D64EC]/20 scale-[1.02]'
                     : 'bg-white border border-[#E5E7EB] text-[#4B5563] hover:bg-white/80 hover:text-[#070709]'
@@ -107,7 +107,7 @@ export function TabbedFeatureSection() {
                 <span className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123]/40 inline-block" />
                 <span className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29]/40 inline-block" />
               </div>
-              <span className="text-xs font-semibold text-[#8B8B8B] pl-2 border-l border-[#E5E7EB]">
+              <span className="text-xs font-medium text-[#8B8B8B] pl-2 border-l border-[#E5E7EB]">
                 kriya.app / dashboard / {['quests', 'attributes', 'streaks', 'vault'][activeTab]}
               </span>
             </div>
@@ -126,13 +126,13 @@ export function TabbedFeatureSection() {
             <div className="md:col-span-3 border-r border-[#F0F1F3] p-5 space-y-6 bg-[#FAFAFC] hidden md:block">
               {/* Sidebar Header 1: General */}
               <div className="space-y-1.5">
-                <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#9CA3AF] px-2 mb-2">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-[#9CA3AF] px-2 mb-2">
                   General
                 </div>
                 <button
                   type="button"
                   onClick={() => setActiveTab(0)}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                     activeTab === 0
                       ? 'bg-white border border-[#E5E7EB] text-[#1D64EC] shadow-xs'
                       : 'text-[#60606C] hover:bg-white/60'
@@ -142,7 +142,7 @@ export function TabbedFeatureSection() {
                     <Compass weight={activeTab === 0 ? 'fill' : 'bold'} className="w-3.5 h-3.5" />
                     Daily Quests
                   </span>
-                  <span className="text-[10px] font-bold bg-[#EFF6FF] text-[#1D64EC] px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] font-medium bg-[#EFF6FF] text-[#1D64EC] px-1.5 py-0.5 rounded">
                     3
                   </span>
                 </button>
@@ -150,7 +150,7 @@ export function TabbedFeatureSection() {
                 <button
                   type="button"
                   onClick={() => setActiveTab(1)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                     activeTab === 1
                       ? 'bg-white border border-[#E5E7EB] text-[#1D64EC] shadow-xs'
                       : 'text-[#60606C] hover:bg-white/60'
@@ -163,7 +163,7 @@ export function TabbedFeatureSection() {
                 <button
                   type="button"
                   onClick={() => setActiveTab(2)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                     activeTab === 2
                       ? 'bg-white border border-[#E5E7EB] text-[#1D64EC] shadow-xs'
                       : 'text-[#60606C] hover:bg-white/60'
@@ -176,13 +176,13 @@ export function TabbedFeatureSection() {
 
               {/* Sidebar Header 2: Rewards */}
               <div className="space-y-1.5">
-                <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#9CA3AF] px-2 mb-2">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-[#9CA3AF] px-2 mb-2">
                   Rewards
                 </div>
                 <button
                   type="button"
                   onClick={() => setActiveTab(3)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                     activeTab === 3
                       ? 'bg-white border border-[#E5E7EB] text-[#1D64EC] shadow-xs'
                       : 'text-[#60606C] hover:bg-white/60'
@@ -201,14 +201,14 @@ export function TabbedFeatureSection() {
                 <div className="space-y-6">
                   <div className="flex items-center justify-between pb-4 border-b border-[#F0F1F3]">
                     <div>
-                      <h3 className="text-lg font-semibold text-[#070709] tracking-normal">
+                      <h3 className="text-lg font-medium text-[#070709] tracking-normal">
                         Today's Quest Objectives
                       </h3>
                       <p className="text-xs text-[#60606C] mt-0.5 tracking-normal font-normal">
                         Click checkboxes to test live XP and Gold reward calculation.
                       </p>
                     </div>
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F4F5F7] text-xs font-bold text-[#070709] tabular-nums">
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F4F5F7] text-xs font-medium text-[#070709] tabular-nums">
                       <Coins weight="fill" className="w-4 h-4 text-[#D9A441]" />
                       <span>720 Gold</span>
                     </div>
@@ -238,14 +238,14 @@ export function TabbedFeatureSection() {
 
                           <div className="min-w-0">
                             <div
-                              className={`text-sm font-bold truncate transition-colors ${
+                              className={`text-sm font-medium truncate transition-colors ${
                                 q.completed ? 'line-through text-[#8B8B8B]' : 'text-[#070709]'
                               }`}
                             >
                               {q.title}
                             </div>
                             <div className="flex items-center gap-2 mt-1 text-[11px]">
-                              <span className="font-semibold text-[#1D64EC] bg-[#EFF6FF] px-2 py-0.5 rounded">
+                              <span className="font-medium text-[#1D64EC] bg-[#EFF6FF] px-2 py-0.5 rounded">
                                 {q.attribute}
                               </span>
                               <span className="text-[#8B8B8B]">• {q.category}</span>
@@ -253,7 +253,7 @@ export function TabbedFeatureSection() {
                           </div>
                         </div>
 
-                        <div className="text-right shrink-0 text-xs font-bold tabular-nums">
+                        <div className="text-right shrink-0 text-xs font-medium tabular-nums">
                           <div className="text-[#1D64EC]">+{q.xp} XP</div>
                           <div className="text-[#D9A441]">+{q.gold} Gold</div>
                         </div>
@@ -263,7 +263,7 @@ export function TabbedFeatureSection() {
 
                   <div className="pt-2 flex items-center justify-between text-xs text-[#8B8B8B]">
                     <span>Interactive sandbox demo</span>
-                    <span className="text-[#059669] font-semibold">
+                    <span className="text-[#059669] font-medium">
                       {quests.filter((q) => q.completed).length} of 3 completed today
                     </span>
                   </div>
@@ -275,14 +275,14 @@ export function TabbedFeatureSection() {
                 <div className="space-y-6">
                   <div className="flex items-center justify-between pb-4 border-b border-[#F0F1F3]">
                     <div>
-                      <h3 className="text-lg font-semibold text-[#070709] tracking-normal">
+                      <h3 className="text-lg font-medium text-[#070709] tracking-normal">
                         Core Attribute Compounding
                       </h3>
                       <p className="text-xs text-[#60606C] mt-0.5 tracking-normal font-normal">
                         Your real-world accomplishments mapped to 4 foundational RPG attributes.
                       </p>
                     </div>
-                    <div className="text-xs font-semibold text-[#1D64EC] bg-[#EFF6FF] px-3 py-1.5 rounded-xl tracking-normal">
+                    <div className="text-xs font-medium text-[#1D64EC] bg-[#EFF6FF] px-3 py-1.5 rounded-xl tracking-normal">
                       Total XP: 3,162
                     </div>
                   </div>
@@ -296,7 +296,7 @@ export function TabbedFeatureSection() {
                     ].map((attr) => (
                       <div key={attr.name} className="p-4 rounded-xl border border-[#EEF0F2] bg-[#FAFAFC] space-y-2">
                         <div className="flex items-center justify-between text-xs">
-                          <span className="font-semibold text-[#070709] tracking-normal">{attr.name}</span>
+                          <span className="font-medium text-[#070709] tracking-normal">{attr.name}</span>
                           <span className="font-medium text-[#60606C] tabular-nums tracking-normal">Level {attr.level}</span>
                         </div>
                         <div className="h-2 w-full bg-[#E5E7EB] rounded-full overflow-hidden">
@@ -320,14 +320,14 @@ export function TabbedFeatureSection() {
                 <div className="space-y-6">
                   <div className="flex items-center justify-between pb-4 border-b border-[#F0F1F3]">
                     <div>
-                      <h3 className="text-lg font-semibold text-[#070709] tracking-normal">
+                      <h3 className="text-lg font-medium text-[#070709] tracking-normal">
                         14-Day Unbroken Momentum
                       </h3>
                       <p className="text-xs text-[#60606C] mt-0.5 tracking-normal font-normal">
                         Keep momentum alive with built-in freeze shields and progressive multipliers.
                       </p>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FEF2F2] border border-[#FCA5A5]/40 text-[#DC2626] text-xs font-semibold tracking-normal">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FEF2F2] border border-[#FCA5A5]/40 text-[#DC2626] text-xs font-medium tracking-normal">
                       <Fire weight="fill" className="w-4 h-4" />
                       <span>1.5x Multiplier Active</span>
                     </div>
@@ -353,7 +353,7 @@ export function TabbedFeatureSection() {
                       <ShieldCheck weight="fill" className="w-4 h-4" />
                       <span>Streak Freeze Shield: 2 available for emergencies</span>
                     </div>
-                    <span className="font-semibold text-[#1D64EC] tracking-normal">Protected</span>
+                    <span className="font-medium text-[#1D64EC] tracking-normal">Protected</span>
                   </div>
                 </div>
               )}
@@ -363,14 +363,14 @@ export function TabbedFeatureSection() {
                 <div className="space-y-6">
                   <div className="flex items-center justify-between pb-4 border-b border-[#F0F1F3]">
                     <div>
-                      <h3 className="text-lg font-semibold text-[#070709] tracking-normal">
+                      <h3 className="text-lg font-medium text-[#070709] tracking-normal">
                         Unlocked Keepsakes & Relics
                       </h3>
                       <p className="text-xs text-[#60606C] mt-0.5 tracking-normal font-normal">
                         Aesthetic relics earned strictly through verified personal consistency.
                       </p>
                     </div>
-                    <div className="text-xs font-bold text-[#D9A441] bg-[#FFFBEB] border border-[#FDE68A] px-3 py-1.5 rounded-xl">
+                    <div className="text-xs font-medium text-[#D9A441] bg-[#FFFBEB] border border-[#FDE68A] px-3 py-1.5 rounded-xl">
                       3 Relics Unlocked
                     </div>
                   </div>
@@ -385,8 +385,8 @@ export function TabbedFeatureSection() {
                         <div className="w-8 h-8 rounded-lg bg-white border border-[#E5E7EB] flex items-center justify-center shadow-xs">
                           <Trophy weight="fill" className="w-4 h-4" style={{ color: relic.color }} />
                         </div>
-                        <div className="text-xs font-extrabold text-[#070709]">{relic.title}</div>
-                        <span className="inline-block text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-white border border-[#E5E7EB] text-[#60606C]">
+                        <div className="text-xs font-medium text-[#070709]">{relic.title}</div>
+                        <span className="inline-block text-[9px] font-semibold uppercase px-1.5 py-0.5 rounded bg-white border border-[#E5E7EB] text-[#60606C]">
                           {relic.tier}
                         </span>
                         <p className="text-[11px] text-[#8B8B8B] leading-tight">{relic.desc}</p>

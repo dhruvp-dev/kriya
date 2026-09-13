@@ -55,7 +55,7 @@ export function LandingFooter() {
 
           {/* Product Links */}
           <div className="md:col-span-3 space-y-3">
-            <div className="text-xs font-semibold uppercase tracking-normal text-[#070709]">
+            <div className="text-xs font-medium uppercase tracking-normal text-[#070709]">
               Product
             </div>
             <ul className="space-y-2 text-xs text-[#60606C] font-normal tracking-normal">
@@ -74,7 +74,7 @@ export function LandingFooter() {
 
           {/* App Surfaces */}
           <div className="md:col-span-2 space-y-3">
-            <div className="text-xs font-semibold uppercase tracking-normal text-[#070709]">
+            <div className="text-xs font-medium uppercase tracking-normal text-[#070709]">
               Surfaces
             </div>
             <ul className="space-y-2 text-xs text-[#60606C] font-normal tracking-normal">
@@ -93,7 +93,7 @@ export function LandingFooter() {
 
           {/* Account */}
           <div className="md:col-span-2 space-y-3">
-            <div className="text-xs font-semibold uppercase tracking-normal text-[#070709]">
+            <div className="text-xs font-medium uppercase tracking-normal text-[#070709]">
               Account
             </div>
             <ul className="space-y-2 text-xs text-[#60606C] font-normal tracking-normal">
@@ -116,9 +116,6 @@ export function LandingFooter() {
           <p>
             &copy; {new Date().getFullYear()} kriya. Turn action into progress.
           </p>
-          <div className="text-[11px] text-[#8B8B8B]">
-            Plus Jakarta Sans · Pure Vector Blobs · Deterministic XP
-          </div>
         </div>
       </div>
     </footer>

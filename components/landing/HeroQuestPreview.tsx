@@ -63,22 +63,22 @@ export function HeroQuestPreview() {
       <div className="absolute inset-0 bg-[#F3F4F5] rounded-3xl -rotate-2 translate-y-3 scale-[0.98] border border-[#E6E6E8] pointer-events-none" />
 
       {/* Floating Foreground Badge 1: Level & Archetype Status */}
-      <div className="absolute -top-4 -right-2 sm:-right-4 z-30 flex items-center gap-1.5 px-3.5 py-1.5 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full shadow-md text-xs font-bold text-[#070709] rotate-2">
+      <div className="absolute -top-4 -right-2 sm:-right-4 z-30 flex items-center gap-1.5 px-3.5 py-1.5 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full shadow-md text-xs font-medium text-[#070709] rotate-2">
         <Trophy weight="fill" className="w-3.5 h-3.5 text-[#D9A441]" />
         <span>Level 12 {activeMeta.name.replace('The ', '')}</span>
       </div>
 
       {/* Floating Foreground Badge 2: Streak Indicator */}
-      <div className="absolute -bottom-3.5 -left-2 sm:-left-4 z-30 flex items-center gap-2 px-3.5 py-1.5 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full shadow-md text-xs font-semibold text-[#070709] -rotate-2">
+      <div className="absolute -bottom-3.5 -left-2 sm:-left-4 z-30 flex items-center gap-2 px-3.5 py-1.5 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full shadow-md text-xs font-medium text-[#070709] -rotate-2">
         <Flame
           weight="fill"
           className={`w-3.5 h-3.5 ${completed ? 'text-[#668F72]' : 'text-[#C85A3D]'}`}
         />
-        <span className="tabular-nums font-bold">
+        <span className="tabular-nums font-medium">
           {completed ? '15 Day Streak' : '14 Day Streak'}
         </span>
         {completed && (
-          <span className="text-[10px] font-extrabold text-[#668F72] px-1.5 py-0.2 rounded bg-[#F1F6F3]">
+          <span className="text-[10px] font-semibold text-[#668F72] px-1.5 py-0.2 rounded bg-[#F1F6F3]">
             ✓ TODAY
           </span>
         )}
@@ -121,7 +121,7 @@ export function HeroQuestPreview() {
                     showFrame={true}
                   />
                 </div>
-                <div className="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-md bg-[#070709] text-white text-[9px] font-black tabular-nums shadow-xs flex items-center gap-0.5">
+                <div className="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-md bg-[#070709] text-white text-[9px] font-bold tabular-nums shadow-xs flex items-center gap-0.5">
                   <span>LV.12</span>
                   <CaretDown weight="bold" className="w-2.5 h-2.5 text-white/70" />
                 </div>
@@ -130,13 +130,13 @@ export function HeroQuestPreview() {
               {/* Archetype Info */}
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-base text-[#070709]">
+                  <span className="font-semibold text-base text-[#070709]">
                     {activeMeta.name}
                   </span>
                   <button
                     type="button"
                     onClick={() => setIsSelectorOpen(!isSelectorOpen)}
-                    className="text-[10px] font-bold text-[#C85A3D] px-2 py-0.5 rounded-md bg-[#FDF4F2] border border-[#C85A3D]/20 hover:bg-[#FDF4F2]/80 transition-colors cursor-pointer"
+                    className="text-[10px] font-medium text-[#C85A3D] px-2 py-0.5 rounded-md bg-[#FDF4F2] border border-[#C85A3D]/20 hover:bg-[#FDF4F2]/80 transition-colors cursor-pointer"
                   >
                     Change
                   </button>
@@ -148,7 +148,7 @@ export function HeroQuestPreview() {
             </div>
 
             {/* Gold Counter */}
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FBF5EA] border border-[#D9A441]/30 text-xs font-bold text-[#070709] tabular-nums shrink-0">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FBF5EA] border border-[#D9A441]/30 text-xs font-medium text-[#070709] tabular-nums shrink-0">
               <Coins weight="fill" className="w-4 h-4 text-[#D9A441]" />
               <span>{currentGold} Gold</span>
             </div>
@@ -157,7 +157,7 @@ export function HeroQuestPreview() {
           {/* Inline Quick Archetype Selector Dropdown */}
           {isSelectorOpen && (
             <div className="absolute top-16 left-0 z-50 bg-white border border-[#E6E6E8] rounded-2xl p-3 shadow-2xl space-y-2 w-full max-w-sm animate-fadeIn">
-              <div className="flex items-center justify-between text-[11px] font-bold text-[#8B8B8B] uppercase tracking-wider px-1">
+              <div className="flex items-center justify-between text-[11px] font-semibold text-[#8B8B8B] uppercase tracking-wider px-1">
                 <span>Select Avatar Archetype</span>
                 <button
                   type="button"
@@ -186,7 +186,7 @@ export function HeroQuestPreview() {
                       }`}
                     >
                       <Avatar variant={id} size={32} system="blob" />
-                      <span className="text-[10px] font-bold text-[#070709] truncate w-full text-center">
+                      <span className="text-[10px] font-medium text-[#070709] truncate w-full text-center">
                         {meta.name.replace('The ', '')}
                       </span>
                     </button>
@@ -200,11 +200,11 @@ export function HeroQuestPreview() {
         {/* Level Progress Bar with Live Math */}
         <div className="py-4 space-y-2 border-b border-[#E6E6E8]">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-bold text-[#070709] tracking-normal">
+            <span className="font-medium text-[#070709] tracking-normal">
               LEVEL 12 PROGRESS
             </span>
             <div className="text-right text-xs">
-              <span className="font-bold text-[#070709] tabular-nums tracking-normal">
+              <span className="font-medium text-[#070709] tabular-nums tracking-normal">
                 {currentXP.toLocaleString()} XP
               </span>
               <span className="text-[#8B8B8B] font-normal ml-1.5 tabular-nums tracking-normal">
@@ -231,10 +231,10 @@ export function HeroQuestPreview() {
         {/* TODAY'S QUEST (Primary Interactive Core) */}
         <div className="pt-4 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#8B8B8B] uppercase tracking-normal">
+            <span className="text-[11px] font-medium text-[#8B8B8B] uppercase tracking-normal">
               TODAY'S QUEST
             </span>
-            <span className="text-[11px] font-semibold text-[#C85A3D]">
+            <span className="text-[11px] font-medium text-[#C85A3D]">
               {completed ? '✓ Quest logged & verified' : 'Click complete to try it live'}
             </span>
           </div>
@@ -248,7 +248,7 @@ export function HeroQuestPreview() {
           >
             {/* Floating Toast Notification upon completion */}
             {showRewardToast && (
-              <div className="absolute -top-4 right-4 z-40 flex items-center gap-2 px-3.5 py-1.5 bg-[#070709] text-white text-xs font-bold rounded-full shadow-xl transition-all animate-bounce">
+              <div className="absolute -top-4 right-4 z-40 flex items-center gap-2 px-3.5 py-1.5 bg-[#070709] text-white text-xs font-medium rounded-full shadow-xl transition-all animate-bounce">
                 <Sparkle weight="fill" className="w-3.5 h-3.5 text-[#D9A441]" />
                 <span className="text-[#668F72] tabular-nums">+{rewardXP} XP</span>
                 <span className="text-[#D9A441] tabular-nums">+{rewardGold} Gold</span>
@@ -275,16 +275,16 @@ export function HeroQuestPreview() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3
-                    className={`text-base font-bold transition-colors ${
+                    className={`text-base font-medium transition-colors ${
                       completed ? 'line-through text-[#8B8B8B]' : 'text-[#070709]'
                     }`}
                   >
                     Read 20 pages
                   </h3>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-white border border-[#E6E6E8] text-[#070709]">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-white border border-[#E6E6E8] text-[#070709]">
                     Intellect
                   </span>
-                  <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold text-[#8B8B8B]">
+                  <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-normal text-[#8B8B8B]">
                     Medium
                   </span>
                 </div>
@@ -294,7 +294,7 @@ export function HeroQuestPreview() {
               </div>
 
               {/* Yield Badges */}
-              <div className="text-right shrink-0 text-xs font-extrabold tabular-nums space-y-0.5">
+              <div className="text-right shrink-0 text-xs font-medium tabular-nums space-y-0.5">
                 <div className="text-[#C85A3D]">+{rewardXP} XP</div>
                 <div className="text-[#D9A441]">+{rewardGold} Gold</div>
               </div>
@@ -310,7 +310,7 @@ export function HeroQuestPreview() {
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#60606C] hover:text-[#070709] transition-colors cursor-pointer py-1 px-2.5 rounded-lg hover:bg-white border border-[#E6E6E8]"
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-[#60606C] hover:text-[#070709] transition-colors cursor-pointer py-1 px-2.5 rounded-lg hover:bg-white border border-[#E6E6E8]"
                 >
                   <ArrowClockwise weight="bold" className="w-3.5 h-3.5" />
                   <span>Reset demo</span>
@@ -319,7 +319,7 @@ export function HeroQuestPreview() {
                 <button
                   type="button"
                   onClick={handleComplete}
-                  className="inline-flex items-center gap-1.5 bg-[#070709] hover:bg-[#202025] text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all shadow-xs active:scale-[0.98] cursor-pointer"
+                  className="inline-flex items-center gap-1.5 bg-[#070709] hover:bg-[#202025] text-white text-xs font-medium px-4 py-2 rounded-xl transition-all shadow-xs active:scale-[0.98] cursor-pointer"
                 >
                   <Lightning weight="fill" className="w-3.5 h-3.5 text-[#D9A441]" />
                   <span>Complete Quest</span>

@@ -41,7 +41,7 @@ export function StatsQuotesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Centered Heading */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-20">
-          <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-bold text-[#070709] tracking-normal leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-[#070709] tracking-normal leading-tight">
             Our community is building momentum
           </h2>
           <p className="text-base sm:text-lg text-[#60606C] leading-relaxed font-normal tracking-normal">
@@ -60,7 +60,7 @@ export function StatsQuotesSection() {
             >
               {/* Left Column: Huge Stat */}
               <div className="md:col-span-4 space-y-1">
-                <div className="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-[#070709] tracking-normal tabular-nums">
+                <div className="text-4xl sm:text-5xl lg:text-[3.25rem] font-medium text-[#070709] tracking-normal tabular-nums">
                   {item.stat}
                 </div>
                 <div className="text-xs sm:text-sm font-medium text-[#8B8B8B] tracking-normal">
@@ -77,13 +77,13 @@ export function StatsQuotesSection() {
 
                   <div className="flex items-center gap-3 pt-2">
                     <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-xs"
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-medium shadow-xs"
                       style={{ backgroundColor: item.color }}
                     >
                       {item.initials}
                     </div>
                     <div>
-                      <div className="text-xs sm:text-sm font-semibold text-[#070709] tracking-normal">
+                      <div className="text-xs sm:text-sm font-medium text-[#070709] tracking-normal">
                         {item.name}
                       </div>
                       <div className="text-[11px] sm:text-xs text-[#8B8B8B] tracking-normal">

@@ -431,9 +431,21 @@ export default function DashboardPage() {
           onOpenCreateModal={() => setIsCreateModalOpen(true)}
         />
 
-        <div className="p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Main Content Column */}
-          <div className="lg:col-span-8 space-y-6">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#070709] tracking-tight">
+                Dashboard
+              </h1>
+              <p className="text-sm text-[#60606C] mt-1 font-medium">
+                Your daily momentum and RPG progression overview.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Main Content Column */}
+            <div className="lg:col-span-8 space-y-6">
             {/* Progression Component */}
             <CharacterProgressionCard
               isLoading={isLoading}
@@ -565,7 +577,8 @@ export default function DashboardPage() {
             />
           </div>
         </div>
-      </main>
+      </div>
+    </main>
 
       <CreateQuestModal
         isOpen={isCreateModalOpen}

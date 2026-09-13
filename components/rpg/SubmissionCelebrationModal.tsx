@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { Trophy, Sparkles, ArrowRight, X, RotateCcw, CheckCircle2, Award } from 'lucide-react';
+import { Trophy, Sparkles, ArrowRight, X, CheckCircle2, Award } from 'lucide-react';
 
 export interface SubmissionCelebrationModalProps {
   isOpen: boolean;
@@ -88,10 +88,6 @@ export function SubmissionCelebrationModal({
     }
     return () => clearTimeout(timer);
   }, [isOpen, delayMs]);
-
-  const handleReplay = () => {
-    fireGraffitiConfetti();
-  };
 
   if (!isOpen && !isDelayedVisible) return null;
 
@@ -182,8 +178,8 @@ export function SubmissionCelebrationModal({
               </div>
             </div>
 
-            {/* Call to Action Buttons */}
-            <div className="mt-6 space-y-3">
+            {/* Call to Action Button */}
+            <div className="mt-6">
               <button
                 type="button"
                 onClick={onClose}
@@ -191,15 +187,6 @@ export function SubmissionCelebrationModal({
               >
                 <span>Continue Progress</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
-
-              <button
-                type="button"
-                onClick={handleReplay}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#60606C] hover:text-[#070709] transition-colors cursor-pointer py-1"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>Replay confetti celebration</span>
               </button>
             </div>
           </motion.div>

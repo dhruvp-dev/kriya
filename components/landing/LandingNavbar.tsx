@@ -66,7 +66,7 @@ export function LandingNavbar() {
         <div className="flex md:hidden items-center gap-2">
           <Link
             href="/signup"
-            className="bg-[#1D64EC] text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg"
+            className="bg-[#1D64EC] text-white text-xs font-medium px-3.5 py-1.5 rounded-lg"
           >
             Start
           </Link>
@@ -114,7 +114,7 @@ export function LandingNavbar() {
             <Link
               href="/signup"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center gap-2 bg-[#1D64EC] text-white font-semibold text-sm py-2.5 rounded-xl shadow-sm"
+              className="w-full flex items-center justify-center gap-2 bg-[#1D64EC] text-white font-medium text-sm py-2.5 rounded-xl shadow-sm"
             >
               <span>Start your journey</span>
               <ArrowRight weight="bold" className="w-4 h-4" />

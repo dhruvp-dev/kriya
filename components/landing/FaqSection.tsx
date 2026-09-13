@@ -48,7 +48,7 @@ export function FaqSection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Centered Heading */}
         <div className="text-center space-y-4 mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-bold text-[#070709] tracking-normal leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-[#070709] tracking-normal leading-tight">
             Expert answers to your questions
           </h2>
           <p className="text-base sm:text-lg text-[#60606C] leading-relaxed max-w-2xl mx-auto font-normal tracking-normal">
@@ -68,7 +68,7 @@ export function FaqSection() {
                   className="w-full flex items-center justify-between text-left gap-4 cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D64EC] rounded-lg"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-base sm:text-lg font-semibold text-[#070709] tracking-normal group-hover:text-[#1D64EC] transition-colors">
+                  <span className="text-base sm:text-lg font-medium text-[#070709] tracking-normal group-hover:text-[#1D64EC] transition-colors">
                     {faq.question}
                   </span>
                   <div className="w-8 h-8 rounded-full bg-[#F4F5F7] flex items-center justify-center text-[#60606C] shrink-0 group-hover:bg-[#EFF6FF] group-hover:text-[#1D64EC] transition-colors">

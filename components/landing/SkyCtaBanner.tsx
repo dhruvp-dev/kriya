@@ -24,7 +24,7 @@ export function SkyCtaBanner() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
         {/* Bold White Headline */}
-        <h2 className="text-3xl sm:text-4xl lg:text-[2.85rem] font-bold text-white tracking-normal leading-tight">
+        <h2 className="text-3xl sm:text-4xl lg:text-[2.85rem] font-medium text-white tracking-normal leading-tight">
           Transform your daily habits with visible progression.
         </h2>
 
